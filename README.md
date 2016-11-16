@@ -36,24 +36,24 @@ A Calendar to rise an activity with your friends!
 
 ###
 
-|頁面|Functions|Data & Table|Possible issues|
+|頁面|Functions|Data & Table|Description|Possible issues|
 |---|---|---|---|
-|Login||新的使用者，更新user_id[]|使用者在別處移除對此網頁的授權|
-|Index||||
-||Buttons|創活動、登出|創活動: Add new activity & Goto Activity.html|登出: Session處理|  
-||已有的活動列表|根據user_id撈取activity[]||  
-||使用者的月曆|同上，撈出其中date[]資料顯示有活動，點擊日期頁面跳轉至此Activity.html|正在詢問有空的日期之顯示|
-||最近的活動|同上，根據date[]排序離目前最近的前N個活動名稱，點擊可跳轉||
-||邀請朋友||FB api related|
-|Activity||||
-||Buttons|||
-|||Edit||
-|||Add||
-|||Who||
-|||Quit||
-||月曆|||
-||舉辦投票|||
-||留言板|||
+|Login|||新的使用者，更新user_id[]|使用者在別處移除對此網頁的授權|
+|Index|||||
+||Buttons|創活動、登出||創活動: Add new activity & Goto Activity.html|登出: Session處理|  
+||已有的活動列表|根據user_id撈取activity[]|||  
+||使用者的月曆||同上，撈出其中date[]資料顯示有活動，點擊日期頁面跳轉至此Activity.html|正在詢問有空的日期之顯示|
+||最近的活動||同上，根據date[]排序離目前最近的前N個活動名稱，點擊可跳轉||
+||邀請朋友|||FB api related|
+|Activity|||||
+||Buttons||||
+|||Edit|||
+|||Add|||
+|||Who|||
+|||Quit|||
+||月曆||||
+||舉辦投票||||
+||留言板||||
 
 
 
