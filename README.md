@@ -34,10 +34,10 @@ A Calendar to rise an activity with your friends!
   
   ＊ : 要進一步連結到另一個Table
 
-###
+### More Detailed Task Table
 
 |頁面|Functions|Data & Table|Description|Possible issues|
-|---|---|---|---|
+|---|---|---|---|---|
 |Login|||新的使用者，更新user_id[]|使用者在別處移除對此網頁的授權|
 |Index|||||
 ||Buttons|創活動、登出||創活動: Add new activity & Goto Activity.html|登出: Session處理|  
