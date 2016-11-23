@@ -3,13 +3,13 @@ A Calendar to rise an activity with your friends!
 
 ### Instruction of Running the code
 1. If you didn't install anything yet, please type:
-   npm install
+npm install
 2. Then type:
-   node app.js
+node app.js
 3. Go to your browser, the web page's urls are:
-   localhost:8080/
-   localhost:8080/index
-   localhost:8080/activity
+localhost:8080/
+localhost:8080/index
+localhost:8080/activity
 
 ### Quick Description
 |Front-end|Back-end|  Description|
