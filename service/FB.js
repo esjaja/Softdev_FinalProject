@@ -34,8 +34,6 @@ function statusChangeCallback(response){
 //call this fundtion when clicking button
 function checkLoginState(){
 	FB.login(function(response) {
-    statusChangeCallback(response);
-  }, {scope: 'public_profile,email,user_friends,publish_actions'});
+        statusChangeCallback(response);
+    }, {scope: 'public_profile,email,user_friends,publish_actions'});
 }
-
-

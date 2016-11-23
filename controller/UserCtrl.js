@@ -32,8 +32,13 @@ var logout = (req, res, next) => {
     return res.redirect('/login');
 }
 
+var display_login = (req, res, next) => {
+    return res.render('login');
+}
+
 module.exports = {
     register: register,
     login: login,
-    logout: logout
+    logout: logout,
+    display_login: display_login
 }
