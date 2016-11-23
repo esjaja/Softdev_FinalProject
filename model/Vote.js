@@ -4,12 +4,12 @@ var Schema = mongoose.Schema;
 var Vote = new Schema({
     id: String,
     activity_id: String,
-    deadline: Date,
+    deadline: String,
+    type: String,
     option: [
         {
-            type: String,
-            title: String,
-            agree_user: [String]
+            name: String,
+            attend: [String]
         }
     ]
 });
