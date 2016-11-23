@@ -2,14 +2,20 @@
 A Calendar to rise an activity with your friends!
 
 ### Instruction of Running the code
-1.If you didn't install anything yet, please type:
+1. If you didn't install anything yet, please type:
+```console
 npm install
-2.Then type:
+```
+2. Then type:
+```console
 node app.js
-3.Go to your browser, the web page's urls are:
+```
+3. Go to your browser, the web page's urls are:
+```console
 localhost:8080/
 localhost:8080/index
 localhost:8080/activity
+```
 
 ### Quick Description
 |Front-end|Back-end|  Description|
