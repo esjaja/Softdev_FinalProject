@@ -12,6 +12,9 @@ A Calendar to rise an activity with your friends!
 [Schedule](https://docs.google.com/spreadsheets/d/1GxFBWrU8EeRcVnmUgGawMmm-SkN5xOC_EGeLNZuciG4/edit#gid=0) > Google Excel  
 [Proposal](https://docs.google.com/presentation/d/1vIZllEucLzMFveREy1tzNzQ3Ns_4z9EY_lqPMFy2E8I/edit#slide=id.g1957550c04_0_0)  > Google ppt
 
+### install semantic
+ Google : semantic UI install ^^
+ npm install semantic-ui
 
 ---  
 
