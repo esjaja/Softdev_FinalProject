@@ -71,7 +71,30 @@ localhost:8080/activity
 ||舉辦投票||||
 ||留言板||||
 
+## Facebook API
 
+### Request permission from users
+
+* 公開檔案：`public_profile`
+* 電子郵件：`email`
+* 好友清單：`user_friends`
+* 發文權限：`publish_actions`
+
+### Information aquired from reponse
+
+you can get it from `statusChangeCallback` function in `service/FB.js`, like `response.authResponse['accessToken']`.
+
+```
+{
+   status: 'connected',
+   authResponse: {
+      accessToken: '...',
+      expiresIn:'...',
+      signedRequest:'...',
+      userID:'...'
+   }
+}
+```
 
   
 
