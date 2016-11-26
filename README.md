@@ -60,6 +60,7 @@ A Calendar to rise an activity with your friends!
 [GridFS API](http://mongodb.github.io/node-mongodb-native/2.2/tutorials/gridfs/streaming/)   
 [GridFS Docunentation1](https://docs.mongodb.com/manual/core/gridfs/#use-gridfs)   
 [GridFS Docunentation2](https://docs.mongodb.com/manual/applications/drivers/)   
+[GridFS backend <-> HTML frontend](https://medium.com/@patrickshaughnessy/front-to-back-file-uploads-using-gridfs-9ddc3fc43b5d#.qz334q5ih)
 
 
 
