@@ -25,6 +25,9 @@
         <div class="ui divider"></div>
         <!-- Display Activity -->
         <div id="activitys" class="ui link items">
+       <div class="ui divider"></div>
+
+        <div id="activities" class="ui link items">
             {{#activities}}
                 <div class="item">
                     <div class="content">
