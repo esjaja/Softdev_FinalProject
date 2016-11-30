@@ -42,3 +42,29 @@ function checkLoginState(){
         statusChangeCallback(response);
     }, {scope: 'public_profile,email,user_friends,publish_actions'});
 }
+
+function inviteFriendToApp(){
+  FB.ui({
+    appid: 562604030601218,
+    method: 'send',
+    link: 'http://www.nctu.edu.tw'//<our_website's_url>
+  });
+}
+
+function addFriendToActivity(){
+  FB.api(
+    "/me/friends",
+    function (response) {
+      if (response && !response.error) {
+        //response has data, paging and summary fields
+        //access them by . and [ ] like below
+        for(var i=0;i<response.data.length;i++){
+          console.log(response.data[i].name);
+          console.log(response.data[i].id);
+        }
+      }else{
+        console.log('Error in accessing friends list');
+      }
+    }
+  );
+}
