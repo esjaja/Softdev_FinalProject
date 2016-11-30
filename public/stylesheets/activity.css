@@ -1,0 +1,232 @@
+body {
+    padding: 10pt;
+    text-align: center;
+    font-family: sans-serif, "Heiti TC", "Microsoft JhengHei";
+    font-size: 16px;
+    background-image: linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,0.1)),url("/public/images/wood.jpg");
+}
+
+.float-right {
+    float: right;
+}
+
+.float-left {
+    float: left;
+}
+
+.right {
+    text-align: right;
+}
+
+#activity {
+    text-align: left;
+    padding: 5pt;
+    background-color: pink;
+    height: 473pt;
+    width:25%;
+    float: left;
+    margin-right: 0;
+    border-radius: 5pt;
+}
+
+#activityTitle {
+    text-align: center;
+    background-color: !#F6A2B1;
+    margin: 20pt 0 10pt 0;
+    !border-bottom-style: solid;
+    !border-bottom-width: 2pt;
+    !padding-bottom: 2pt;
+    outline: none;
+    font-size: 20pt;
+    text-decoration: underline;
+}
+
+#activityDescription {
+    background-color: pink;
+    padding: 5pt 5pt 0 10pt;
+    margin: -3pt 0 5pt 0;
+    text-align: left;
+    border: none;
+    border-left-style: solid;
+    border-left-width: 3pt;
+    border-left-color: #73BBAF;
+    width: 100%;
+    height: 75pt;
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: pre-line;
+    resize: none;
+    outline-color: #D17C7C
+}
+
+#activityDescription:focus {
+    background-color: !#F6A2B1;
+}
+
+#activityDescription::-webkit-scrollbar-track {
+    background-color: #F6A2B1;
+}
+
+#activityDescription::-webkit-scrollbar {
+    width: 5px;
+    background-color: #F5F5F5;
+}
+
+#activityDescription::-webkit-scrollbar-thumb {
+    background-color: #73BBAF;
+    !border: 1px solid #555555;
+}
+
+#activityDate{
+    margin-top:3pt;
+}
+
+
+#controller {
+    margin-left: 28%;
+    background-color: orange;
+    height: 35pt;
+    width: 72%;
+    padding: 4pt;
+    border-radius: 5pt;
+    border-width: 1pt;
+    text-align: right;
+}
+
+#voteBoard {
+    margin-top: 10pt;
+    margin-left: 28%;
+    background-color: #CFDEEF;
+    height: 120pt;
+    width: 43%;
+    border-radius: 3pt;
+}
+
+
+#chatboard {
+    position:relative;
+    padding:5pt;
+    text-align: left;
+    margin-top: 10pt;
+    float: right;
+    background-color: #E8E8F3;
+    width: 27%;
+    height: 428pt;
+    border-radius: 10pt;
+}
+
+
+#chatBox{
+   ! background-color: black;
+    position: absolute;
+    bottom:2%;
+    width:90%;
+}
+#chatMsg{
+    width: 100%;
+}
+
+/*
+#calendar {
+    margin-left: 25%;
+    margin-right: 30%;
+    background-color: white;
+    height: 260pt;
+    width: 45%;
+}
+
+#upcomingActivity {
+    margin-left: 25%;
+    margin-right: 30%;
+    background-color: teal;
+    height: 160pt;
+    width: 45%;
+}
+
+
+
+
+#month {
+    font-size: 20pt;
+    color: orange;
+    text-align: left;
+}
+*/
+
+#calendar {
+    margin-left: 28%;
+    margin-right: 30%;
+    background-color: white;
+    height: 275pt;
+    width: 43%;
+    padding: 10pt;
+    border-radius: 10pt;
+    !box-shadow: 2pt 2pt 5pt grey;
+}
+#calendar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+#calendar li {
+    display: block;
+    float: left;
+    width: 14.36%;
+    padding: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    margin-right: -1px;
+    margin-bottom: -1px;
+}
+
+#calendar ul.weekdays {
+    height: 40px;
+    background: pink;
+    cursor: default;
+}
+
+#calendar ul.weekdays li {
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 20px;
+    border: none !important;
+    padding: 10px 7px;
+    color: #fff;
+    font-size: 13px;
+}
+#day{
+    margin:-2px -4px 0 0;
+}
+.days {
+    color: #355261;
+    font-family: sans-serif;
+    height: 45px;
+    background-color: !#F1DEDE;
+}
+
+.days:hover {
+    color: white;
+    background-color: #85B3E4;
+    cursor: pointer;
+}
+
+.disabledDays {
+    color: #E2DDDD;
+    background-color: #C0B5C0;
+}
+
+.disabledDays:hover {
+    color: #E2DDDD;
+    background-color: #C0B5C0;
+    cursor: default;
+}
+
+.monthButton {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: white;
+    outline: none;
+}
