@@ -5,13 +5,13 @@
 	<link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="/semantic/dist/semantic.min.js"></script>
-	<script src="/public/javascripts/getActivity.js"></script>
+	<script src="/public/javascripts/FB.js"></script>
 </head>
 <body>
 <div class="" style="justify-content: center;display: flex;">
 	<div id="login">
 		<p>Fat fat can also has spring!<p>
-		<button class="ui facebook button">
+		<button class="ui facebook button" onclick="checkLoginState()">
 		  <i class="facebook icon"></i>
 		  Facebook
 		</button>
