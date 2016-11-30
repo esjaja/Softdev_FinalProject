@@ -8,8 +8,14 @@ var session = require('express-session');
 //var redisStore = require('connect-redis')(session);
 var expressValidator = require('express-validator');
 var mongoose = require('mongoose');
+var multiparty = require('connect-multiparty')();
+var assert = require('assert');
+var fs = require('fs');
+var Gridfs = require('gridfs-stream');
+var loop = require('node-while-loop');
 
 var app = express();
+var router = express.Router();
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -36,6 +42,11 @@ db.once('open',function (callback) {
   console.log("Mongodb open");
 });
 
+//Connect the GridFS stream service to the existing mongo driver and database instance created when you start your app
+var database = db.db;
+var mongoDriver = mongoose.mongo;
+var gfs = new Gridfs(database, mongoDriver);
+
 //require controllers
 var UserCtrl = require('./controller/UserCtrl.js');
 var ActivityCtrl = require('./controller/ActivityCtrl.js');
@@ -48,6 +59,51 @@ app.get('/activity', ActivityCtrl.display_activity);
 app.all('/login', UserCtrl.login);
 app.post('/create_activity', ActivityCtrl.create_activity);
 
+//router.post('/activity', multiparty, function(req, res){
+db.once('open', function () {
+  // To check if a file exists or not
+  var options = {filename : 'I_NEED_YOU.mp3'}; //can be done via _id as well
+  //var bool=true;
+  gfs.exist(options, function (err, found) {
+    if (err) return handleError(err);
+    //console.log('File exists');
+    if(found){
+      gfs.remove({ filename: 'I_NEED_YOU.mp3' }, function (err) {
+                if (err) return handleError(err);
+                console.log('success');});
+    }
+    else {
+      //bool=false;
+      console.log('File does not exist');
+    }
+  });
+  // Write to fs
+  var writestream = gfs.createWriteStream({
+    filename: 'I_NEED_YOU.mp3', // wait for edit the variable names: req.files.file.name
+    mode: 'w',
+    //content_type: req.files.file.mimetype,  // wait for edit the variable names
+    //metadata: req.body
+  });
+  var readstream = fs.createReadStream('./I_NEED_YOU.mp3').pipe(writestream); // wait for edit the variable names: req.files.file.path
+  writestream.on('data', function (chunk){
+      console.log('Writing some data, just dont know what');
+  });
+  writestream.on('close', function (file) {
+    console.log('Written file ' + file.filename);
+  });
+  writestream.on('error', function (err) {
+     console.log('Got the following error: ' + err);
+  });
+  // show the gfs existing files
+  gfs.files.find(/*{ filename: 'I_NEED_YOU.mp3' }*/).toArray(function (err, files) {
+    if (err) {
+         throw (err);
+    }
+    console.log(files);
+  });
+  // read from fs and show in response
+  //readstream.pipe(res);
+});
 
 // error handler
 /*app.use(function(err, req, res, next) {
