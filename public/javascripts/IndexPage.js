@@ -7,6 +7,8 @@ $(document).ready(function(){
 	
 	init();
 
+	
+
 	// change calendar month
 	$('.monthButton').click(function(){
 		if(this.id == 'right')date.setMonth(date.getMonth()+1);
