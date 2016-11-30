@@ -1,26 +1,21 @@
 {
   "name": "final",
-  "version": "1.0.0",
-  "description": "A Calendar to rise an activity with your friends!",
-  "main": "app.js",
-  "dependencies": {
-    "body-parser": "^1.15.2",
-    "cookie-parser": "^1.4.3",
-    "express": "^4.14.0",
-    "mongoose": "^4.6.8"
-  },
-  "devDependencies": {},
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/esjaja/Softdev_FinalProject.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/esjaja/Softdev_FinalProject/issues"
-  },
-  "homepage": "https://github.com/esjaja/Softdev_FinalProject#readme"
+  "dependencies": {
+    "async": "^2.1.4",
+    "body-parser": "~1.15.2",
+    "cookie-parser": "~1.4.3",
+    "crypto": "0.0.3",
+    "debug": "~2.2.0",
+    "express": "~4.14.0",
+    "express-session": "^1.14.2",
+    "express-validator": "^2.21.0",
+    "hjs": "~0.0.6",
+    "mongoose": "^4.6.8",
+    "semantic-ui": "^2.2.6"
+  }
 }

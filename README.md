@@ -1,6 +1,22 @@
 # Softdev_FinalProject
 A Calendar to rise an activity with your friends!
 
+### Instruction of Running the code
+1. If you didn't install anything yet, please type:
+```console
+npm install
+```
+2. Then type:
+```console
+node app.js
+```
+3. Go to your browser, the web page's urls are:
+```console
+localhost:8080/
+localhost:8080/index
+localhost:8080/activity
+```
+
 ### Quick Description
 |Front-end|Back-end|  Description|
 |---|---|---|
@@ -55,7 +71,30 @@ A Calendar to rise an activity with your friends!
 ||舉辦投票||||
 ||留言板||||
 
+## Facebook API
 
+### Request permission from users
+
+* 公開檔案：`public_profile`
+* 電子郵件：`email`
+* 好友清單：`user_friends`
+* 發文權限：`publish_actions`
+
+### Information aquired from reponse
+
+you can get it from `statusChangeCallback` function in `service/FB.js`, like `response.authResponse['accessToken']`.
+
+```
+{
+   status: 'connected',
+   authResponse: {
+      accessToken: '...',
+      expiresIn:'...',
+      signedRequest:'...',
+      userID:'...'
+   }
+}
+```
 
   
 
