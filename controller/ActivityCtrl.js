@@ -93,7 +93,38 @@ var display_index = (req, res, next) => {
         });
     });
 }
-
+var edit_activity_title = (req, res, next) => {
+    async.waterfall([
+        (callback) => {
+            //check activity_id is available
+            Activity.find({id: req.body.activity_id}, (err, activities) => {
+                if(err){
+                    console.log('Error: ' + err);
+                }
+                if(activties.length !== 0){
+                    callback(null);
+                }
+                // else: display error message
+                console.log('Unavailable Activity');
+            });
+        },
+        (callback) => {
+            Activity.update({id: req.body.activity_id},
+                {$set:{title: req.body.title}},
+                (err) => {
+                    if(err) return console.log('Error: '+err);
+                    callback(null);
+                }
+            );
+        }
+    ],
+    (err, result) => {
+        if(err){
+            console.log('Error: ' + err);
+        }
+        return res.redirect('/activity');
+    });
+}
 
 module.exports = {
     display_index: display_index,
