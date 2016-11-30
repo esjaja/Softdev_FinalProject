@@ -1,5 +1,5 @@
 var multiparty = require('connect-multiparty')();
-ar assert = require('assert');
+var assert = require('assert');
 var fs = require('fs');
 var Gridfs = require('gridfs-stream');
 var loop = require('node-while-loop');
