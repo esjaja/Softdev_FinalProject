@@ -95,7 +95,9 @@ you can get it from `statusChangeCallback` function in `service/FB.js`, like `re
    }
 }
 ```
-
+### GridFS Links:   
+[GridFS backend <-> HTML frontend](https://medium.com/@patrickshaughnessy/front-to-back-file-uploads-using-gridfs-9ddc3fc43b5d#.qz334q5ih)
+[GridFS + mongoose](http://excellencenodejsblog.com/gridfs-using-mongoose-nodejs/)
   
 
 
