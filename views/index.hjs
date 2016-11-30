@@ -22,9 +22,7 @@
         </div>
 		<!---->
 
-        <div class="ui divider"></div>
         <!-- Display Activity -->
-        <div id="activitys" class="ui link items">
        <div class="ui divider"></div>
 
         <div id="activities" class="ui link items">
@@ -40,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-            <div class="ui divider"></div>
+                <div class="ui divider"></div>
             {{/activities}}
         </div>
         <!-- Display Activity -->

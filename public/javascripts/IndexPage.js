@@ -94,8 +94,12 @@ function searchActivity(val){
 	$('#activities > .item').each((index, element) => {
 		let string = $(element).text();
 		console.log(string);
-		if(string.match(regExp)!==null) $(element).css('display', 'block');
-		else {console.log("noo"); $(element).css('display', 'none');}
+		if(string.match(regExp)!==null) {
+			$(element).css('display', 'block');
+			$(element).next().css('display','block');
+		}
+		else {console.log("noo"); $(element).css('display', 'none');
+		$(element).next().css('display','none');}
 	});
 	return;
 }
