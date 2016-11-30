@@ -25,33 +25,36 @@
 
        <div class="ui divider"></div>
 
-        <div id="activitys" class="ui link items">
-        <!-- Create this by Activity_num
-            <div class="item">
-                <div class="content">
-                    <a class="header">ActivityName</a>
-                    <div class="meta">
-                        <span>Description</span>
-                    </div>
-                    <div class="extra">
-                    <div class="ui right floated">
-                        Date...</div>
+        <div id="activities" class="ui link items">
+            {{#activities}}
+                <div class="item">
+                    <div class="content">
+                        <a class="header">{{title}}</a>
+                        <div class="meta">
+                            <span>{{description}}</span>
+                        </div>
+                        <div class="extra">
+                            <div class="ui right floated">{{date}}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-         <!---->
+            {{/activities}}
         </div>
     </div>
     <!-- Activity List -->
 
     <!-- Control bar -->
     <div id="control">
-        <button id="newActivity" class="ui left floated teal button">
-            <i class="add to calendar outline icon"></i> New Activity
-        </button>
-        <button id="Logout" class="ui right floated blue button">
-            <i class="user icon"></i> Logout
-        </button>
+        <form action="/create_activity" method="post">
+            <button id="newActivity" class="ui left floated teal button">
+                <i class="add to calendar outline icon"></i> New Activity
+            </button>
+        </form>
+        <form action="/logout" method="get">
+            <button id="Logout" class="ui right floated blue button">
+                <i class="user icon"></i> Logout
+            </button>
+        </form>
     </div>
     <!-- Control bar -->
 
