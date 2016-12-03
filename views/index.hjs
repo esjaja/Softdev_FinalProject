@@ -53,6 +53,7 @@
                 <i class="add to calendar outline icon"></i> New Activity
             </button>
         </form>
+        <button id="Invite" class="ui left floated purple button"><i class="icon add user"></i> Invite</button>
         <form action="/logout" method="get">
             <button id="Logout" class="ui right floated blue button">
                 <i class="user icon"></i> Logout
