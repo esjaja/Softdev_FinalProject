@@ -41,7 +41,7 @@ $(document).ready(function(){
 	// controll bar behavior //
 	$('#Edit').click(function(){
 		console.log('Edit push');
-	});	
+	});
 	$('#Add').click(function(){
 		console.log('Add push');
 	});

@@ -4,7 +4,7 @@ var months = ["JANUARY","FEBUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","
 var date = new Date();
 
 $(document).ready(function(){
-	
+
 	init();
 
 	// change calendar month
@@ -30,6 +30,8 @@ $(document).ready(function(){
 	$('.item').click(function(){
 		console.log(this);
 	})
+
+	$('#Invite').click(inviteFriendToApp());
 
 });
 
