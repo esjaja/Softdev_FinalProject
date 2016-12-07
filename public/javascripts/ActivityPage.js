@@ -4,7 +4,7 @@ var months = ["JANUARY","FEBUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","
 var date = new Date();
 
 $(document).ready(function(){
-	
+
 	init();
 
 	// change calendar month
@@ -22,6 +22,34 @@ $(document).ready(function(){
 	})
 ////////// calendar same as index page ///////////
 
+	// activity Description edition
+	$('#activityTitle').on('click',function(){
+		this.focus();
+	});
+	$('#activityTitle').blur(function(){
+		// preserve \n
+		/*var item = document.getElementById("activityDescription");
+		var text = item.innerText || item.textContent;
+		text = text.replace(/\\r\\n/g, "<br />");*/
+		var text = this.textContent;
+		console.log(text);
+		$.ajax({
+	        url: "edit_activity_title",
+	        data: {
+	            activity_id: document.location.search.slice(6),
+				title: text
+	        },
+	        type: "POST",
+	        dataType: "json",
+	        success: function(data, textStatus, jqXHR) {
+				$(this).val(text);
+				console.log("edit title success!");
+	        },
+	        error: function() {
+				$(this).val("Please Try Again.");
+	        }
+	    });
+	});
 
 	// activity Description edition
 	$('#activityDescription').on('click',function(){
@@ -71,7 +99,7 @@ $(document).ready(function(){
 	  .modal({
 	    allowMultiple: false
 	  });
-	  //// choose others show second modal //// 
+	  //// choose others show second modal ////
 	$('.second.modal')
 	  .modal('attach events', '.first.modal .others');
 
@@ -114,13 +142,13 @@ $(document).ready(function(){
 		console.log('type[OTHERS]title: ' + $(this).val());
 		CheckVote(voteObj);
 	})
-	//// type OTHERS : options //////// 
+	//// type OTHERS : options ////////
 	$('input.option').on('keyup',function(e){
 		if(e.keyCode == 13){
 			if($(this).val())
 			{
 				$('.field.options').append('<a class="ui large label opt">'
-						+ $(this).val() + 
+						+ $(this).val() +
 						'<i class="delete icon"></i></a>');
 				voteObj['options'].push($(this).val());
 				console.log("type[OTHERS] options:" + $(this).val());
@@ -213,7 +241,7 @@ function calendarDate(date){
 		var preMonlastDate = new Date(date.getFullYear(),date.getMonth(),0);
 		firstDay = firstDay.getDay();
 		lastDate = lastDate.getDate();
-		preMonlastDate = preMonlastDate.getDate();	
+		preMonlastDate = preMonlastDate.getDate();
 		$(days).addClass('days');
 		// preMonDisplay
 		for(var i=0 ; i < firstDay ; i++){

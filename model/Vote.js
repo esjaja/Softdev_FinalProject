@@ -6,6 +6,7 @@ var Vote = new Schema({
     activity_id: String,
     deadline: String,
     type: String,
+    title: String,
     option: [
         {
             name: String,

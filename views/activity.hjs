@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div id="votePage" style="display: none">vote
         </div>
         <div id="votedPage" style="display: none">voted</div>
@@ -68,7 +68,7 @@
               <div class="header">Which type of vote do you want to arise?</div>
               <div class="content" style="height:120pt;">
                 <div class="ui two column center aligned grid">
-                <div class="column choose dates" style="border-right-style: solid; border-width: 1pt; border-color: #E9E5E5;"> 
+                <div class="column choose dates" style="border-right-style: solid; border-width: 1pt; border-color: #E9E5E5;">
                 <div class="ui icon header"><i class="calendar huge icon"></i>Asking dates</div>
                 </div>
                 <div class="column choose others">

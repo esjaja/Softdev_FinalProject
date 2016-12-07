@@ -51,13 +51,20 @@ var gfs = new Gridfs(database, mongoDriver);
 var UserCtrl = require('./controller/UserCtrl.js');
 var ActivityCtrl = require('./controller/ActivityCtrl.js');
 var UserCtrl = require('./controller/UserCtrl.js');
+var CheckUser = require('./middleware/CheckUser.js');
 // APIS
 app.get('/', UserCtrl.display_login);
 app.get('/logout', UserCtrl.logout);
-app.get('/index', ActivityCtrl.display_index);
-app.get('/activity', ActivityCtrl.display_activity);
 app.all('/login', UserCtrl.login);
+
+app.use(CheckUser.check_login);
+app.get('/index',ActivityCtrl.display_index);
+app.get('/activity', ActivityCtrl.display_activity);
+
 app.post('/create_activity', ActivityCtrl.create_activity);
+app.post('/edit_activity_title', ActivityCtrl.edit_activity_title);
+app.post('/edit_activity_description', ActivityCtrl.edit_activity_description);
+app.post('/edit_activity_dates', ActivityCtrl.edit_activity_dates);
 
 //router.post('/activity', multiparty, function(req, res){
 db.once('open', function () {
