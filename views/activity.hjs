@@ -5,32 +5,53 @@
     <title>Activity</title>
 	<link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="/public/stylesheets/activity.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="/semantic/dist/semantic.min.js"></script>
     <script src="/public/javascripts/ActivityPage.js"></script>
 </head>
 <body>
     <!-- Activity Description-->
     <div id="activity">
-        <div id="activityTitle" contenteditable>Title</div>
-        <h5 class="ui header left floated dividing">Description</h5>
-        <textarea id="activityDescription" spellcheck="false"></textarea>
-        <div><h5 class="ui header left floated dividing">Date</h5></div>
-        <br>
-        <!--div class="ui mini pink button"><i class="edit icon"></i>Edit</div-->
-        <div id="activityDate">
-            <div class="ui purple labels">
-                <div class="ui label">2016-09-20 ~ 2016-09-30</div>           
-                <div class="ui label">2016-09-20</div>
+        <div id="menu" class="ui secondary three item menu">
+          <a id="home" class="item active">Home</a>
+          <a id="vote" class="item">Vote</a>
+          <a id="voted" class="item">Voted</a>
+        </div>
+
+        <div id="Pages">
+        <div id="homePage">
+            <div id="activityTitle" contenteditable>{{title}}</div>
+            <h5 class="ui header left floated dividing">Description</h5>
+           <textarea id="activityDescription" spellcheck="false">{{description}}</textarea>
+            <div><h5 class="ui header left floated dividing">Date</h5></div>
+            <br>
+            <!--div class="ui mini pink button"><i class="edit icon"></i>Edit</div-->
+            <div id="activityDate">
+                <div class="ui purple labels">
+                    {{#date}}
+                      <div class="ui label">{{.}}</div>
+                    {{/date}}
+                </div>
             </div>
         </div>
+        
+        <div id="votePage" style="display: none">vote
+        </div>
+        <div id="votedPage" style="display: none">voted</div>
+        </div>
+
+
     </div>
     <!-- Activity Description -->
 
     <!-- Control bar -->
     <div id="controller">
         <div class="float-left">
-            <button id="Edit" class="ui pink button"><i class="edit icon"></i>Edit</button>
+            <button id="Vote" class="ui pink button"><i class="wizard icon"></i>New Vote
+            </button>
+            <!-- push Vote display modal-->
             <button id="Add" class="ui purple button"><i class="icon add user"></i> Add</button>
         </div>
         <div class="float-right">
@@ -38,10 +59,54 @@
                 <i class="sign out icon"></i>Back</button>
             <button class="ui blue button" onclick="window.location.href='/logout'"><i class="user icon"></i> Logout</button>
         </div>
-
-
     </div>
     <!-- Control bar -->
+
+    <!-- modal -->
+    <div class="ui coupled modal">
+            <div class="ui small first modal">
+              <div class="header">Which type of vote do you want to arise?</div>
+              <div class="content" style="height:120pt;">
+                <div class="ui two column center aligned grid">
+                <div class="column choose dates" style="border-right-style: solid; border-width: 1pt; border-color: #E9E5E5;"> 
+                <div class="ui icon header"><i class="calendar huge icon"></i>Asking dates</div>
+                </div>
+                <div class="column choose others">
+                <div class="ui icon header"><i class="game huge icon"></i>Asking others</div>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ui small second modal">
+                <div class="header">What do you want to ask?</div>
+                <div class="content">
+                <div class="ui form">
+                    <div class="field">
+                        <label>Title</label>
+                        <input class="title inputs" type="text" placeholder="">
+                    </div>
+                    <div class="field options">
+                        <label>Options</label>
+                        <div class="ui left icon input">
+                        <input class="option inputs" type="text" placeholder="Add options...">
+                        <i class="add icon"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Deadline</label>
+                        <input type="text" onkeydown="return false" id="datepicker" placeholder="Choose a deadline">
+                    </div>
+                </div>
+                </div>
+                <div class="actions">
+                    <div class="ui done disabled button">Done!</div>
+                    <div class="ui approve button">Cancel</div>
+                </div>
+            </div>
+    </div>
+    <!-- modal -->
+
 
     <!-- Chatting -->
     <div id="chatboard">Chatting!
@@ -69,6 +134,7 @@
     </div>
     <!-- Chatting -->
 
+    <div class="ui page cal dimmer"></div>
     <!-- Canlendar -->
     <div id="calendar" class="ui segments">
         <!-- Month and Year -->
