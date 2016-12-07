@@ -22,7 +22,7 @@
 
         <div id="Pages">
         <div id="homePage">
-            <div id="activityTitle" contenteditable>{{title}}</div>
+            <div id="activityTitle" spellcheck="false" contenteditable>{{title}}</div>
             <h5 class="ui header left floated dividing">Description</h5>
            <textarea id="activityDescription" spellcheck="false">{{description}}</textarea>
             <div><h5 class="ui header left floated dividing">Date</h5></div>
