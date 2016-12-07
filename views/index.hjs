@@ -54,15 +54,15 @@
             </button>
         </form>
         <button id="Invite" class="ui left floated purple button"><i class="icon add user"></i> Invite</button>
-		
-		
+
+
         <form action="/logout" method="get">
             <button id="Logout" class="ui right floated blue button">
                 <i class="user icon"></i> Logout
             </button>
         </form>
         <!-- PASS USER_ID HERE-->
-        <img id="stick" class="ui circular mini spaced right floated image" src="http://graph.facebook.com/100000362912714/picture?type=square">
+        <img id="stick" class="ui circular mini spaced right floated image" src="http://graph.facebook.com/{{user_id}}/picture?type=square">
     </div>
     <!-- Control bar -->
 
@@ -71,7 +71,7 @@
         <div class="ui card">
       <div class="image">
         <!-- PASS USER_ID HERE-->
-        <img src="http://graph.facebook.com/100000362912714/picture?type=large">
+        <img src="http://graph.facebook.com/{{user_id}}/picture?type=large">
       </div>
       <div class="content">
         <a class="header">FATFAT</a>

@@ -56,19 +56,19 @@ $(document).ready(function(){
 		$(this).focus();
 	});
 	$('#activityDescription').blur(function(){
-		var text = this.textContent;
+		var text = $(this).val();
  		console.log(text);
  		$.ajax({
- 	        url: "edit_activity_title",
+ 	        url: "edit_activity_description",
  	        data: {
  	            activity_id: document.location.search.slice(6),
- 				title: text
+ 				description: text
  	        },
  	        type: "POST",
 	        dataType: "json",
  	        success: function(data, textStatus, jqXHR) {
  				$(this).val(text);
- 				console.log("edit title success!");
+ 				console.log("edit description success!");
  	        },
 	        error: function() {
  				$(this).val("Please Try Again.");

@@ -125,6 +125,7 @@ var display_index = (req, res, next) => {
         }
     ], (err, activities, dates) => {
         return res.render('index', {
+            user_id: req.session.user_id,
             activities: activities,
             dates: dates
         });
