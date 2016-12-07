@@ -232,7 +232,7 @@ function calendarDate(date){
 		}
 }
 
-/*
+
 function searchActivity(val){
 	var regExp = new RegExp(val,'gi');
 	console.log("search regExp:" + regExp);
@@ -243,4 +243,4 @@ function searchActivity(val){
 		else {console.log("noo"); $(element).css('display', 'none');}
 	});
 	return;
-}*/
+}
