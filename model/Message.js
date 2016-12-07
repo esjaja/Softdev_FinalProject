@@ -5,6 +5,7 @@ var Message = new Schema({
     id: String,
     activity_id: String,
     user_id: String,
+    user_name: String,
     time: String,
     content: String
 });

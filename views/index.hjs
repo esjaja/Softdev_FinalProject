@@ -30,7 +30,7 @@
             {{#activities}}
                 <div class="item">
                     <div class="content">
-                        <a class="header">{{title}}</a>
+                        <a class="header" href="/activity?page={{id}}">{{title}}</a>
                         <div class="meta">
                             <span>{{description}}</span>
                         </div>

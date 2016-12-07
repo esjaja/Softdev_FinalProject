@@ -4,7 +4,7 @@ var months = ["JANUARY","FEBUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","
 var date = new Date();
 
 $(document).ready(function(){
-	
+
 	init();
 
 	// change calendar month
@@ -22,6 +22,34 @@ $(document).ready(function(){
 	})
 	////////// calendar same as index page ///////////
 
+	// activity Description edition
+	$('#activityTitle').on('click',function(){
+		this.focus();
+	});
+	$('#activityTitle').blur(function(){
+		// preserve \n
+		/*var item = document.getElementById("activityDescription");
+		var text = item.innerText || item.textContent;
+		text = text.replace(/\\r\\n/g, "<br />");*/
+		var text = this.textContent;
+		console.log(text);
+		$.ajax({
+	        url: "edit_activity_title",
+	        data: {
+	            activity_id: document.location.search.slice(6),
+				title: text
+	        },
+	        type: "POST",
+	        dataType: "json",
+	        success: function(data, textStatus, jqXHR) {
+				$(this).val(text);
+				console.log("edit title success!");
+	        },
+	        error: function() {
+				$(this).val("Please Try Again.");
+	        }
+	    });
+	});
 
 	// activity Description edition
 	$('#activityDescription').on('click',function(){
@@ -33,8 +61,22 @@ $(document).ready(function(){
 		var text = item.innerText || item.textContent;
 		text = text.replace(/\\r\\n/g, "<br />");*/
 		var text = $(this).val();
-		console.log('Update content : ' + (text));
-		$(this).val(text);
+		$.ajax({
+	        url: "edit_activity_description",
+	        data: {
+	            activity_id: document.location.search.slice(6),
+				description: text
+	        },
+	        type: "POST",
+	        dataType: "json",
+	        success: function(data, textStatus, jqXHR) {
+				$(this).val(text);
+				console.log("edit description success!");
+	        },
+	        error: function() {
+				$(this).val("Please Try Again.");
+	        }
+	    });
 	});
 
 
@@ -81,7 +123,7 @@ function calendarDate(date){
 		var preMonlastDate = new Date(date.getFullYear(),date.getMonth(),0);
 		firstDay = firstDay.getDay();
 		lastDate = lastDate.getDate();
-		preMonlastDate = preMonlastDate.getDate();	
+		preMonlastDate = preMonlastDate.getDate();
 		$(days).addClass('days');
 		// preMonDisplay
 		for(var i=0 ; i < firstDay ; i++){

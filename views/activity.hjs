@@ -12,16 +12,17 @@
 <body>
     <!-- Activity Description-->
     <div id="activity">
-        <div id="activityTitle" contenteditable>Title</div>
+        <div id="activityTitle" contenteditable>{{title}}</div>
         <h5 class="ui header left floated dividing">Description</h5>
-        <textarea id="activityDescription" spellcheck="false"></textarea>
+        <textarea id="activityDescription" spellcheck="false">{{description}}</textarea>
         <div><h5 class="ui header left floated dividing">Date</h5></div>
         <br>
         <!--div class="ui mini pink button"><i class="edit icon"></i>Edit</div-->
         <div id="activityDate">
             <div class="ui purple labels">
-                <div class="ui label">2016-09-20 ~ 2016-09-30</div>           
-                <div class="ui label">2016-09-20</div>
+                {{#date}}
+                    <div class="ui label">{{.}}</div>
+                {{/date}}
             </div>
         </div>
     </div>
