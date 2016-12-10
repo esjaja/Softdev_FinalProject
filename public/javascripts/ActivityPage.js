@@ -62,7 +62,9 @@ $(document).ready(function(){
 		$('div.item.active').each(function(index,data){
 			//console.log($('div.item.active')[index].innerHTML.split('>')[1].trim());
 			//console.log(data.innerHTML.split('>')[1].trim());
-			member_list.push(data.innerHTML.split('>')[1].trim());
+			$(this).remove();
+			$('.ui.dropdown.search.selection').dropdown('restore defaults');
+			//member_list.push(data.innerHTML.split('>')[1].trim());
 			//console.log(data.id);
 			$.ajax({
 	      url: "add_activity_member",
@@ -80,6 +82,7 @@ $(document).ready(function(){
 					console.log("error!!");
 	      }
 			});
+			membersInActivity();
 		});
 		//console.log(member_list);
 	});
@@ -91,11 +94,6 @@ $(document).ready(function(){
 			else
 				$(this).removeClass('selected');
 	});
-
-	//First element of dropdown debug
-	//$('input.search').focus(function(){
-		//to handle with OAO
-	//});
 
 	$('#Back').click(function(){
 		console.log('Back push');

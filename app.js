@@ -36,7 +36,6 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 //mongoose.connect("mongodb://localhost/softdevDB");
 mongoose.connect('mongodb://softdev:softdev@ds157487.mlab.com:57487/softdev_db');
- librechat//ss456789
 var db = mongoose.connection;
 db.on("error", console.error.bind(console,"console error:"));
 db.once('open',function (callback) {
