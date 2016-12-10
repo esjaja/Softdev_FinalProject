@@ -25,7 +25,7 @@ window.fbAsyncInit = function() {
 }
 
 $(document).bind('loadList',function(){
-
+  friendsInApp($('#Add').attr('value'));
   membersInActivity($('#Add').attr('value'));
 });
 
@@ -67,6 +67,30 @@ function inviteFriendToApp(){
   });
 }
 
+function friendsInApp(token){
+  //find all friend using our application and make the list of adding new members
+  //'me/friends' or uid,{fields:'friends'}
+  var membersInActivity = []; //push id
+  $('#Member .menu .item').each(function(index, data){
+    membersInActivity.push(data.id);
+  });
+
+  FB.api('me/friends',{ access_token: token},function (response) {
+
+    if (response && !response.error) {
+      //response has data, paging and summary fields
+      //access them by . and [ ] like below
+      for(var i=0;i<response.data.length;i++){
+        //console.log(response.data[i].name);
+        //console.log(response.data[i].id);
+        if(membersInActivity.includes(response.data[i].id) == false)
+          $('#addListMenu').append('<div id="'+response.data[i].id+'" class="item"><img class="ui avatar image" src="http://graph.facebook.com/'+response.data[i].id+'/picture?type=small">'+response.data[i].name+'</div>');
+      }
+    }else{
+      console.log("error message: "+response.error.message);
+    }
+  });
+}
 function membersInActivity(token){
   //load members' names.
   $('#Member .menu .item').each(function(index, data){
