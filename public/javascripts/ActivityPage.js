@@ -64,6 +64,7 @@ $(document).ready(function(){
 			//console.log(data.innerHTML.split('>')[1].trim());
 			$(this).remove();
 			$('.ui.dropdown.search.selection').dropdown('restore defaults');
+			$('#memberList').append('<div id="'+data.id+'" class="item"> <img class="ui avatar image" src="http://graph.facebook.com/'+data.id+'/picture?type=small">'+data.textContent.trim()+'</div>');
 			//member_list.push(data.innerHTML.split('>')[1].trim());
 			//console.log(data.id);
 			$.ajax({
@@ -82,7 +83,6 @@ $(document).ready(function(){
 					console.log("error!!");
 	      }
 			});
-			membersInActivity();
 		});
 		//console.log(member_list);
 	});

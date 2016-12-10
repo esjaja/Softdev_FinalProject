@@ -51,7 +51,7 @@
             <div id="Member" class="ui red floating labeled icon dropdown button">
               <i class="icon users"></i>
               <span class="text">Member</span>
-              <div class="menu">
+              <div id="memberList" class="menu">
                 <!--<div class="header">
                   People You Might Know
                 </div>-->
