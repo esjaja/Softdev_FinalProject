@@ -7,7 +7,7 @@ var Activity = new Schema({
     title: String,
     date: [Date],
     description: String,
-    vote_id: [String]    
+    vote_id: [String]
 });
 
 module.exports = mongoose.model('Activity', Activity);

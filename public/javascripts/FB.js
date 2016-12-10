@@ -11,9 +11,23 @@ window.fbAsyncInit = function() {
         appId: '562604030601218', //1762557207338774
         cookie: true,    // enable cookies to allow the server to access the session
         xfbml: true,    // parse social plugins on this page
+        status: true,   //check login status
         version: 'v2.8' // use graph api version 2.8
     });
+    if(window.location.pathname=="/"){
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    }
+    if(window.location.pathname=="/activity"){
+        $(document).trigger('loadList');
+    }
 }
+
+$(document).bind('loadList',function(){
+
+  membersInActivity($('#Add').attr('value'));
+});
 
 function statusChangeCallback(response){
 	//all fields of callback of response: search "authResponse" in page goo.gl/OSl5EP
@@ -23,10 +37,12 @@ function statusChangeCallback(response){
         //login and authorized
         console.log('succeed!!!');
         //window.location.replace('/login?token='+response['authResponse']['accessToken']+"&id="+response['authResponse']['userID']);
+
         var form = '';
-        form += '<input type="hidden" name="token" value="'+response['authResponse']['accessToken']+'">';
-        form += '<input type="hidden" name="user_id" value="'+response['authResponse']['userID']+'">';
+        form += '<input type="hidden" name="token" value="'+response.authResponse['accessToken']+'">';
+        form += '<input type="hidden" name="user_id" value="'+response.authResponse['userID']+'">';
         $('<form action="/login" method="POST">'+form+'</form>').appendTo('body').submit();
+
     } else if (response.status === 'not_authorized') {
         //login facebook but not authorize
         console.log('please authorize the app to use the service.');
@@ -40,7 +56,7 @@ function statusChangeCallback(response){
 function checkLoginState(){
 	FB.login(function(response) {
         statusChangeCallback(response);
-    }, {scope: 'public_profile,email,user_friends,publish_actions'});
+    }, {scope: 'public_profile,email,user_friends'});
 }
 
 function inviteFriendToApp(){
@@ -51,20 +67,18 @@ function inviteFriendToApp(){
   });
 }
 
-function addFriendToActivity(){
-  FB.api(
-    "/me/friends",
-    function (response) {
+function membersInActivity(token){
+  //load members' names.
+  $('#Member .menu .item').each(function(index, data){
+
+    FB.api(data.id, { fielss: 'name', access_token: token}, function (response) {
+
       if (response && !response.error) {
-        //response has data, paging and summary fields
-        //access them by . and [ ] like below
-        for(var i=0;i<response.data.length;i++){
-          console.log(response.data[i].name);
-          console.log(response.data[i].id);
-        }
+        var pre = data.innerHTML.split('>')[0];
+        data.innerHTML = pre + '>' + response.name;
       }else{
-        console.log('Error in accessing friends list');
+        console.log("error message: "+response.error.message);
       }
-    }
-  );
+    });
+  });
 }

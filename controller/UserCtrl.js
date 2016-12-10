@@ -34,6 +34,7 @@ var login = (req, res, next) => {
     ], (err, result) => {
         if(err) return console.log('Error: '+err);
         req.session.user_id = req.body.user_id;
+        req.session.token = req.body.token;
         return res.redirect('/index');
     });
 }

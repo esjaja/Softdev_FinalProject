@@ -8,8 +8,14 @@ var session = require('express-session');
 //var redisStore = require('connect-redis')(session);
 var expressValidator = require('express-validator');
 var mongoose = require('mongoose');
+var multiparty = require('connect-multiparty')();
+var assert = require('assert');
+var fs = require('fs');
+var Gridfs = require('gridfs-stream');
+var loop = require('node-while-loop');
 
 var app = express();
+var router = express.Router();
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -30,24 +36,38 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 //mongoose.connect("mongodb://localhost/softdevDB");
 mongoose.connect('mongodb://softdev:softdev@ds157487.mlab.com:57487/softdev_db');
+ librechat//ss456789
 var db = mongoose.connection;
 db.on("error", console.error.bind(console,"console error:"));
 db.once('open',function (callback) {
   console.log("Mongodb open");
 });
 
+//Connect the GridFS stream service to the existing mongo driver and database instance created when you start your app
+var database = db.db;
+var mongoDriver = mongoose.mongo;
+var gfs = new Gridfs(database, mongoDriver);
+
+
 //require controllers
 var UserCtrl = require('./controller/UserCtrl.js');
 var ActivityCtrl = require('./controller/ActivityCtrl.js');
 var UserCtrl = require('./controller/UserCtrl.js');
+var CheckUser = require('./middleware/CheckUser.js');
 // APIS
 app.get('/', UserCtrl.display_login);
 app.get('/logout', UserCtrl.logout);
-app.get('/index', ActivityCtrl.display_index);
-app.get('/activity', ActivityCtrl.display_activity);
 app.all('/login', UserCtrl.login);
-app.post('/create_activity', ActivityCtrl.create_activity);
 
+app.use(CheckUser.check_login);
+app.get('/index',ActivityCtrl.display_index);
+app.get('/activity', ActivityCtrl.display_activity);
+
+app.post('/create_activity', ActivityCtrl.create_activity);
+app.post('/edit_activity_title', ActivityCtrl.edit_activity_title);
+app.post('/edit_activity_description', ActivityCtrl.edit_activity_description);
+app.post('/edit_activity_dates', ActivityCtrl.edit_activity_dates);
+app.post('/add_activity_member', ActivityCtrl.add_activity_member);
 
 // error handler
 /*app.use(function(err, req, res, next) {

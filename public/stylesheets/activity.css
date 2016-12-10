@@ -1,10 +1,12 @@
 body {
-    padding: 10pt;
+    padding: 5pt;
     text-align: center;
     font-family: sans-serif, "Heiti TC", "Microsoft JhengHei";
     font-size: 16px;
     background-image: linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,0.1)),url("/public/images/wood.jpg");
 }
+
+
 
 .float-right {
     float: right;
@@ -21,12 +23,24 @@ body {
 #activity {
     text-align: left;
     padding: 5pt;
+    padding-top: 0;
     background-color: pink;
     height: 473pt;
     width:25%;
     float: left;
     margin-right: 0;
     border-radius: 5pt;
+}
+#menu >a:hover{
+
+}
+#menu >a.active{
+    font-weight: bold;
+}
+
+div > .choose:hover{
+    background-color: #F2F2F7;
+    cursor: pointer;
 }
 
 #activityTitle {
@@ -174,7 +188,6 @@ body {
     display: block;
     float: left;
     width: 14.36%;
-    padding: 5px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     margin-right: -1px;
@@ -200,6 +213,9 @@ body {
     margin:-2px -4px 0 0;
 }
 .days {
+    text-align: left;
+    padding: 0pt 3pt;
+    font-size: 5pt;
     color: #355261;
     font-family: sans-serif;
     height: 45px;
@@ -210,6 +226,18 @@ body {
     color: white;
     background-color: #85B3E4;
     cursor: pointer;
+}
+
+.voteDays{
+    text-align: left;
+    padding: 0pt 3pt;
+    font-size: 5pt;
+    color: #355261;
+    font-family: sans-serif;
+    height: 45px;
+    background-color: #F3C5D2;
+    transform: translateY(-1px);
+    box-shadow:1pt 1pt #30305F;
 }
 
 .disabledDays {
@@ -230,3 +258,9 @@ body {
     background-color: white;
     outline: none;
 }
+
+/*dropdown style setting*/
+.ui.multiple.search.dropdown>.text{ margin: .45240952em 0 .45240952em 1.7em;}
+.ui.multiple.search.dropdown>input.search{margin: .45240952em 0 .45240952em 0;}
+.ui.selection.dropdown{ min-height: 2em; }
+.ui.multiple.dropdown{ padding: 0 2.1em 0 .35714286em; }

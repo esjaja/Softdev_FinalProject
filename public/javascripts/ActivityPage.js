@@ -2,9 +2,10 @@
 
 var months = ["JANUARY","FEBUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
 var date = new Date();
+var dropdownFlag = true;
 
 $(document).ready(function(){
-	
+  //alert(aa);
 	init();
 
 	// change calendar month
@@ -27,31 +28,81 @@ $(document).ready(function(){
 	$('#activityDescription').on('click',function(){
 		this.focus();
 	});
+
 	$('#activityDescription').blur(function(){
-		// preserve \n
-		/*var item = document.getElementById("activityDescription");
-		var text = item.innerText || item.textContent;
-		text = text.replace(/\\r\\n/g, "<br />");*/
 		var text = $(this).val();
-		console.log('Update content : ' + (text));
-		$(this).val(text);
+ 		console.log(text);
+ 		$.ajax({
+      url: "edit_activity_description",
+      data: {
+        activity_id: document.location.search.slice(6),
+ 				description: text
+			},
+      type: "POST",
+    	dataType: "json",
+      success: function(data, textStatus, jqXHR) {
+				$(this).val(text);
+				console.log("edit description success!");
+      },
+    	error: function() {
+				$(this).val("Please Try Again.");
+      }
+		});
 	});
 
+	$('#menu a').click(function(){
+		$(this).addClass('active').siblings().removeClass('active');
+		var pageid = '#'+$(this).attr("id") + 'Page';
+		$(pageid).show().siblings().hide();
+	})
 
 	// controll bar behavior //
-	$('#Edit').click(function(){
-		console.log('Edit push');
-	});
 	$('#Add').click(function(){
-		console.log('Add push');
+		var member_list = [];
+		$('div.item.active').each(function(index,data){
+			//console.log($('div.item.active')[index].innerHTML.split('>')[1].trim());
+			//console.log(data.innerHTML.split('>')[1].trim());
+			member_list.push(data.innerHTML.split('>')[1].trim());
+			//console.log(data.id);
+			$.ajax({
+	      url: "add_activity_member",
+	      data: {
+	        activity_id: document.location.search.slice(6),
+	 				user_id: data.id
+				},
+	      type: "POST",
+	    	dataType: "json",
+	      success: function(data, textStatus, jqXHR) {
+	      	console.log(data);
+					console.log("success to add member");
+	      },
+	    	error: function() {
+					console.log("error!!");
+	      }
+			});
+		});
+		//console.log(member_list);
 	});
+
+	//add selected effect
+	$('#addListMenu').on('click','.item',function(){
+			if($(this).hasClass('active'))
+				$(this).addClass('selected');
+			else
+				$(this).removeClass('selected');
+	});
+
+	//First element of dropdown debug
+	//$('input.search').focus(function(){
+		//to handle with OAO
+	//});
+
 	$('#Back').click(function(){
 		console.log('Back push');
 	});
 	$('#Logout').click(function(){
 		console.log('Logout push');
 	});
-
 
 	// vote column
 	$('#voteBoard .item').click(function(){
@@ -60,44 +111,44 @@ $(document).ready(function(){
 		$('.item').removeClass('active');
 		$(this).addClass('active');
 		$('#voteArea').text('Change Column!');
-	})
-
+	});
 });
 
 function init(){
 	calendarDate(date);
-	//console.log("sort activity by date");
-	//activity.sort(function(a,b){return a.date>b.date;});
-	//showActivity(activity);
+	//initialize the addList dropdown with parameters
+	$('.ui.dropdown.search.selection').dropdown({useLabels: false,forceSelection: false});
+	//initialize the memberList dropdown with parameters
+	$('.ui.dropdown.floating.labeled').dropdown({useLabels: false, action: 'nothing'});
 }
 
 
 function calendarDate(date){
 	$('#mon').text(months[date.getMonth()]);
 	$('#year').text(date.getFullYear());
-		var days = $('#day li');
-		var firstDay = new Date(date.getFullYear(),date.getMonth());
-		var lastDate = new Date(date.getFullYear(),date.getMonth()+1,0);
-		var preMonlastDate = new Date(date.getFullYear(),date.getMonth(),0);
-		firstDay = firstDay.getDay();
-		lastDate = lastDate.getDate();
-		preMonlastDate = preMonlastDate.getDate();	
-		$(days).addClass('days');
-		// preMonDisplay
-		for(var i=0 ; i < firstDay ; i++){
-			$(days[i]).text(preMonlastDate - firstDay + i +1);
-			$(days[i]).addClass('disabledDays');
-		}
-		// thisMon
-		for(var i=1 ; i <= lastDate ; i++){
-			$(days[firstDay + i-1]).text(i);
-			$(days[firstDay + i-1]).removeClass('disabledDays');
-		}
-		// nextMon
-		for(var i=firstDay+lastDate; i<= days.length ; i++){
-			$(days[i]).text(i - (firstDay+lastDate) +1);
-			$(days[i]).addClass('disabledDays');
-		}
+	var days = $('#day li');
+	var firstDay = new Date(date.getFullYear(),date.getMonth());
+	var lastDate = new Date(date.getFullYear(),date.getMonth()+1,0);
+	var preMonlastDate = new Date(date.getFullYear(),date.getMonth(),0);
+	firstDay = firstDay.getDay();
+	lastDate = lastDate.getDate();
+	preMonlastDate = preMonlastDate.getDate();
+	$(days).addClass('days');
+	// preMonDisplay
+	for(var i=0 ; i < firstDay ; i++){
+		$(days[i]).text(preMonlastDate - firstDay + i +1);
+		$(days[i]).addClass('disabledDays');
+	}
+	// thisMon
+	for(var i=1 ; i <= lastDate ; i++){
+		$(days[firstDay + i-1]).text(i);
+		$(days[firstDay + i-1]).removeClass('disabledDays');
+	}
+	// nextMon
+	for(var i=firstDay+lastDate; i<= days.length ; i++){
+		$(days[i]).text(i - (firstDay+lastDate) +1);
+		$(days[i]).addClass('disabledDays');
+	}
 }
 
 
@@ -112,3 +163,4 @@ function searchActivity(val){
 	});
 	return;
 }
+

@@ -31,8 +31,6 @@ $(document).ready(function(){
 		console.log(this);
 	})
 
-	$('#Invite').click(inviteFriendToApp());
-
 });
 
 function init(){
@@ -49,7 +47,7 @@ function calendarDate(date){
 		var preMonlastDate = new Date(date.getFullYear(),date.getMonth(),0);
 		firstDay = firstDay.getDay();
 		lastDate = lastDate.getDate();
-		preMonlastDate = preMonlastDate.getDate();	
+		preMonlastDate = preMonlastDate.getDate();
 		// preMonDisplay
 		for(var i=0 ; i < firstDay ; i++){
 			$(days[i]).text(preMonlastDate - firstDay + i +1);
