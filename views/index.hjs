@@ -54,7 +54,7 @@
             </button>
         </form>
         <button id="Invite" class="ui left floated purple button" onclick="inviteFriendToApp()"><i class="icon add user"></i> Invite</button>
-
+        <button id="Invite" class="ui left floated purple button"><i class="icon add user"></i> Invite</button>
 
         <form action="/logout" method="get">
             <button id="Logout" class="ui right floated blue button">

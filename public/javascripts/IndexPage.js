@@ -2,7 +2,6 @@
 
 var months = ["JANUARY","FEBUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
 var date = new Date();
-
 $(document).ready(function(){
 
 	init();
@@ -89,13 +88,14 @@ function activityAdd(){
 }
 
 function searchActivity(val){
-	var regExp = new RegExp(val,'g');
+	var regExp = new RegExp(val,'gi');
 	console.log("search regExp:" + regExp);
 	$('#activities > .item').each((index, element) => {
 		let string = $(element).text();
 		console.log(string);
 		if(string.match(regExp)!==null) {
 			$(element).css('display', 'block');
+			// display a line between activities
 			$(element).next().css('display','block');
 		}
 		else {console.log("noo"); $(element).css('display', 'none');

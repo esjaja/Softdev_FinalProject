@@ -5,24 +5,37 @@ var Activity = require('../model/Activity.js');
 var create_vote = (req, res, next) => {
     async.waterfall([
         (callback) => {
+            //check input
+            if(req.body.type !== "opt" || req.body.type !== "time") return console.log('Error: '+err);
+            if(req.body.type === "time"){
+                let reg = /(\d{4})-(\d{2})-(\d{2})/;
+                for(let opt in req.body.options){
+                    if(opt.match(reg) === null) return console.log('Error: '+err);
+                }
+            }
+            callback(null);
+        },
+        (callback) => {
             //check activity_id is available
-            Activity.find({id: req.body.activity_id}, (err, activities) => {
+            Activity.findOne({id: req.body.activity_id}, (err, activity) => {
                 if(err){
-                    console.log('Error: ' + err);
+                    return console.log('Error: ' + err);
                 }
-                if(activties.length !== 0){
-                    callback(null);
+                if(typeof activity === 'undefined' || activity === null){
+                    return console.log('Unavailable Activity');
                 }
-                // else: display error message
-                console.log('Unavailable Activity');
+                callback(null);
             });
         },
         (callback) => {
             //create
+            let md5 = crypto.createHash('md5');
+            let vote_id = md5.update(new Date().getTime().toString() + req.session.user_id + req.body.activity_id).digest('base64').replace(/\+/g, '-').replace(/\//g, '_');
             var vote = new Vote({
-                id:
+                id: vote_id
                 activity_id: req.body.activity_id,
                 type: req.body.type,
+                title: req.body.title,
                 deadline: req.body.deadline,
                 option: req.body.options
             });
@@ -32,13 +45,22 @@ var create_vote = (req, res, next) => {
                 }
                 callback(null);
             });
+        },
+        (vote_id, callback) => {
+            Activity.update({id: req.body.activity_id},
+                {$push:{vote_id: vote_id}},
+                (err) => {
+                    if(err) return console.log('Error: '+err);
+                    callback(null);
+                }
+            );
         }
     ],
     (err, result) => {
         if(err){
             console.log('Error: ' + err);
         }
-        return res.redirect('/activity');
+        return res.redirect('/activity?page='+req.body.activity_id);
     });
 }
 
@@ -53,6 +75,12 @@ var add_options = (req, res, next) => {
                 }
                 if(vote === null){
                     console.log('No Votes');
+                }
+                if(vote.type === "time"){
+                    let reg = /(\d{4})-(\d{2})-(\d{2})/;
+                    for(let opt in req.body.options){
+                        if(opt.match(reg) === null) return console.log('Error: '+err);
+                    }
                 }
                 for(let option of vote.option){
                     let idx = options.indexOf(option.name);
@@ -87,7 +115,7 @@ var add_options = (req, res, next) => {
         if(err){
             console.log('Error: ' + err);
         }
-        return res.redirect('activity');
+        return res.redirect('/activity?page='+req.body.activity_id);
     });
 }
 var remove_options = (req, res, next) => {
@@ -129,7 +157,7 @@ var remove_options = (req, res, next) => {
         if(err){
             console.log('Error: ' + err);
         }
-        return res.redirect('activity');
+        return res.redirect('/activity?page='+req.body.activity_id);
     });
 }
 var update_vote = (req, res, next) => {
@@ -149,8 +177,8 @@ var update_vote = (req, res, next) => {
                     console.log('No Options');
                 }
                 let idx = op[0].attend.indexOf(req.body.user_id);
-                if(idx !== -1 && req.body.attend === true) return res.redirect('activity');
-                if(idx === -1 && req.body.attend === false) return res.redirect('activity');
+                if(idx !== -1 && req.body.attend === true) return res.redirect('/activity?page='+req.body.activity_id);
+                if(idx === -1 && req.body.attend === false) return res.redirect('/activity?page='+req.body.activity_id);
                 callback(null, op);
             });
         },
@@ -183,7 +211,7 @@ var update_vote = (req, res, next) => {
         return res.redirect('activity');
     });
 }
-var get_vote = (req, res, next) => {
+/*var get_vote = (req, res, next) => {
     async.waterfall([
         (callback) => {
             Vote.findOne({id: req.body.vote_id}, (err, vote) => {
@@ -198,12 +226,11 @@ var get_vote = (req, res, next) => {
         if(err) console.log('Error: ' + err);
         return res.render('activity', vote);
     });
-}
+}*/
 
 module.exports = {
     create_vote: create_vote,
     add_options: add_options,
     remove_options: remove_options,
-    update_vote: update_vote,
-    get_vote: get_vote
+    update_vote: update_vote
 }

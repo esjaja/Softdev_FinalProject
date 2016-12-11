@@ -12,7 +12,7 @@ var create_activity = (req, res, next) => {
             if(typeof req.session.user_id === 'undefined' || req.session.user_id === null) req.session.user_id = "testing";
 
             let md5 = crypto.createHash('md5');
-            let id = md5.update(new Date().getTime().toString() + req.session.user_id).digest('base64');
+            let id = md5.update(new Date().getTime().toString() + req.session.user_id).digest('base64').replace(/\+/g, '-').replace(/\//g, '_');
             let activity = new Activity({
                 id: id,
                 user_id: [req.session.user_id],
@@ -37,10 +37,10 @@ var create_activity = (req, res, next) => {
                 if(err){
                     console.log('Error: ' + err);
                 }
-                callback(null);
+                callback(null, activity_id);
             });
         }
-    ], (err, result) => {
+    ], (err, activity_id) => {
         if(err){
             console.log('Error: ' + err);
         }
@@ -263,6 +263,42 @@ var add_activity_member = (req, res, next) => {
     });
 }
 
+var edit_activity_dates = (req, res, next) => {
+    async.waterfall([
+        (callback) => {
+            //check activity_id is available
+            Activity.findOne({id: req.body.activity_id}, (err, activity) => {
+                if(err){
+                    console.log('Error: ' + err);
+                }
+                if(typeof activity === 'undefined' || activity === null){
+                    console.log('Unavailable Activity');
+                }
+                for(let dt in req.body.dates) {
+                    if(dt.match(/(\d{4})-(\d{2})-(\d{2})/) === null) return console.log('Invalid Input');
+                }
+                callback(null);
+            });
+        },
+        (callback) => {
+            Activity.update({id: req.body.activity_id},
+                {$set:{date: req.body.dates}},
+                (err) => {
+                    if(err) return console.log('Error: '+err);
+                    callback(null);
+                }
+            );
+        }
+    ],
+    (err, result) => {
+        if(err){
+            console.log('Error: ' + err);
+        }
+        return res.json({
+            status: 200
+        });
+    });
+}
 module.exports = {
     display_index: display_index,
     display_activity: display_activity,
