@@ -105,8 +105,8 @@ body {
 }
 
 .disabledDays{
-	color:#48A3A7;
-	background-color:#C0B5C0;
+    color:#48A3A7;
+    background-color:#C0B5C0;
 }
 
 
@@ -126,9 +126,9 @@ body {
 }
 
 .monthButton{
-	margin: 0;
-	padding: 0;
-	border:none;
-	background-color: white;
-	outline:none;
+    margin: 0;
+    padding: 0;
+    border:none;
+    background-color: white;
+    outline:none;
 }

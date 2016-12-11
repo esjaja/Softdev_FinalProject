@@ -3,25 +3,25 @@
 
 <head>
     <title>Fat's Schedule</title>
-	<link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="/public/stylesheets/index.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="/semantic/dist/semantic.min.js"></script>
-	<script src="/public/javascripts/IndexPage.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/semantic/dist/semantic.min.js"></script>
+    <script src="/public/javascripts/IndexPage.js"></script>
     <script src="/public/javascripts/FB.js"></script>
 </head>
 
 <body>
     <!-- Activity List -->
     <div id="activityList" >
-    	<!-- Search -->
+        <!-- Search -->
         <div class="ui search" style="text-align: center;">
             <div class="ui icon input">
                 <input class="prompt" type="text" placeholder="Search activity...">
                 <i class="search icon"></i>
             </div>
         </div>
-		<!---->
+        <!---->
 
         <!-- Display Activity -->
        <div class="ui divider"></div>
@@ -53,8 +53,8 @@
                 <i class="add to calendar outline icon"></i> New Activity
             </button>
         </form>
+        <button id="Invite" class="ui left floated purple button" onclick="inviteFriendToApp()"><i class="icon add user"></i> Invite</button>
         <button id="Invite" class="ui left floated purple button"><i class="icon add user"></i> Invite</button>
-
 
         <form action="/logout" method="get">
             <button id="Logout" class="ui right floated blue button">
@@ -95,18 +95,18 @@
     <!-- Canlendar -->
     <div id="calendar" class="ui segments">
     <!-- Month and Year display -->
-    	<div style="margin-bottom: -5pt;margin-top: -10pt">
-    		<div style="width: 150pt" class="ui mini blue statistic">
-    		  <div id="mon" class="value">
-    		    November
-    		  </div>
-    		  <div id="year" class="label">
-    		    2017
-    		  </div>
-    		</div>
-    		<button id="left" class="monthButton"><i class="chevron circle left icon"></i></button>
-    		<button id="right" class="monthButton"><i class="chevron circle right icon"></i></button>
-    	</div>
+        <div style="margin-bottom: -5pt;margin-top: -10pt">
+            <div style="width: 150pt" class="ui mini blue statistic">
+              <div id="mon" class="value">
+                November
+              </div>
+              <div id="year" class="label">
+                2017
+              </div>
+            </div>
+            <button id="left" class="monthButton"><i class="chevron circle left icon"></i></button>
+            <button id="right" class="monthButton"><i class="chevron circle right icon"></i></button>
+        </div>
 
         <ul class="weekdays">
             <li>Sun</li>
@@ -118,7 +118,7 @@
             <li>Sat</li>
         </ul>
 
-		<div id = "day">
+        <div id = "day">
         <!-- Generate days by js-->
         <ul class="days">
             <li>1</li>

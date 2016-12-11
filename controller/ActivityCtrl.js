@@ -68,6 +68,8 @@ var display_activity = (req, res, next) => {
         }
     ], (err, activity, date) => {
         return res.render('activity', {
+            uid: req.session.user_id,
+            token: req.session.token,
             user_id: activity.user_id,
             title: activity.title,
             date: date,
@@ -76,6 +78,7 @@ var display_activity = (req, res, next) => {
         });
     });
 }
+
 var display_index = (req, res, next) => {
     async.waterfall([
         (callback) => {
@@ -165,6 +168,7 @@ var edit_activity_title = (req, res, next) => {
         });
     });
 }
+
 var edit_activity_description = (req, res, next) => {
     async.waterfall([
         (callback) => {
@@ -235,11 +239,72 @@ var edit_activity_dates = (req, res, next) => {
         });
     });
 }
+
+var add_activity_member = (req, res, next) => {
+    async.waterfall([
+        (callback) => {
+            Activity.update({id: req.body.activity_id},{//here 20161209 1:39
+                $addToSet: {
+                    user_id: req.body.user_id
+                }
+            },(err) => {
+                if(err) return console.log('Error: '+err);
+                callback(null);
+            });
+        }
+    ],
+    (err, result) => {
+        if(err){
+            console.log('Error: ' + err);
+        }
+        return res.json({
+            status: 200
+        });
+    });
+}
+
+var edit_activity_dates = (req, res, next) => {
+    async.waterfall([
+        (callback) => {
+            //check activity_id is available
+            Activity.findOne({id: req.body.activity_id}, (err, activity) => {
+                if(err){
+                    console.log('Error: ' + err);
+                }
+                if(typeof activity === 'undefined' || activity === null){
+                    console.log('Unavailable Activity');
+                }
+                for(let dt in req.body.dates) {
+                    if(dt.match(/(\d{4})-(\d{2})-(\d{2})/) === null) return console.log('Invalid Input');
+                }
+                callback(null);
+            });
+        },
+        (callback) => {
+            Activity.update({id: req.body.activity_id},
+                {$set:{date: req.body.dates}},
+                (err) => {
+                    if(err) return console.log('Error: '+err);
+                    callback(null);
+                }
+            );
+        }
+    ],
+    (err, result) => {
+        if(err){
+            console.log('Error: ' + err);
+        }
+        return res.json({
+            status: 200
+        });
+    });
+}
 module.exports = {
     display_index: display_index,
     display_activity: display_activity,
     create_activity: create_activity,
     edit_activity_title: edit_activity_title,
     edit_activity_description: edit_activity_description,
-    edit_activity_dates: edit_activity_dates
+    edit_activity_dates: edit_activity_dates,
+    add_activity_member: add_activity_member
 }

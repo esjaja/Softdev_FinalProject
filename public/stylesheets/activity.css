@@ -258,3 +258,9 @@ div > .choose:hover{
     background-color: white;
     outline: none;
 }
+
+/*dropdown style setting*/
+.ui.multiple.search.dropdown>.text{ margin: .45240952em 0 .45240952em 1.7em;}
+.ui.multiple.search.dropdown>input.search{margin: .45240952em 0 .45240952em 0;}
+.ui.selection.dropdown{ min-height: 2em; }
+.ui.multiple.dropdown{ padding: 0 2.1em 0 .35714286em; }

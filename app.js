@@ -65,6 +65,7 @@ app.post('/create_activity', ActivityCtrl.create_activity);
 app.post('/edit_activity_title', ActivityCtrl.edit_activity_title);
 app.post('/edit_activity_description', ActivityCtrl.edit_activity_description);
 app.post('/edit_activity_dates', ActivityCtrl.edit_activity_dates);
+app.post('/add_activity_member', ActivityCtrl.add_activity_member);
 
 //router.post('/activity', multiparty, function(req, res){
 db.once('open', function () {
