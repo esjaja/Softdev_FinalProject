@@ -62,6 +62,24 @@ function calendarDate(date){
 			$(days[i]).text(i - (firstDay+lastDate) +1);
 			$(days[i]).addClass('disabledDays');
 		}
+
+		//get activities in the month
+		$.ajax({
+			url: "get_activities_month",
+			data: {
+				month: date.getMonth()
+			},
+			type: "POST",
+			dataType: "json",
+			success: function(data, textStatus, jqXHR) {
+				// to be filled in what to do -----------------------
+				console.log("get month success!");
+				console.log(data);
+			},
+			error: function() {
+				console.log("get month failed! QQ");
+			}
+		});
 }
 
 
