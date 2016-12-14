@@ -1,4 +1,6 @@
+'use strict';
 var async = require('async');
+var crypto = require('crypto');
 var Vote = require('../model/Vote.js');
 var Activity = require('../model/Activity.js');
 
@@ -6,7 +8,7 @@ var create_vote = (req, res, next) => {
     async.waterfall([
         (callback) => {
             //check input
-            if(req.body.type !== "opt" || req.body.type !== "time") return console.log('Error: '+err);
+            if(req.body.type !== "OTHERS" && req.body.type !== "time") return console.log('Error: '+"Wrong Type");
             if(req.body.type === "time"){
                 let reg = /(\d{4})-(\d{2})-(\d{2})/;
                 for(let opt in req.body.options){
@@ -29,21 +31,28 @@ var create_vote = (req, res, next) => {
         },
         (callback) => {
             //create
+            let option = [];
+            for(let opt of req.body['options[]']){
+                option.push({
+                    name: opt,
+                    attend: []
+                });
+            }
             let md5 = crypto.createHash('md5');
             let vote_id = md5.update(new Date().getTime().toString() + req.session.user_id + req.body.activity_id).digest('base64').replace(/\+/g, '-').replace(/\//g, '_');
             var vote = new Vote({
-                id: vote_id
+                id: vote_id,
                 activity_id: req.body.activity_id,
                 type: req.body.type,
                 title: req.body.title,
                 deadline: req.body.deadline,
-                option: req.body.options
+                option: option
             });
             vote.save((err, result) => {
                 if(err){
                     console.log('Error: ' + err);
                 }
-                callback(null);
+                callback(null, vote_id);
             });
         },
         (vote_id, callback) => {
@@ -60,7 +69,9 @@ var create_vote = (req, res, next) => {
         if(err){
             console.log('Error: ' + err);
         }
-        return res.redirect('/activity?page='+req.body.activity_id);
+        return res.json({
+            status: 200
+        });
     });
 }
 
@@ -78,7 +89,7 @@ var add_options = (req, res, next) => {
                 }
                 if(vote.type === "time"){
                     let reg = /(\d{4})-(\d{2})-(\d{2})/;
-                    for(let opt in req.body.options){
+                    for(let opt of req.body.options){
                         if(opt.match(reg) === null) return console.log('Error: '+err);
                     }
                 }
@@ -115,7 +126,9 @@ var add_options = (req, res, next) => {
         if(err){
             console.log('Error: ' + err);
         }
-        return res.redirect('/activity?page='+req.body.activity_id);
+        return res.json({
+            status: 200
+        });
     });
 }
 var remove_options = (req, res, next) => {
@@ -157,9 +170,27 @@ var remove_options = (req, res, next) => {
         if(err){
             console.log('Error: ' + err);
         }
-        return res.redirect('/activity?page='+req.body.activity_id);
+        return res.json({
+            status: 200
+        });
     });
 }
+
+var delete_vote = (req, res, next) => {
+    async.waterfall([
+        (callback) => {
+            Vote.remove({id: req.body.vote_id}, (err) => {
+                if(err) console.log('Error: ' + err);
+                callback(null);
+            });
+        }
+    ], (err, result) => {
+        return res.json({
+            status: 200
+        });
+    });
+}
+
 var update_vote = (req, res, next) => {
     async.waterfall([
         (callback) => {
@@ -176,16 +207,16 @@ var update_vote = (req, res, next) => {
                 if(op.length === 0){
                     console.log('No Options');
                 }
-                let idx = op[0].attend.indexOf(req.body.user_id);
+                let idx = op[0].attend.indexOf(req.session.user_id);
                 if(idx !== -1 && req.body.attend === true) return res.redirect('/activity?page='+req.body.activity_id);
                 if(idx === -1 && req.body.attend === false) return res.redirect('/activity?page='+req.body.activity_id);
                 callback(null, op);
             });
         },
         (option, callback) => {
-            if(req.body.attend === true) Vote.update({id:req.body.vote_id}, {
+            if(req.body.attend === true) Vote.update({"id":req.body.vote_id, "option.name": req.body.option_name}, {
                 $push: {
-                    option.$.attend: req.body.user_id
+                    "option.$.attend": req.session.user_id
                 }
             }, (err) => {
                 if(err){
@@ -195,7 +226,7 @@ var update_vote = (req, res, next) => {
             });
             else Vote.update({id:req.body.vote_id}, {
                 $pull: {
-                    option.$.attend: req.body.user_id
+                    "option.$.attend": req.session.user_id
                 }
             }, (err) => {
                 if(err){
@@ -232,5 +263,6 @@ module.exports = {
     create_vote: create_vote,
     add_options: add_options,
     remove_options: remove_options,
-    update_vote: update_vote
+    update_vote: update_vote,
+    delete_vote: delete_vote
 }

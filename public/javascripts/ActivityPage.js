@@ -61,20 +61,20 @@ $(document).ready(function(){
 		var text = $(this).val();
  		console.log(text);
  		$.ajax({
-      url: "edit_activity_description",
-      data: {
-        activity_id: document.location.search.slice(6),
- 				description: text
+			url: "edit_activity_description",
+			data: {
+			activity_id: document.location.search.slice(6),
+						description: text
+				},
+			type: "POST",
+			dataType: "json",
+			success: function(data, textStatus, jqXHR) {
+					$(this).val(text);
+					console.log("edit description success!");
 			},
-      type: "POST",
-    	dataType: "json",
-      success: function(data, textStatus, jqXHR) {
-				$(this).val(text);
-				console.log("edit description success!");
-      },
-    	error: function() {
-				$(this).val("Please Try Again.");
-      }
+			error: function() {
+					$(this).val("Please Try Again.");
+			}
 		});
 	});
 
@@ -186,6 +186,25 @@ $(document).ready(function(){
 
 	$('.ui.done.button').on('click',function(){
 		console.log(voteObj);
+		$.ajax({
+			url: "create_vote",
+			data: {
+				activity_id: document.location.search.slice(6),
+				options: voteObj.options,
+				title: voteObj.title,
+				type: voteObj.type,
+				deadline: voteObj.deadline
+			},
+			type: "POST",
+			dataType: "json",
+			success: function(data, textStatus, jqXHR) {
+				console.log(data);
+				console.log("success to create vote");
+			},
+			error: function() {
+				console.log("error!!");
+			}
+		});
 	})
 
 	$('#calendar li.days').not('.disabledDays').on('click',function(){
@@ -203,20 +222,20 @@ $(document).ready(function(){
 			//member_list.push(data.innerHTML.split('>')[1].trim());
 			//console.log(data.id);
 			$.ajax({
-	      url: "add_activity_member",
-	      data: {
-	        activity_id: document.location.search.slice(6),
-	 				user_id: data.id
-				},
-	      type: "POST",
-	    	dataType: "json",
-	      success: function(data, textStatus, jqXHR) {
-	      	console.log(data);
-					console.log("success to add member");
-	      },
-	    	error: function() {
-					console.log("error!!");
-	      }
+		      url: "add_activity_member",
+		      data: {
+		        activity_id: document.location.search.slice(6),
+		 				user_id: data.id
+					},
+		      type: "POST",
+		    	dataType: "json",
+		      success: function(data, textStatus, jqXHR) {
+		      	console.log(data);
+						console.log("success to add member");
+		      },
+		    	error: function() {
+						console.log("error!!");
+		      }
 			});
 		});
 		//console.log(member_list);
@@ -275,29 +294,29 @@ function CheckVote(vote){
 function calendarDate(date){
 	$('#mon').text(months[date.getMonth()]);
 	$('#year').text(date.getFullYear());
-  var days = $('#day li');
-  var firstDay = new Date(date.getFullYear(),date.getMonth());
-  var lastDate = new Date(date.getFullYear(),date.getMonth()+1,0);
-  var preMonlastDate = new Date(date.getFullYear(),date.getMonth(),0);
-  firstDay = firstDay.getDay();
-  lastDate = lastDate.getDate();
-  preMonlastDate = preMonlastDate.getDate();
-  $(days).addClass('days');
-  // preMonDisplay
-  for(var i=0 ; i < firstDay ; i++){
-    $(days[i]).text(preMonlastDate - firstDay + i +1);
-    $(days[i]).addClass('disabledDays');
-  }
-  // thisMon
-  for(var i=1 ; i <= lastDate ; i++){
-    $(days[firstDay + i-1]).text(i);
-    $(days[firstDay + i-1]).removeClass('disabledDays');
-  }
-  // nextMon
-  for(var i=firstDay+lastDate; i<= days.length ; i++){
-    $(days[i]).text(i - (firstDay+lastDate) +1);
-    $(days[i]).addClass('disabledDays');
-  }
+	var days = $('#day li');
+	var firstDay = new Date(date.getFullYear(),date.getMonth());
+	var lastDate = new Date(date.getFullYear(),date.getMonth()+1,0);
+	var preMonlastDate = new Date(date.getFullYear(),date.getMonth(),0);
+	firstDay = firstDay.getDay();
+	lastDate = lastDate.getDate();
+	preMonlastDate = preMonlastDate.getDate();
+	$(days).addClass('days');
+	// preMonDisplay
+	for(var i=0 ; i < firstDay ; i++){
+    	$(days[i]).text(preMonlastDate - firstDay + i +1);
+    	$(days[i]).addClass('disabledDays');
+	}
+	// thisMon
+	for(var i=1 ; i <= lastDate ; i++){
+    	$(days[firstDay + i-1]).text(i);
+    	$(days[firstDay + i-1]).removeClass('disabledDays');
+	}
+	// nextMon
+	for(var i=firstDay+lastDate; i<= days.length ; i++){
+    	$(days[i]).text(i - (firstDay+lastDate) +1);
+    	$(days[i]).addClass('disabledDays');
+	}
 }
 
 
