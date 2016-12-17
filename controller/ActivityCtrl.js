@@ -8,9 +8,6 @@ var crypto = require('crypto');
 var create_activity = (req, res, next) => {
     async.waterfall([
         (callback) => {
-            //for testing !!!
-            if(typeof req.session.user_id === 'undefined' || req.session.user_id === null) req.session.user_id = "testing";
-
             let md5 = crypto.createHash('md5');
             let id = md5.update(new Date().getTime().toString() + req.session.user_id).digest('base64').replace(/\+/g, '-').replace(/\//g, '_');
             let activity = new Activity({
@@ -59,11 +56,35 @@ var display_activity = (req, res, next) => {
                 if(typeof activity === 'undefined' || activity === null){
                     return console.log('Unavailable Activity');
                 }
-                let dt = [];
-                if(typeof activity.date !== 'undefined') dt = activity.date.map((dt) => {
-                    return dt.toISOString().slice(0,10);
-                });
-                callback(null, activity, dt);
+                let date = []
+                if(typeof activity.date !== 'undefined'){
+                    let dt = activity.date.map((dt, i) => {
+                        let str = dt.toISOString().slice(0,10);
+                        let timestamp = new Date(str);
+                        timestamp.setDate(dt.getDate() + activity.date.length - i);
+                        return {
+                            date: str,
+                            timestamp: timestamp.getTime()
+                        };
+                    });
+
+                    let start, end;
+                    start = "";
+                    end = "";
+                    for(let i in dt){
+                        if(start === "") start = dt[i];
+                        else if(dt[i].timestamp === start.timestamp) end = dt[i];
+                        else {
+                            if(end === "") date.push(start.date);
+                            else date.push(start.date+" ~ "+end.date);
+                            start = dt[i];
+                            end = "";
+                        }
+                    }
+                    if(end === "") date.push(start.date);
+                    else date.push(start.date+" ~ "+end.date);
+                }
+                callback(null, activity, date);
             });
         }
     ], (err, activity, date) => {
@@ -92,7 +113,7 @@ var display_index = (req, res, next) => {
         },
         (activity_id, callback) => {
             //get activities details
-            Activity.find({id: {$in: activity_id}}, (err, activities) => {
+            Activity.find({id: {$in: activity_id}}, null, {sort: {title: 1}},(err, activities) => {
                 if(err || activities === null){
                     console.log('Error: ' + err);
                 }
@@ -106,31 +127,14 @@ var display_index = (req, res, next) => {
                     else act_new.date = "";
                     return act_new;
                 });
-
                 let tmp = [];
-                //{ date: "2016-12-05", activity_id: [1,2,3]}
-                for(let act in activities) {
-                    if(typeof act.date === 'undefined' || act.date === null) continue;
-                    let dt = act.date.forEach((date, index, array) => {
-                        let str = date.toISOString().slice(0,10);
-                        if(tmp[str] === null) tmp[str] = [act.id];
-                        else tmp[str].push(act.id);
-                    });
-                }
-                let dates = tmp.map((act, index) => {
-                    return {
-                        date: index,
-                        activities: act
-                    };
-                });
-                callback(null, activities_new, dates);
+                callback(null, activities_new);
             });
         }
-    ], (err, activities, dates) => {
+    ], (err, activities) => {
         return res.render('index', {
             user_id: req.session.user_id,
-            activities: activities,
-            dates: dates
+            activities: activities
         });
     });
 }
@@ -203,43 +207,6 @@ var edit_activity_description = (req, res, next) => {
     });
 }
 
-var edit_activity_dates = (req, res, next) => {
-    async.waterfall([
-        (callback) => {
-            //check activity_id is available
-            Activity.findOne({id: req.body.activity_id}, (err, activity) => {
-                if(err){
-                    console.log('Error: ' + err);
-                }
-                if(typeof activity === 'undefined' || activity === null){
-                    console.log('Unavailable Activity');
-                }
-                for(let dt in req.body.dates) {
-                    if(dt.match(/(\d{4})-(\d{2})-(\d{2})/) === null) return console.log('Invalid Input');
-                }
-                callback(null);
-            });
-        },
-        (callback) => {
-            Activity.update({id: req.body.activity_id},
-                {$set:{date: req.body.dates}},
-                (err) => {
-                    if(err) return console.log('Error: '+err);
-                    callback(null);
-                }
-            );
-        }
-    ],
-    (err, result) => {
-        if(err){
-            console.log('Error: ' + err);
-        }
-        return res.json({
-            status: 200
-        });
-    });
-}
-
 var add_activity_member = (req, res, next) => {
     async.waterfall([
         (callback) => {
@@ -274,7 +241,7 @@ var edit_activity_dates = (req, res, next) => {
                 if(typeof activity === 'undefined' || activity === null){
                     console.log('Unavailable Activity');
                 }
-                for(let dt in req.body.dates) {
+                for(let dt of req.body.dates) {
                     if(dt.match(/(\d{4})-(\d{2})-(\d{2})/) === null) return console.log('Invalid Input');
                 }
                 callback(null);
@@ -299,6 +266,58 @@ var edit_activity_dates = (req, res, next) => {
         });
     });
 }
+
+var get_activities_month =  (req, res, next) => {
+    async.waterfall([
+        (callback) => {
+            //get the user's activity list
+            User.findOne({id: req.session.user_id}, (err, user) => {
+                if(err || user === null){
+                    console.log('Error: ' + err);
+                }
+                callback(null, user.activity_id);
+            });
+        },
+        (activity_id, callback) => {
+            //get activities details
+            Activity.find({id: {$in: activity_id}}, (err, activities) => {
+                if(err || activities === null){
+                    console.log('Error: ' + err);
+                }
+                let activities_new = [];
+                let check = [];
+                //{ date: "2016-12-05", activity_id: [1,2,3]}
+                for(let act of activities) {
+                    if(typeof act.date === 'undefined' || act.date === null) continue;
+                    act.date.forEach((date, index, array) => {
+                        let str = date.toISOString().slice(0,10);
+                        let m = parseInt(req.body.month) + 1;
+                        if(parseInt(str.slice(5,7)) === m){
+                            if(typeof activities_new[act.id] === 'undefined' || activities_new[act.id] === null){
+                                check.push(act.id);
+                                activities_new[act.id] = [str];
+                            }
+                            else activities_new[act.id].push(str);
+                        }
+                    });
+                }
+                let result = [];
+                for(let act of check){
+                    result.push({
+                        activity_id: act,
+                        date: activities_new[act]
+                    });
+                }
+                callback(null, result);
+            });
+        }
+    ], (err, result) => {
+        return res.json({
+            activities: result
+        });
+    });
+}
+
 module.exports = {
     display_index: display_index,
     display_activity: display_activity,
@@ -306,5 +325,6 @@ module.exports = {
     edit_activity_title: edit_activity_title,
     edit_activity_description: edit_activity_description,
     edit_activity_dates: edit_activity_dates,
-    add_activity_member: add_activity_member
+    add_activity_member: add_activity_member,
+    get_activities_month: get_activities_month
 }
