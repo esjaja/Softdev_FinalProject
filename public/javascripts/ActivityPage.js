@@ -58,22 +58,6 @@ $(document).ready(function(){
 		var text = $(this).val();
  		console.log(text);
  		$.ajax({
-<<<<<<< HEAD
-	      url: "edit_activity_description",
-	      data: {
-	        activity_id: document.location.search.slice(6),
-	 				description: text
-				},
-	      type: "POST",
-	    	dataType: "json",
-	      success: function(data, textStatus, jqXHR) {
-					$(this).val(text);
-					console.log("edit description success!");
-	      },
-	    	error: function() {
-					$(this).val("Please Try Again.");
-	      }
-=======
 			url: "edit_activity_description",
 			data: {
 			activity_id: document.location.search.slice(6),
@@ -88,7 +72,6 @@ $(document).ready(function(){
 			error: function() {
 					$(this).val("Please Try Again.");
 			}
->>>>>>> 65c5637f08bf1c52f5995c44ca11a07bee0ecd22
 		});
 	});
 
