@@ -3,14 +3,14 @@
 
 <head>
   <title>Activity</title>
-	<link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
-  <link rel="stylesheet" type="text/css" href="/public/stylesheets/activity.css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="/semantic/dist/semantic.min.js"></script>
-  <script src="/public/javascripts/ActivityPage.js"></script>
-  <script src="/public/javascripts/FB.js"></script>>
+    <link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/activity.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="/semantic/dist/semantic.min.js"></script>
+    <script src="/public/javascripts/ActivityPage.js"></script>
+    <script src="/public/javascripts/FB.js"></script>
 </head>
 <body>
      <!-- Activity Description-->
@@ -37,17 +37,12 @@
                 </div>
             </div>
           </div>
+          <div id="votePage" style="display: none">
+              
 
-          <div id="votePage" style="display: none">vote</div>
+          </div>
           <div id="votedPage" style="display: none">voted</div>
         </div>
-
-        <div id="votePage" style="display: none">vote
-        </div>
-        <div id="votedPage" style="display: none">voted</div>
-        </div>
-
-
     </div>
     <!-- Activity Description -->
 
@@ -55,18 +50,15 @@
     <div id="controller">
         <div class="float-left">
             <!-- push Vote display modal-->
-            <button id="Vote" class="ui pink button"><i class="wizard icon"></i>New Vote
-            </button>
-            <div id="Member" class="ui red floating labeled icon dropdown button">
-              <i class="icon users"></i>
-              <span class="text">Member</span>
+            <button id="Vote" class="ui pink button"><i class="wizard icon"></i>New Vote</button>
+            <div id="Member" class="ui red scrolling floating dropdown button"><i class="icon users"></i>Member
               <div id="memberList" class="menu">
                 <!--<div class="header">
                   People You Might Know
                 </div>-->
                   {{#user_id}}
                     <div id="{{.}}" class="item">
-                      <img class="ui avatar image" src="http://graph.facebook.com/{{.}}/picture?type=small">
+                      <img class="ui avatar circular image" src="http://graph.facebook.com/{{.}}/picture?type=square">
                       test
                     </div>
                   {{/user_id}}
@@ -84,9 +76,8 @@
             </div>
         </div>
         <div class="float-right">
-            <button id="Back" class="ui olive rotate button" data-inverted="" data-tooltip="Withdraw from this activity" data-position="bottom center" onclick="window.location.href='/index'">
-                <i class="sign out icon"></i>Back</button>
-            <button class="ui blue button" onclick="window.location.href='/logout'"><i class="user icon"></i> Logout</button>
+            <button id="Back" class="ui olive rotate button" data-inverted="" data-tooltip="Withdraw from this activity" data-position="bottom center" onclick="window.location.href='/index'"><i class="sign out icon"></i>Back</button>
+            <button class="ui blue button" onclick="window.location.href='/logout'"><i class="user icon"></i>Logout</button>
         </div>
     </div>
     <!-- Control bar -->
@@ -164,17 +155,14 @@
     <!-- Chatting -->
 
     <div class="ui page cal dimmer"></div>
+
     <!-- Canlendar -->
     <div id="calendar" class="ui segments">
         <!-- Month and Year -->
         <div style="margin-bottom: -5pt;margin-top: -10pt">
             <div style="width: 150pt" class="ui mini blue statistic">
-                <div id="mon" class="value">
-                    November
-                </div>
-                <div id="year" class="label">
-                    2017
-                </div>
+                <div id="mon" class="value">November</div>
+                <div id="year" class="label">2017</div>
             </div>
             <button id="left" class="monthButton"><i class="chevron circle left icon"></i></button>
             <button id="right" class="monthButton"><i class="chevron circle right icon"></i></button>

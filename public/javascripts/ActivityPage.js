@@ -23,16 +23,14 @@ $(document).ready(function(){
 	})
 ////////// calendar same as index page ///////////
 
-	// activity Description edition
-	$('#activityTitle').on('click',function(){
+////////////////// ACTIVITY DESCRIPTION //////////////////
+	$('#activityTitle').on('click',function(e){
 		this.focus();
 	});
-
+	$('#activityTitle').on('keypress',function(e){
+		return e.which!=13; //disable enter key
+	});
 	$('#activityTitle').blur(function(){
-		// preserve \n
-		/*var item = document.getElementById("activityDescription");
-		var text = item.innerText || item.textContent;
-		text = text.replace(/\\r\\n/g, "<br />");*/
 		var text = this.textContent;
 		console.log(text);
 		$.ajax({
@@ -53,7 +51,6 @@ $(document).ready(function(){
 	    });
 	});
 
-	// activity Description edition
 	$('#activityDescription').on('click',function(){
 		$(this).focus();
 	});
@@ -61,44 +58,29 @@ $(document).ready(function(){
 		var text = $(this).val();
  		console.log(text);
  		$.ajax({
-      url: "edit_activity_description",
-      data: {
-        activity_id: document.location.search.slice(6),
- 				description: text
-			},
-      type: "POST",
-    	dataType: "json",
-      success: function(data, textStatus, jqXHR) {
-				$(this).val(text);
-				console.log("edit description success!");
-      },
-    	error: function() {
-				$(this).val("Please Try Again.");
-      }
+	      url: "edit_activity_description",
+	      data: {
+	        activity_id: document.location.search.slice(6),
+	 				description: text
+				},
+	      type: "POST",
+	    	dataType: "json",
+	      success: function(data, textStatus, jqXHR) {
+					$(this).val(text);
+					console.log("edit description success!");
+	      },
+	    	error: function() {
+					$(this).val("Please Try Again.");
+	      }
 		});
 	});
 
-	$('#menu a').click(function(){
+	
+	$('#menu > a').click(function(){
 		$(this).addClass('active').siblings().removeClass('active');
 		var pageid = '#'+$(this).attr("id") + 'Page';
 		$(pageid).show().siblings().hide();
 	})
-
-	$('#menu a').click(function(){
-		$(this).addClass('active').siblings().removeClass('active');
-		var pageid = '#'+$(this).attr("id") + 'Page';
-		$(pageid).show().siblings().hide();
-	})
-
-
-
-	// controll bar behavior //
-	//$(document).click(function(e){
-	//	var target = e.target;
-		//if(!$(target).is("#options") && !$(target).next().is("#options")){
-	//		$('#options').hide();
-	//	}
-	//})
 
 //////// modal registration /////////
 	$('.coupled.modal')
@@ -117,8 +99,6 @@ $(document).ready(function(){
 		/// initialization ////
 		voteObj = newVote();
 		CheckVote(voteObj);
-
-
 		$('.first.modal').modal('show');
 		console.log('Vote push');
 	});
@@ -170,13 +150,11 @@ $(document).ready(function(){
 		console.log("type[OPTIONS] options removed :" + itema.text());
 		voteObj.options.splice(index,1);
 		$(this).parent('a').remove();
-
 		CheckVote(voteObj);
 	})
 
 	$( "#datepicker" ).datepicker(
-		{
-			dateFormat:"yy-mm-dd",
+		{	dateFormat:"yy-mm-dd",
 			onSelect: function(dataText,inst){
 				voteObj.deadline = dataText;
 				CheckVote(voteObj);
@@ -187,6 +165,8 @@ $(document).ready(function(){
 	$('.ui.done.button').on('click',function(){
 		console.log(voteObj);
 	})
+/////	END OF VOTE  	//////
+
 
 	$('#calendar li.days').not('.disabledDays').on('click',function(){
 		console.log($(this));
@@ -194,6 +174,7 @@ $(document).ready(function(){
 
 	$('#Add').click(function(){
 		var member_list = [];
+		console.log("hi");
 		$('div.item.active').each(function(index,data){
 			//console.log($('div.item.active')[index].innerHTML.split('>')[1].trim());
 			//console.log(data.innerHTML.split('>')[1].trim());
@@ -250,7 +231,7 @@ function init(){
 	//initialize the addList dropdown with parameters
 	$('.ui.dropdown.search.selection').dropdown({useLabels: false,forceSelection: false});
 	//initialize the memberList dropdown with parameters
-	$('.ui.dropdown.floating.labeled').dropdown({useLabels: false, action: 'nothing'});
+	$('.ui.dropdown.red.button').dropdown({useLabels: false, action: 'nothing'});
 }
 
 function newVote(){
