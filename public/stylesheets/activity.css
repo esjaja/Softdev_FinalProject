@@ -18,17 +18,6 @@ body {
     text-align: right;
 }
 
-#activity {
-    text-align: left;
-    padding: 5pt;
-    padding-top: 0;
-    background-color: pink;
-    height: 473pt;
-    width:25%;
-    float: left;
-    margin-right: 0;
-    border-radius: 5pt;
-}
 #menu >a:hover{
 
 }
@@ -40,6 +29,19 @@ div > .choose:hover{
     background-color: #F2F2F7;
     cursor: pointer;
 }
+
+#activity {
+    text-align: left;
+    padding: 5pt;
+    padding-top: 0;
+    background-color: pink;
+    height: 473pt;
+    width:25%;
+    float: left;
+    margin-right: 0;
+    border-radius: 5pt;
+}
+
 
 #activityTitle {
     text-align: center;
@@ -113,7 +115,15 @@ div > .choose:hover{
     width: 43%;
     border-radius: 3pt;
 }
-
+#votePage img:hover{
+    opacity: 0.5;
+}
+#votePage .title:hover{
+    color:#CDA7A7;
+}
+#votePage .title.active{
+    color:#9E2F2F;
+}
 
 #chatboard {
     position:relative;

@@ -37,11 +37,46 @@
                 </div>
             </div>
           </div>
-          <div id="votePage" style="display: none">
-              
 
+        <!-- VOTE PAGE -->
+        <div id="votePage" style="display: none">
+            <div class="ui accordion">
+            <!-- List every vote from here -->
+                        <!-- Pass vote ID -->
+             <div class="voteEntry" id="123456">
+                <div class="title"><i class="dropdown icon"></i>WHERE TO GO <!-- Title of Vote -->
+                    <div class="ui tiny progress" data-value="2" data-total="4">
+                    <!-- data-value: number people that has voted, data-total: total number of this activity -->
+                      <div class="bar"></div>
+                      <div class="label"></div>
+                    </div>
+                </div>
+                <div class="content">
+                    <!-- every option begin (each div each option)-->
+                    <div>
+                        <!-- need self id no matter had choosen this option or not -->
+                        <!-- Choose: btn pass 'green' in class -->
+                        <!--         img pass 'inline' in style display -->
+                        <!-- Not Choose : img pass 'none' -->
+                        <button class="ui tiny basic button" style="margin:7pt 0 3pt 0;">
+                        TAIPEI <!-- vote option -->
+                        </button>
+                        <img class="ui avatar image me" src="http://graph.facebook.com/100000362912714/picture?type=square" style="margin-right:-1pt;display:none;">
+
+                        <!-- pass other users' id that have voted -->
+                        {{#user_id}}
+                        <img class="ui avatar image" src="http://graph.facebook.com/{{.}}/picture?type=square" style="margin-right:-1pt;">
+                        {{/user_id}}
+                    </div>
+                    <!-- every option end -->
+                </div>
+            </div>
+            <!-- end of whole vote -->
           </div>
-          <div id="votedPage" style="display: none">voted</div>
+        </div>
+        <!-- END OF VOTE PAGE -->
+
+        <div id="votedPage" style="display: none">voted</div>
         </div>
     </div>
     <!-- Activity Description -->
@@ -237,7 +272,7 @@
     </div>
     <!-- Canlendar -->
 
-    <!-- Voting -->
+    <!-- Voting 
     <div id="voteBoard">
         <div class="ui top attached tabular menu">
             <a class="item active">Vote</a>

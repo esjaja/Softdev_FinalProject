@@ -5,7 +5,7 @@ var date = new Date();
 var dropdownFlag = true;
 
 $(document).ready(function(){
-
+	console.log(window.Worker!=="undefined");
 	init();
 
 	// change calendar month
@@ -24,12 +24,18 @@ $(document).ready(function(){
 ////////// calendar same as index page ///////////
 
 ////////////////// ACTIVITY DESCRIPTION //////////////////
-	$('#activityTitle').on('click',function(e){
-		this.focus();
+	$('#activityTitle').on({
+		click : function(e){
+			this.focus();
+			//console.log('title click');
+		},
+		keypress : function(e){
+			//console.log('key press:'+e.target);
+			e.preventDefault();
+		//	return e.which!=13; //disable enter key
+		}
 	});
-	$('#activityTitle').on('keypress',function(e){
-		return e.which!=13; //disable enter key
-	});
+
 	$('#activityTitle').blur(function(){
 		var text = this.textContent;
 		console.log(text);
@@ -222,6 +228,46 @@ $(document).ready(function(){
 		//console.log(member_list);
 	});
 
+////// Vote page ///////
+	$(".ui.accordion").on('click','.button',function(e){
+		// use entry to get control progress bar and others
+		var entry = $(this).parents('.voteEntry');
+		var progress = entry.find(".progress");
+
+		// 'preState' and 'myState' are used to check whether 
+		// this user has vote any option in this vote.
+		var preState = entry.find(".green");
+		// change button & self img display
+		$(this).toggleClass("green");
+		$(this).siblings(".me").toggle('fast');
+		var myState = entry.find(".green");
+		if(myState.length==0){
+			progress.progress('decrement');
+		}else if(myState.length==1 && preState.length==0){
+			progress.progress('increment');
+		}
+
+		// infomation for back-end update
+		var voteId = entry.attr("id");
+		var option = $(this).text();
+		var action = ($(this).hasClass('green'))?'select':'unselect';
+		console.log("VOTE ID : " + voteId);
+		console.log("Option : " + option + " " + action);
+
+	})
+
+	// progress initialization for entries of votes
+	$(".ui.progress").progress({
+		text:{
+			active: '{value} of {total} people vote',
+			success: 'Everyone has voted!'
+		}
+	})
+
+////// Vote page ///////
+
+
+
 	//add selected effect
 	$('#addListMenu').on('click','.item',function(){
 			if($(this).hasClass('active'))
@@ -251,6 +297,7 @@ function init(){
 	$('.ui.dropdown.search.selection').dropdown({useLabels: false,forceSelection: false});
 	//initialize the memberList dropdown with parameters
 	$('.ui.dropdown.red.button').dropdown({useLabels: false, action: 'nothing'});
+	$('.ui.accordion').accordion();
 }
 
 function newVote(){
