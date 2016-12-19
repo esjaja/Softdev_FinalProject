@@ -5,34 +5,31 @@ var date = new Date();
 var dropdownFlag = true;
 
 $(document).ready(function(){
-	console.log(window.Worker!=="undefined");
 	init();
 
-	// change calendar month
-	$('.monthButton').click(function(){
+/***** Calendar control *****/
+	// change calendar 
+	$('#calendar .monthButton').click(function(){
 		if(this.id == 'right')date.setMonth(date.getMonth()+1);
 		else if(this.id == 'left')date.setMonth(date.getMonth()-1);
 		calendarDate(date);
 	})
 	// change calendar month by mouse scroll
-	$('#calendar').on('mousewheel',function(){
-		console.log(event.deltaY);
-		if(event.deltaY>0)date.setMonth(date.getMonth()+1);
-		else date.setMonth(date.getMonth()-1);
-		calendarDate(date);
-	})
-////////// calendar same as index page ///////////
-
-////////////////// ACTIVITY DESCRIPTION //////////////////
+	$('#calendar').on({
+		mousewheel : function(){
+			console.log(event.deltaY);
+			if(event.deltaY>0)date.setMonth(date.getMonth()+1);
+			else date.setMonth(date.getMonth()-1);
+			calendarDate(date);
+		}
+	});
+/****** edit activity TITLE ******/
 	$('#activityTitle').on({
-		click : function(e){
-			this.focus();
-			//console.log('title click');
+		click : function(){
+			$(this).focus();
 		},
 		keypress : function(e){
-			//console.log('key press:'+e.target);
 			e.preventDefault();
-		//	return e.which!=13; //disable enter key
 		}
 	});
 
@@ -57,6 +54,7 @@ $(document).ready(function(){
 	    });
 	});
 
+/****** edit activity DESCRIPTION ******/
 	$('#activityDescription').on('click',function(){
 		$(this).focus();
 	});
@@ -81,61 +79,89 @@ $(document).ready(function(){
 		});
 	});
 
-	
+/***** Change display page between activity info or vote pages *****/
 	$('#menu > a').click(function(){
 		$(this).addClass('active').siblings().removeClass('active');
 		var pageid = '#'+$(this).attr("id") + 'Page';
 		$(pageid).show().siblings().hide();
 	})
 
+	////// Vote page ///////
+	$("#votePage .ui.accordion").on('click','.button',function(e){
+		// use entry to get control progress bar and others
+		var entry = $(this).parents('.voteEntry');
+		var progress = entry.find(".progress");
+		// 'preState' and 'myState' are used to check whether 
+		// this user has vote any option in this vote.
+		var preState = entry.find(".green");
+		// change button & self img display
+		$(this).toggleClass("green");
+		$(this).siblings(".me").toggle('fast');
+		var myState = entry.find(".green");
+		if(myState.length==0){
+			progress.progress('decrement');
+		}else if(myState.length==1 && preState.length==0){
+			progress.progress('increment');
+		}
+/* TODO: infomation for back-end update  */
+		var voteId = entry.attr("id");
+		var option = $(this).text();
+		var action = ($(this).hasClass('green'))?'select':'unselect';
+		console.log("VOTE ID : " + voteId);
+		console.log("Option : " + option + " " + action);
+	})
+	// progress initialization for entries of votes
+	$(".ui.progress").progress({
+		text:{
+			active: '{value} of {total} people voted',
+			success: 'Everyone has voted!'
+		}
+	})
+
+
+////// Vote Button press show modal ////////
 //////// modal registration /////////
 	$('.coupled.modal')
 	  .modal({
 	    allowMultiple: false
 	  });
-	  //// choose others show second modal ////
+	  //// choose 'others' -> show second modal ////
 	$('.second.modal')
 	  .modal('attach events', '.first.modal .others');
-
-////// Vote Button press show modal ////////
-
+/***** arise a New Vote *****/
 	var voteObj;
-
 	$('#Vote').click(function(){
-		/// initialization ////
 		voteObj = newVote();
-		CheckVote(voteObj);
+		CheckVoteDoneBtn(voteObj);
 		$('.first.modal').modal('show');
-		console.log('Vote push');
 	});
-//// First step : choose type ////
-	$('div > .choose.dates').click(function(){
-		console.log("type[DATE]");
+	//// First step : ask what ////
+	$('#askDate').click(function(){
+		//console.log("type[DATE]");
 		voteObj['type']='DATE';
 		$('.first.modal').modal('hide');
-		$('.days').not('.disabledDays').addClass('voteDays');
+		$('.days').not('.disabledDays').addClass('');
 	})
-
-	$('div > .choose.others').click(function(){
-		console.log("type[OTHERS]");
+	$('#askOther').click(function(){
+		//console.log("type[OTHERS]");
 		voteObj['type']='OTHERS';
 	})
 
-	//// type OTHERS : title ////////
-	$('input.title').on('keyup',function(e){
+	//// title ////////
+	$('.second.modal input.title').on('keyup',function(e){
 		if(e.keyCode ==13){ // enter
 			voteObj['title'] = $(this).val();
 			var index = $('.inputs').index(this) + 1;
          	$('.inputs').eq(index).focus(); // to option input
 		}
 	})
-	$('input.title').blur(function(){
+	$('.second.modal input.title').blur(function(){
 		voteObj['title'] = $(this).val();
-		console.log('type[OTHERS]title: ' + $(this).val());
-		CheckVote(voteObj);
+		//console.log('type[OTHERS]title: ' + $(this).val());
+		CheckVoteDoneBtn(voteObj);
 	})
-	//// type OTHERS : options ////////
-	$('input.option').on('keyup',function(e){
+	//// options ////////
+	$('.second.modal input.option').on('keyup',function(e){
 		if(e.keyCode == 13){
 			if($(this).val())
 			{
@@ -145,30 +171,32 @@ $(document).ready(function(){
 				voteObj['options'].push($(this).val());
 				console.log("type[OTHERS] options:" + $(this).val());
 				$(this).val('');
-				CheckVote(voteObj);
+				CheckVoteDoneBtn(voteObj);
 			}
 		}
 	})
 	//// type OHTERS : remove options //////
-	$('.field.options').on('click','.delete.icon',function(){
+	$('.second.modal .field.options').on('click','.delete.icon',function(){
 		var itema = $(this).parent('a');
 		var index = $('a.ui.label').index(itema)
-		console.log("type[OPTIONS] options removed :" + itema.text());
+		//console.log("type[OPTIONS] options removed :" + itema.text());
 		voteObj.options.splice(index,1);
 		$(this).parent('a').remove();
-		CheckVote(voteObj);
+		CheckVoteDoneBtn(voteObj);
 	})
 
+	// Jquery datepicker setting
 	$( "#datepicker" ).datepicker(
 		{	dateFormat:"yy-mm-dd",
 			onSelect: function(dataText,inst){
 				voteObj.deadline = dataText;
-				CheckVote(voteObj);
-			}
+				CheckVoteDoneBtn(voteObj);
+			},
+			minDate:0
 		}
 	);
 
-	$('.ui.done.button').on('click',function(){
+	$('.second.modal .ui.done.button').on('click',function(){
 		console.log(voteObj);
 		$.ajax({
 			url: "create_vote",
@@ -192,11 +220,11 @@ $(document).ready(function(){
 	})
 /////	END OF VOTE  	//////
 
-
 	$('#calendar li.days').not('.disabledDays').on('click',function(){
 		console.log($(this));
 	})
 
+/***** MEMBER ADDING ******/
 	$('#Add').click(function(){
 		var member_list = [];
 		console.log("hi");
@@ -228,46 +256,6 @@ $(document).ready(function(){
 		//console.log(member_list);
 	});
 
-////// Vote page ///////
-	$(".ui.accordion").on('click','.button',function(e){
-		// use entry to get control progress bar and others
-		var entry = $(this).parents('.voteEntry');
-		var progress = entry.find(".progress");
-
-		// 'preState' and 'myState' are used to check whether 
-		// this user has vote any option in this vote.
-		var preState = entry.find(".green");
-		// change button & self img display
-		$(this).toggleClass("green");
-		$(this).siblings(".me").toggle('fast');
-		var myState = entry.find(".green");
-		if(myState.length==0){
-			progress.progress('decrement');
-		}else if(myState.length==1 && preState.length==0){
-			progress.progress('increment');
-		}
-
-		// infomation for back-end update
-		var voteId = entry.attr("id");
-		var option = $(this).text();
-		var action = ($(this).hasClass('green'))?'select':'unselect';
-		console.log("VOTE ID : " + voteId);
-		console.log("Option : " + option + " " + action);
-
-	})
-
-	// progress initialization for entries of votes
-	$(".ui.progress").progress({
-		text:{
-			active: '{value} of {total} people vote',
-			success: 'Everyone has voted!'
-		}
-	})
-
-////// Vote page ///////
-
-
-
 	//add selected effect
 	$('#addListMenu').on('click','.item',function(){
 			if($(this).hasClass('active'))
@@ -276,19 +264,20 @@ $(document).ready(function(){
 				$(this).removeClass('selected');
 	});
 
-	$('#Back').click(function(){
+	/*$('#Back').click(function(){
 		console.log('Back push');
 	});
 	$('#Logout').click(function(){
 		console.log('Logout push');
-	});
+	});*/
+
 
 	// vote column
-	$('#voteBoard .item').click(function(){
+	/*$('#voteBoard .item').click(function(){
 		$('.item').removeClass('active');
 		$(this).addClass('active');
 		$('#voteArea').text('This area is gonna to have other usage now');
-	})
+	})*/
 });
 
 function init(){
@@ -302,13 +291,13 @@ function init(){
 
 function newVote(){
 	var vote = {"id":"","activity_id":"","type":"","title":"","options":[],"deadline":""};
-	$('input.title').val('');
-	$('input.option').val('');
-	$('.field.options > a').remove();
+	$('.second.modal input.title').val('');
+	$('.second.modal input.option').val('');
+	$('.second.modal .field.options > a').remove();
 	$( "#datepicker" ).datepicker({dateFormat:"yy-mm-dd"}).val('');
 	return vote;
 }
-function CheckVote(vote){
+function CheckVoteDoneBtn(vote){
 	if(vote.title && vote.options.length && vote.deadline )
 	{
 		$('.ui.done.button').addClass('approve green').removeClass('disabled');
@@ -326,16 +315,16 @@ function calendarDate(date){
 	var firstDay = new Date(date.getFullYear(),date.getMonth());
 	var lastDate = new Date(date.getFullYear(),date.getMonth()+1,0);
 	var preMonlastDate = new Date(date.getFullYear(),date.getMonth(),0);
-	firstDay = firstDay.getDay();
-	lastDate = lastDate.getDate();
-	preMonlastDate = preMonlastDate.getDate();
+	firstDay = firstDay.getDay();	// first day of this month is Mon,Tue...(0~6)
+	lastDate = lastDate.getDate();	// last day of this month
+	preMonlastDate = preMonlastDate.getDate();	// prev month has XX days
 	$(days).addClass('days');
 	// preMonDisplay
 	for(var i=0 ; i < firstDay ; i++){
-    	$(days[i]).text(preMonlastDate - firstDay + i +1);
+    	$(days[i]).text(preMonlastDate - firstDay + i + 1);
     	$(days[i]).addClass('disabledDays');
 	}
-	// thisMon
+	// thisMonth
 	for(var i=1 ; i <= lastDate ; i++){
     	$(days[firstDay + i-1]).text(i);
     	$(days[firstDay + i-1]).removeClass('disabledDays');

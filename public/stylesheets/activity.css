@@ -5,7 +5,6 @@ body {
     font-size: 16px;
     background-image: linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,0.1)),url("/public/images/wood.jpg");
 }
-
 .float-right {
     float: right;
 }
@@ -13,23 +12,14 @@ body {
 .float-left {
     float: left;
 }
-
 .right {
     text-align: right;
 }
 
-#menu >a:hover{
-
-}
+/* Activity */
 #menu >a.active{
     font-weight: bold;
 }
-
-div > .choose:hover{
-    background-color: #F2F2F7;
-    cursor: pointer;
-}
-
 #activity {
     text-align: left;
     padding: 5pt;
@@ -41,8 +31,6 @@ div > .choose:hover{
     margin-right: 0;
     border-radius: 5pt;
 }
-
-
 #activityTitle {
     text-align: center;
     background-color: !#F6A2B1;
@@ -54,7 +42,6 @@ div > .choose:hover{
     font-size: 20pt;
     text-decoration: underline;
 }
-
 #activityDescription {
     background-color: pink;
     padding: 5pt 5pt 0 10pt;
@@ -72,30 +59,35 @@ div > .choose:hover{
     resize: none;
     outline-color: #D17C7C
 }
-
 #activityDescription:focus {
     background-color: !#F6A2B1;
 }
-
 #activityDescription::-webkit-scrollbar-track {
     background-color: #F6A2B1;
 }
-
 #activityDescription::-webkit-scrollbar {
     width: 5px;
     background-color: #F5F5F5;
 }
-
 #activityDescription::-webkit-scrollbar-thumb {
     background-color: #73BBAF;
     !border: 1px solid #555555;
 }
-
 #activityDate{
     margin-top:3pt;
 }
+/* Vote page in Activity */
+#votePage img:hover{
+    opacity: 0.5;
+}
+#votePage .title:hover{
+    color:#CDA7A7;
+}
+#votePage .title.active{
+    color:#9E2F2F;
+}
 
-
+/*  */
 #controller {
     margin-left: 28%;
     background-color: orange;
@@ -107,24 +99,8 @@ div > .choose:hover{
     text-align: right;
 }
 
-#voteBoard {
-    margin-top: 10pt;
-    margin-left: 28%;
-    background-color: #CFDEEF;
-    height: 120pt;
-    width: 43%;
-    border-radius: 3pt;
-}
-#votePage img:hover{
-    opacity: 0.5;
-}
-#votePage .title:hover{
-    color:#CDA7A7;
-}
-#votePage .title.active{
-    color:#9E2F2F;
-}
 
+/* Chatting sight */
 #chatboard {
     position:relative;
     padding:5pt;
@@ -136,8 +112,6 @@ div > .choose:hover{
     height: 428pt;
     border-radius: 10pt;
 }
-
-
 #chatBox{
    ! background-color: black;
     position: absolute;
@@ -146,6 +120,109 @@ div > .choose:hover{
 }
 #chatMsg{
     width: 100%;
+}
+
+/* vote modal */
+div > .choose:hover{
+    background-color: #F2F2F7;
+    cursor: pointer;
+}
+
+
+/* Calendar in middle */
+#calendar {
+    margin-left: 28%;
+    margin-right: 30%;
+    background-color: white;
+    height: 275pt;
+    width: 43%;
+    padding: 10pt;
+    border-radius: 10pt;
+    !box-shadow: 2pt 2pt 5pt grey;
+}
+#calendar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+#calendar li {
+    display: block;
+    float: left;
+    width: 14.36%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    margin-right: -1px;
+    margin-bottom: -1px;
+}
+#calendar ul.weekdays {
+    height: 40px;
+    background: pink;
+    cursor: default;
+}
+#calendar ul.weekdays li {
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 20px;
+    border: none !important;
+    padding: 10px 7px;
+    color: #fff;
+    font-size: 13px;
+}
+#day{
+    margin:-2px -3px 0 0;
+}
+.days {
+    text-align: left;
+    padding: 0pt 3pt;
+    font-size: 5pt;
+    color: #355261;
+    font-family: sans-serif;
+    height: 45px;
+    background-color: !#F1DEDE;
+}
+
+.days:hover {
+    color: white;
+    background-color: #85B3E4;
+    cursor: pointer;
+}
+.disabledDays {
+    color: #E2DDDD;
+    background-color: #C0B5C0;
+}
+.disabledDays:hover {
+    color: #E2DDDD;
+    background-color: #C0B5C0;
+    cursor: default;
+}
+.voteDays{
+    text-align: left;
+    padding: 0pt 3pt;
+    font-size: 5pt;
+    color: #355261;
+    font-family: sans-serif;
+    height: 45px;
+    background-color: #F3C5D2;
+    transform: translateY(-1px);
+    box-shadow:1pt 1pt #30305F;
+}
+.monthButton {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: white;
+    outline: none;
+}
+
+/*  not use  */
+#voteBoard {
+    margin-top: 10pt;
+    margin-left: 28%;
+    background-color: #CFDEEF;
+    height: 120pt;
+    width: 43%;
+    border-radius: 3pt;
 }
 
 /*
@@ -174,98 +251,6 @@ div > .choose:hover{
     text-align: left;
 }
 */
-
-#calendar {
-    margin-left: 28%;
-    margin-right: 30%;
-    background-color: white;
-    height: 275pt;
-    width: 43%;
-    padding: 10pt;
-    border-radius: 10pt;
-    !box-shadow: 2pt 2pt 5pt grey;
-}
-#calendar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-}
-
-#calendar li {
-    display: block;
-    float: left;
-    width: 14.36%;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    margin-right: -1px;
-    margin-bottom: -1px;
-}
-
-#calendar ul.weekdays {
-    height: 40px;
-    background: pink;
-    cursor: default;
-}
-
-#calendar ul.weekdays li {
-    text-align: center;
-    text-transform: uppercase;
-    line-height: 20px;
-    border: none !important;
-    padding: 10px 7px;
-    color: #fff;
-    font-size: 13px;
-}
-#day{
-    margin:-2px -4px 0 0;
-}
-.days {
-    text-align: left;
-    padding: 0pt 3pt;
-    font-size: 5pt;
-    color: #355261;
-    font-family: sans-serif;
-    height: 45px;
-    background-color: !#F1DEDE;
-}
-
-.days:hover {
-    color: white;
-    background-color: #85B3E4;
-    cursor: pointer;
-}
-
-.voteDays{
-    text-align: left;
-    padding: 0pt 3pt;
-    font-size: 5pt;
-    color: #355261;
-    font-family: sans-serif;
-    height: 45px;
-    background-color: #F3C5D2;
-    transform: translateY(-1px);
-    box-shadow:1pt 1pt #30305F;
-}
-
-.disabledDays {
-    color: #E2DDDD;
-    background-color: #C0B5C0;
-}
-
-.disabledDays:hover {
-    color: #E2DDDD;
-    background-color: #C0B5C0;
-    cursor: default;
-}
-
-.monthButton {
-    margin: 0;
-    padding: 0;
-    border: none;
-    background-color: white;
-    outline: none;
-}
 
 /*dropdown style setting*/
 .ui.multiple.search.dropdown>.text{ margin: .45240952em 0 .45240952em 1.7em;}
