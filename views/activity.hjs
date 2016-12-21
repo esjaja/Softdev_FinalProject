@@ -20,7 +20,6 @@
           <a id="vote" class="item">Vote</a>
           <a id="voted" class="item">Voted</a>
         </div>
-        
         <div id="Pages">
             <!-- Activity information -->
             <div id="homePage">

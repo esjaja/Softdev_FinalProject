@@ -108,7 +108,7 @@ function membersInActivity(token){
 
       if (response && !response.error) {
         var pre = data.innerHTML.split('>')[0];
-        data.innerHTML = pre + '>' + response.name;
+        data.innerHTML = pre + '>' + response.name +'<i class="delete right red large link icon" onclick="removeMember(this)"></i>';
       }else{
         console.log("error message: "+response.error.message);
       }

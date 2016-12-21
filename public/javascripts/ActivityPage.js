@@ -225,7 +225,6 @@ $(document).ready(function(){
 		});
 	})
 
-	
 /**************[NOT DONE] Days Free/Busy of Everyone ****************/
 	$('#calendar li.days').not('.disabledDays').popup({
 	  	position: 'top center',
@@ -447,4 +446,29 @@ function removemessage(message_id){
 		console.log("error!!");
 	  }
   });
+}
+
+function removeMember(event){
+    console.log(event.parentNode.id);
+    //remove and enable add
+    $("#"+event.parentNode.id).remove();
+    //console.log();
+    $('#addListMenu').append('<div id="'+event.parentNode.id+'" class="item"><img class="ui avatar image" src="http://graph.facebook.com/'+event.parentNode.id+'/picture?type=small">'+event.previousSibling.nodeValue+'</div>');
+
+    $.ajax({
+      url: "remove_activity_member",
+      data: {
+        activity_id: document.location.search.slice(6),
+	      user_id: event.parentNode.id
+	    },
+      type: "POST",
+        dataType: "json",
+      success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        console.log("Remove member successfully!");
+      },
+        error: function() {
+        console.log("error!!");
+      }
+    });
 }
