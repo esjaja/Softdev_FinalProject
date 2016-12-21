@@ -103,26 +103,41 @@ body {
 /* Chatting sight */
 #chatboard {
     position:relative;
-    padding:10pt 5pt 0 5pt;
+    padding: 0;
     text-align: left;
     margin-top: 10pt;
     float: right;
     background-color: #E8E8F3;
     width: 27%;
     height: 428pt;
-    border-radius: 10pt;
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: flex;
+    border-radius: 10pt 0 0 10pt;
+    display: block;
     flex-direction: column;
 }
-#chatBox{
-   ! background-color: black;
-    position: relative;
-    bottom:2%;
-    width:90%;
-    margin-top: auto;
+#chatsight{
+    height:92%;
+    padding:15pt 10pt 0 10pt;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
+#chatsight::-webkit-scrollbar-track {
+    background-color: #F6A2B1;
+}
+#chatsight::-webkit-scrollbar {
+    width: 5px;
+    background-color: #F5F5F5;
+}
+#chatsight::-webkit-scrollbar-thumb {
+    background-color: #73BBAF;
+    !border: 1px solid #555555;
+}
+#chatBox{
+    margin:0 auto;
+    margin-top: 5pt;
+    margin-bottom: 5pt;
+    height:5%;
+    width:95%;
+    }
 #chatMsg{
     width: 100%;
 }
@@ -132,7 +147,7 @@ body {
 div > .choose:hover{
     background-color: #F2F2F7;
     cursor: pointer;
-
+}
 #chatremove{
     background-color: rgba(120,120,120, 0);
     border: 0px;

@@ -77,7 +77,6 @@
               </div>
             </div>
             <!-- END OF VOTE PAGE -->
-
             <div id="votedPage" style="display: none">voted</div>
         </div>
     </div>
@@ -168,24 +167,26 @@
 
 
     <!-- Chatting -->
-    <div id="chatboard">Chatting!
-      <div class="ui comments">
-          {{#messages}}
-              <div class="comment" id={{id}}>
-                <a class="avatar"><img src="http://graph.facebook.com/{{user_id}}/picture?type=square"></a>
-                <div class="content">
-                    <a class="author">{{user_name}}</a>
-                    <div class="metadata">
-                        <div class="date">{{time}}</div>
+    <div id="chatboard">
+        <div id="chatsight">
+          <div class="ui comments">
+              {{#messages}}
+                  <div class="comment" id={{id}}>
+                    <a class="avatar"><img src="http://graph.facebook.com/{{user_id}}/picture?type=square"></a>
+                    <div class="content">
+                        <a class="author">{{user_name}}</a>
+                        <div class="metadata">
+                            <div class="date">{{time}}</div>
+                        </div>
+                        <button id="chatremove" value={{id}} onclick="removemessage(this.value)"><i class="teal remove icon"></i></button>
+                        <div class="text">
+                        {{content}}
+                        </div>
                     </div>
-                    <button id="chatremove" value={{id}} onclick="removemessage(this.value)"><i class="teal remove icon"></i></button>
-                    <div class="text">
-                    {{content}}
-                    </div>
-                </div>
-                <div class="ui divider"></div>
-              </div>
-          {{/messages}}
+                    <div class="ui divider" style="margin: 0pt"></div>
+                  </div>
+              {{/messages}}
+          </div>
       </div>
       <div id="chatBox">
           <input id="chatMsg" placeholder="Type Message..."></input>

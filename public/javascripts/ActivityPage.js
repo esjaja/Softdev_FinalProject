@@ -314,6 +314,7 @@ $(document).ready(function(){
 	                      '<div class="text">'+text+
 	                      '</div>'+
 	                  '</div>'+
+	                  '<div class="ui divider" style="margin: 0pt"></div>'+
 	                '</div>');
 				},
 				error: function() {
