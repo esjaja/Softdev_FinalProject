@@ -38,7 +38,7 @@
             </div>
           </div>
           <div id="votePage" style="display: none">
-              
+
 
           </div>
           <div id="votedPage" style="display: none">voted</div>
@@ -131,22 +131,21 @@
     <!-- Chatting -->
     <div id="chatboard">Chatting!
       <div class="ui comments">
-        <div class="comment">
-          <a class="avatar"><img src="/public/images/pikachu.png"></a>
-          <div class="content">
-              <a class="author">Leonardo Pikachu</a>
-              <div class="metadata">
-                  <div class="date">2 days ago</div>
+          {{#messages}}
+              <div class="comment" id={{id}}>
+                <a class="avatar"><img src="http://graph.facebook.com/{{user_id}}/picture?type=square"></a>
+                <div class="content">
+                    <a class="author">{{user_name}}</a>
+                    <div class="metadata">
+                        <div class="date">{{time}}</div>
+                    </div>
+                    <button id="chatremove" value={{id}} onclick="removemessage(this.value)"><i class="teal remove icon"></i></button>
+                    <div class="text">
+                    {{content}}
+                    </div>
+                </div>
               </div>
-              <div class="text">
-              Hey guys, I hope this example comment is helping you read this documentation.
-              </div>
-              <!--<div class="actions">
-                  <a class="reply">Reply</a>
-                  <a class="hide">Hide</a>
-              </div>-->
-          </div>
-        </div>
+          {{/messages}}
       </div>
       <div id="chatBox">
           <input id="chatMsg" placeholder="Type Message..."></input>

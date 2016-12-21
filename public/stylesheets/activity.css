@@ -125,19 +125,31 @@ div > .choose:hover{
     width: 27%;
     height: 428pt;
     border-radius: 10pt;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 
 #chatBox{
    ! background-color: black;
-    position: absolute;
+    position: relative;
     bottom:2%;
     width:90%;
+    margin-top: auto;
 }
 #chatMsg{
     width: 100%;
 }
-
+#chatremove{
+    background-color: rgba(120,120,120, 0);
+    border: 0px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    float: right;
+}
 /*
 #calendar {
     margin-left: 25%;
