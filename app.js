@@ -50,7 +50,8 @@ var gfs = new Gridfs(database, mongoDriver);
 //require controllers
 var UserCtrl = require('./controller/UserCtrl.js');
 var ActivityCtrl = require('./controller/ActivityCtrl.js');
-var VoteCtrl = require('./controller/VoteCtrl.js')
+var VoteCtrl = require('./controller/VoteCtrl.js');
+var MessageCtrl = require('./controller/MessageCtrl.js');
 var CheckUser = require('./middleware/CheckUser.js');
 // APIS
 app.get('/', UserCtrl.display_login);
@@ -68,6 +69,9 @@ app.post('/edit_activity_dates', ActivityCtrl.edit_activity_dates);
 app.post('/add_activity_member', ActivityCtrl.add_activity_member);
 app.post('/get_activities_month', ActivityCtrl.get_activities_month);
 app.post('/create_vote', VoteCtrl.create_vote);
+
+app.post('/add_message', MessageCtrl.add_message);
+app.post('/delete_message', MessageCtrl.delete_message);
 
 //router.post('/activity', multiparty, function(req, res){
 db.once('open', function () {

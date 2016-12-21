@@ -208,8 +208,8 @@ var update_vote = (req, res, next) => {
                     console.log('No Options');
                 }
                 let idx = op[0].attend.indexOf(req.session.user_id);
-                if(idx !== -1 && req.body.attend === true) return res.redirect('/activity?page='+req.body.activity_id);
-                if(idx === -1 && req.body.attend === false) return res.redirect('/activity?page='+req.body.activity_id);
+                if(idx !== -1 && req.body.attend === true) return res.json({status: 100});
+                if(idx === -1 && req.body.attend === false) return res.json({status: 100});
                 callback(null, op);
             });
         },
@@ -220,7 +220,7 @@ var update_vote = (req, res, next) => {
                 }
             }, (err) => {
                 if(err){
-
+                    console.log('Error: ' + err);
                 }
                 callback(null);
             });
@@ -230,7 +230,7 @@ var update_vote = (req, res, next) => {
                 }
             }, (err) => {
                 if(err){
-
+                    console.log('Error: ' + err);
                 }
                 callback(null);
             });
@@ -239,7 +239,7 @@ var update_vote = (req, res, next) => {
         if(err){
             console.log('Error: ' + err);
         }
-        return res.redirect('activity');
+        return res.json({status: 200});
     });
 }
 /*var get_vote = (req, res, next) => {

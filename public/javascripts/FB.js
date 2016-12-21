@@ -38,10 +38,19 @@ function statusChangeCallback(response){
         console.log('succeed!!!');
         //window.location.replace('/login?token='+response['authResponse']['accessToken']+"&id="+response['authResponse']['userID']);
 
-        var form = '';
-        form += '<input type="hidden" name="token" value="'+response.authResponse['accessToken']+'">';
-        form += '<input type="hidden" name="user_id" value="'+response.authResponse['userID']+'">';
-        $('<form action="/login" method="POST">'+form+'</form>').appendTo('body').submit();
+        FB.api(
+          '/'+response.authResponse['userID'],
+          'GET',
+          {},
+          function(res) {
+              // Insert your code here
+              var form = '';
+              form += '<input type="hidden" name="token" value="'+response.authResponse['accessToken']+'">';
+              form += '<input type="hidden" name="user_id" value="'+res.id+'">';
+              form += '<input type="hidden" name="user_name" value="'+res.name+'">';
+              $('<form action="/login" method="POST">'+form+'</form>').appendTo('body').submit();
+          }
+        );
 
     } else if (response.status === 'not_authorized') {
         //login facebook but not authorize
