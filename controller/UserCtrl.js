@@ -44,6 +44,10 @@ var logout = (req, res, next) => {
 }
 
 var display_login = (req, res, next) => {
+    if(req.session.user_id != null){
+        //Check login state. If the user has logged in, he or she does not need to click login button again
+        return res.redirect('/index');
+    }
     return res.render('login');
 }
 

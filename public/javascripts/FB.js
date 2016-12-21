@@ -14,11 +14,11 @@ window.fbAsyncInit = function() {
         status: true,   //check login status
         version: 'v2.8' // use graph api version 2.8
     });
-    if(window.location.pathname=="/"){
+    /*if(window.location.pathname=="/"){
         FB.getLoginStatus(function(response) {
             statusChangeCallback(response);
         });
-    }
+    }*/
     if(window.location.pathname=="/activity"){
         $(document).trigger('loadList');
     }
