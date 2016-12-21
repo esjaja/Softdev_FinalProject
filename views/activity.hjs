@@ -13,66 +13,101 @@
     <script src="/public/javascripts/FB.js"></script>
 </head>
 <body>
-     <!-- Activity Description-->
+     <!-- Activity -->
     <div id="activity">
         <div id="menu" class="ui secondary three item menu">
-          <a id="home" class="item active">Home</a>
+          <a id="home" class="item active">Activity</a>
           <a id="vote" class="item">Vote</a>
           <a id="voted" class="item">Voted</a>
         </div>
-
+        
         <div id="Pages">
-          <div id="homePage">
-            <div id="activityTitle" spellcheck="false" contenteditable>{{title}}</div>
-            <h5 class="ui header left floated dividing">Description</h5>
-            <textarea id="activityDescription" spellcheck="false">{{description}}</textarea>
-            <div><h5 class="ui header left floated dividing">Date</h5></div>
-            <br>
-            <!--div class="ui mini pink button"><i class="edit icon"></i>Edit</div-->
-            <div id="activityDate">
-                <div class="ui purple labels">
-                    {{#date}}
-                      <div class="ui label">{{.}}</div>
-                    {{/date}}
+            <!-- Activity information -->
+            <div id="homePage">
+                <div id="activityTitle" spellcheck="false" contenteditable>{{title}}</div>
+                <h5 class="ui header left floated dividing">Description</h5>
+                <textarea id="activityDescription" spellcheck="false">{{description}}</textarea>
+                <div><h5 class="ui header left floated dividing">Date</h5></div>
+                <br>
+                <!--div class="ui mini pink button"><i class="edit icon"></i>Edit</div-->
+                <div id="activityDate">
+                    <div class="ui purple labels">
+                        {{#date}}
+                          <div class="ui label">{{.}}</div>
+                        {{/date}}
+                    </div>
                 </div>
             </div>
-          </div>
-          <div id="votePage" style="display: none">
+            <!-- Activity information -->
 
+            <!-- VOTE PAGE -->
+            <div id="votePage" style="display: none">
+                <div class="ui accordion">
+                <!-- TODO: List every vote from here -->
+                                    <!-- vote ID -->
+                 <div class="voteEntry" id="">
+                    <div class="title"><i class="dropdown icon"></i>WHERE TO GO <!-- vote TITLE -->
+                        <div class="ui tiny progress" data-value="2" data-total="4">
+                        <!-- data-value: number people that has voted, data-total: total number of this activity -->
+                          <div class="bar"></div>
+                          <div class="label"></div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <!-- every option (each div each option)-->
+                        <div>
+                            <!-- need ID of self no matter had choosen this option or not -->
+                            <!-- Choose: btn pass 'green' in class -->
+                            <!--         img pass 'inline' in style display -->
+                            <!-- Not Choose : img pass 'none' -->
+                            <button class="ui tiny basic button" style="margin:7pt 0 3pt 0;">
+                            TAIPEI <!-- vote OPTION -->
+                            </button>
+                            <img class="ui avatar image me" src="http://graph.facebook.com/100000362912714/picture?type=square" style="margin-right:-1pt;display:none;">
 
-          </div>
-          <div id="votedPage" style="display: none">voted</div>
+                            <!-- pass other users' id that have voted -->
+                            {{#user_id}}
+                            <img class="ui avatar image" src="http://graph.facebook.com/{{.}}/picture?type=square" style="margin-right:-1pt;">
+                            {{/user_id}}
+                        </div>
+                        <!-- every option end -->
+                    </div>
+                </div>
+                <!-- end of whole vote -->
+              </div>
+            </div>
+            <!-- END OF VOTE PAGE -->
+
+            <div id="votedPage" style="display: none">voted</div>
         </div>
     </div>
-    <!-- Activity Description -->
-
+    <!-- Activity -->
+ 
     <!-- Control bar -->
     <div id="controller">
         <div class="float-left">
             <!-- push Vote display modal-->
             <button id="Vote" class="ui pink button"><i class="wizard icon"></i>New Vote</button>
             <div id="Member" class="ui red scrolling floating dropdown button"><i class="icon users"></i>Member
-              <div id="memberList" class="menu">
+                <div id="memberList" class="menu">
                 <!--<div class="header">
                   People You Might Know
                 </div>-->
-                  {{#user_id}}
+                    {{#user_id}}
                     <div id="{{.}}" class="item">
                       <img class="ui avatar circular image" src="http://graph.facebook.com/{{.}}/picture?type=square">
                       test
                     </div>
-                  {{/user_id}}
-              </div>
+                    {{/user_id}}
+                </div>
             </div>
             <div class="ui labeled purple icon action search selection multiple dropdown">
-              <input type="hidden" placeholder="add">
-              <i name="{{uid}}" value="{{token}}" id="Add" class="add user icon" style="cursor:pointer"></i>
-              <div class="default text">Add</div>
-              <div id="addListMenu" class="menu">
-                <div class="header">
-                  Facebook friends
+                <input type="hidden" placeholder="add">
+                <i name="{{uid}}" value="{{token}}" id="Add" class="add user icon" style="cursor:pointer"></i>
+                <div class="default text">Add</div>
+                <div id="addListMenu" class="menu">
+                    <div class="header">Facebook friends</div>
                 </div>
-              </div>
             </div>
         </div>
         <div class="float-right">
@@ -82,25 +117,29 @@
     </div>
     <!-- Control bar -->
 
-    <!-- modal -->
+    <!-- arrise VOTE , modal setting-->
     <div class="ui coupled modal">
-            <div class="ui small first modal">
-              <div class="header">Which type of vote do you want to arise?</div>
-              <div class="content" style="height:120pt;">
+        <div class="ui small first modal">
+            <div class="header">Which type of vote do you want to arise?</div>
+            <div class="content" style="height:120pt;">
                 <div class="ui two column center aligned grid">
-                <div class="column choose dates" style="border-right-style: solid; border-width: 1pt; border-color: #E9E5E5;">
-                <div class="ui icon header"><i class="calendar huge icon"></i>Asking dates</div>
+                    <div class="column choose dates" style="border-right-style: solid; border-width: 1pt; border-color: #E9E5E5;" id="askDate">
+                        <div class="ui icon header">
+                        <i class="calendar huge icon"></i>Asking dates
+                        </div>
+                    </div>
+                    <div class="column choose others" id="askOther">
+                        <div class="ui icon header">
+                        <i class="game huge icon"></i>Asking others
+                        </div>
+                    </div>
                 </div>
-                <div class="column choose others">
-                <div class="ui icon header"><i class="game huge icon"></i>Asking others</div>
-                </div>
-                </div>
-              </div>
             </div>
+        </div>
 
-            <div class="ui small second modal">
-                <div class="header">What do you want to ask?</div>
-                <div class="content">
+        <div class="ui small second modal">
+            <div class="header">What do you want to ask?</div>
+            <div class="content">
                 <div class="ui form">
                     <div class="field">
                         <label>Title</label>
@@ -118,14 +157,14 @@
                         <input type="text" onkeydown="return false" id="datepicker" placeholder="Choose a deadline">
                     </div>
                 </div>
-                </div>
-                <div class="actions">
-                    <div class="ui done disabled button">Done!</div>
-                    <div class="ui approve button">Cancel</div>
-                </div>
             </div>
+            <div class="actions">
+                <div class="ui done disabled button">Done!</div>
+                <div class="ui approve button">Cancel</div>
+            </div>
+        </div>
     </div>
-    <!-- modal -->
+    <!-- arrise VOTE , modal setting -->
 
 
     <!-- Chatting -->
@@ -144,6 +183,7 @@
                     {{content}}
                     </div>
                 </div>
+                <div class="ui divider"></div>
               </div>
           {{/messages}}
       </div>
@@ -153,7 +193,9 @@
     </div>
     <!-- Chatting -->
 
+
     <div class="ui page cal dimmer"></div>
+
 
     <!-- Canlendar -->
     <div id="calendar" class="ui segments">
@@ -238,14 +280,13 @@
 
     <!-- Voting -->
     <div id="voteBoard">
-        <div class="ui top attached tabular menu">
-            <a class="item active">Vote</a>
-            <a class="item"> Voted </a>
-        </div>
-        <div class="ui bottom attached segment" style="height: 110pt;">
             <div id="voteArea">hello</div>
-        </div>
     </div>
     <!-- Voting -->
+
+    <div class="ui page dimmer"></div>
+
+</div>
+</div>
 </body>
 </html>
