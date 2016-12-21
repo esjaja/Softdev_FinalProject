@@ -1,6 +1,7 @@
 'use strict';
 var User = require('../model/User.js');
 var Activity = require('../model/Activity.js');
+var Message = require('../model/Message.js');
 var Vote = require('../model/Vote.js');
 var async = require('async');
 var crypto = require('crypto');
@@ -56,7 +57,8 @@ var display_activity = (req, res, next) => {
                 if(typeof activity === 'undefined' || activity === null){
                     return console.log('Unavailable Activity');
                 }
-                let date = []
+                activity.total = activity.user_id.length;
+                let date = [];
                 if(typeof activity.date !== 'undefined'){
                     let dt = activity.date.map((dt, i) => {
                         let str = dt.toISOString().slice(0,10);
@@ -86,8 +88,60 @@ var display_activity = (req, res, next) => {
                 }
                 callback(null, activity, date);
             });
+        },
+        (activity, date, callback) => {
+            Vote.find({id: {$in: activity.vote_id}, type: 'OTHERS'}, null, {sort: {title: 1}}, (err, votes) => {
+                if (err) return console.log('Error: ' + err);
+
+                for(let i = 0; i < votes.length; i++){
+                    let join = 0;
+                    let member = [];
+                    for(let j = 0; j < votes[i].option.length; j++){
+                        member.concat(votes[i].option[j].attend);
+                        if(votes[i].option[j].attend.indexOf(req.session.user_id) > 0) votes[i].option[j].agree = true;
+                        else votes[i].option[j].agree = false;
+                    }
+                    member = member.filter((item, pos) => {
+                        return member.indexOf(item) == pos;
+                    });
+                    votes[i].count = member.length;
+                }
+
+                let dt = new Date();
+                //seperate into voting and voted
+                let voting = votes.filter((vote) => {
+                    let deadline = new Date(vote.deadline);
+                    return deadline.getTime() - dt.getTime() > 0;
+                });
+                let voted = votes.filter((vote) => {
+                    let deadline = new Date(vote.deadline);
+                    return deadline.getTime() - dt.getTime() <= 0;
+                });
+                callback(null, activity, date, voting, voted);
+            });
+        },
+        (activity, date, voting, voted, callback) => {
+            let ids = activity.user_id.toString();
+            User.find({id: {$in: activity.user_id}}, 'id name',(err, users) => {
+                if(err) return console.log('Error: ' + err);
+                let new_user = {};
+                users.forEach((user) => {
+                    new_user[user.id] = user.name;
+                });
+                callback(null, activity, date, voting, voted, new_user);
+            });
+        },
+        (activity, date, voting, voted, users, callback) => {
+            //get messages
+            Message.find({activity_id: activity.id}, null, {sort: {time: 1}}, (err, messages) => {
+                if(err) return console.log('Error: ' + err);
+                messages.forEach((mes) => {
+                    mes.user_name = users[mes.user_id];
+                });
+                callback(null, activity, date, voting, voted, messages);
+            });
         }
-    ], (err, activity, date) => {
+    ], (err, activity, date, voting, voted, messages) => {
         return res.render('activity', {
             uid: req.session.user_id,
             token: req.session.token,
@@ -95,7 +149,10 @@ var display_activity = (req, res, next) => {
             title: activity.title,
             date: date,
             description: activity.description,
-            vote_id: activity.vote_id
+            total: activity.total,
+            voting: voting,
+            voted: voted,
+            messages: messages
         });
     });
 }
@@ -209,6 +266,16 @@ var edit_activity_description = (req, res, next) => {
 
 var add_activity_member = (req, res, next) => {
     async.waterfall([
+        (callback) => {
+            User.update({id: req.body.user_id},{
+                $addToSet: {
+                    activity_id: req.body.activity_id
+                }
+            }, (err) => {
+                if(err) return console.log('Error: '+err);
+                callback(null);
+            });
+        },
         (callback) => {
             Activity.update({id: req.body.activity_id},{//here 20161209 1:39
                 $addToSet: {

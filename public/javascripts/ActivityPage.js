@@ -85,6 +85,7 @@ $(document).ready(function(){
 	});
 
 
+
 /*****************   Menu in activity sight  ******************/
 	$('#menu > a').click(function(){
 		$(this).addClass('active').siblings().removeClass('active');
@@ -283,6 +284,44 @@ $(document).ready(function(){
 		$(this).addClass('active');
 		$('#voteArea').text('This area is gonna to have other usage now');
 	})*/
+
+	$("#chatMsg").keypress(function(e){
+		code = (e.keyCode ? e.keyCode : e.which);
+		if (code == 13){
+			var text = $(this).val();
+			$(this).val('');
+			$.ajax({
+				url: "add_message",
+				data: {
+					activity_id: document.location.search.slice(6),
+					message: text
+				},
+				type: "POST",
+				dataType: "json",
+				success: function(data, textStatus, jqXHR) {
+					console.log(data);
+					console.log("success to new a message");
+					//add the chat message into chat board??
+					$('.ui.comments').append(
+					  '<div class="comment" id='+data.id+'>'+
+	                 ' <a class="avatar"><img src="http://graph.facebook.com/'+data.user_id+'/picture?type=square"></a>'+
+	                  '<div class="content">'+
+	                      '<a class="author">'+data.user_name+'</a>'+
+	                      '<div class="metadata">'+
+	                          '<div class="date">just now</div>'+
+	                      '</div>'+
+						  '<button id="chatremove" value='+data.id+' onclick="removemessage(this.value)"><i class="teal remove icon"></i></button>'+
+	                      '<div class="text">'+text+
+	                      '</div>'+
+	                  '</div>'+
+	                '</div>');
+				},
+				error: function() {
+					console.log("error!!");
+				}
+			});
+		}
+	});
 });
 
 function init(){
@@ -388,3 +427,23 @@ function searchActivity(val){
 	return;
 }
 */
+
+function removemessage(message_id){
+	console.log(message_id);
+	$("#"+message_id).remove();
+	$.ajax({
+	  url: "delete_message",
+	  data: {
+		message_id: message_id
+	  },
+	  type: "POST",
+	  dataType: "json",
+	  success: function(data, textStatus, jqXHR) {
+		console.log(data);
+		console.log("success delete");
+	  },
+		error: function() {
+		console.log("error!!");
+	  }
+  });
+}
