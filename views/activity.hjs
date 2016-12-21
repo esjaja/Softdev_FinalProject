@@ -180,6 +180,8 @@
                 <div class="text">
                 Hey guys, I hope this example comment is helping you read this documentation.
                 </div>
+                
+                <div class="ui divider"></div>
               <!--<div class="actions">
                   <a class="reply">Reply</a>
                   <a class="hide">Hide</a>

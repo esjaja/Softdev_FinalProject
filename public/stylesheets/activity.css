@@ -103,7 +103,7 @@ body {
 /* Chatting sight */
 #chatboard {
     position:relative;
-    padding:5pt;
+    padding:10pt 5pt 0 5pt;
     text-align: left;
     margin-top: 10pt;
     float: right;
