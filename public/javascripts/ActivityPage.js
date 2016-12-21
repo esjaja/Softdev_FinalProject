@@ -3,19 +3,20 @@
 var months = ["JANUARY","FEBUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
 var date = new Date();
 var dropdownFlag = true;
-
+var votedateFlag =false;
 $(document).ready(function(){
 	init();
 
-/***** Calendar control *****/
-	// change calendar 
+/****************** Calendar control *****************/
+	//Change Month
 	$('#calendar .monthButton').click(function(){
 		if(this.id == 'right')date.setMonth(date.getMonth()+1);
 		else if(this.id == 'left')date.setMonth(date.getMonth()-1);
 		calendarDate(date);
 	})
 	// change calendar month by mouse scroll
-	$('#calendar').on({
+	//$('#calendar').on({
+	$( document.getElementById("calendar") ).on({
 		mousewheel : function(){
 			console.log(event.deltaY);
 			if(event.deltaY>0)date.setMonth(date.getMonth()+1);
@@ -23,8 +24,9 @@ $(document).ready(function(){
 			calendarDate(date);
 		}
 	});
-/****** edit activity TITLE ******/
-	$('#activityTitle').on({
+	//Edit Title
+	//$('#activityTitle').on({
+	$( document.getElementById("activityTitle") ).on({
 		click : function(){
 			$(this).focus();
 		},
@@ -33,7 +35,8 @@ $(document).ready(function(){
 		}
 	});
 
-	$('#activityTitle').blur(function(){
+	//$('#activityTitle').blur(function(){
+	$(document.getElementById("activityTitle")).blur(function(){
 		var text = this.textContent;
 		console.log(text);
 		$.ajax({
@@ -54,11 +57,13 @@ $(document).ready(function(){
 	    });
 	});
 
-/****** edit activity DESCRIPTION ******/
-	$('#activityDescription').on('click',function(){
+	//Edit Description
+	//$('#activityDescription').on('click',function(){
+	$(document.getElementById('activityDescription')).on('click',function(){
 		$(this).focus();
 	});
-	$('#activityDescription').blur(function(){
+	//$('#activityDescription').blur(function(){
+	$(document.getElementById('activityDescription')).blur(function(){
 		var text = $(this).val();
  		console.log(text);
  		$.ajax({
@@ -79,14 +84,15 @@ $(document).ready(function(){
 		});
 	});
 
-/***** Change display page between activity info or vote pages *****/
+
+/*****************   Menu in activity sight  ******************/
 	$('#menu > a').click(function(){
 		$(this).addClass('active').siblings().removeClass('active');
 		var pageid = '#'+$(this).attr("id") + 'Page';
 		$(pageid).show().siblings().hide();
 	})
 
-	////// Vote page ///////
+/****************	Votes Display Page *********************/
 	$("#votePage .ui.accordion").on('click','.button',function(e){
 		// use entry to get control progress bar and others
 		var entry = $(this).parents('.voteEntry');
@@ -103,51 +109,58 @@ $(document).ready(function(){
 		}else if(myState.length==1 && preState.length==0){
 			progress.progress('increment');
 		}
-/* TODO: infomation for back-end update  */
+	/* TODO: infomation for back-end update  */
 		var voteId = entry.attr("id");
 		var option = $(this).text();
 		var action = ($(this).hasClass('green'))?'select':'unselect';
 		console.log("VOTE ID : " + voteId);
 		console.log("Option : " + option + " " + action);
 	})
-	// progress initialization for entries of votes
-	$(".ui.progress").progress({
-		text:{
-			active: '{value} of {total} people voted',
-			success: 'Everyone has voted!'
-		}
-	})
 
 
-////// Vote Button press show modal ////////
-//////// modal registration /////////
+/******************* Rise Vote ********************/
+	//modal registration
 	$('.coupled.modal')
 	  .modal({
 	    allowMultiple: false
 	  });
-	  //// choose 'others' -> show second modal ////
+	// choose option : 'others' will show second modal
 	$('.second.modal')
 	  .modal('attach events', '.first.modal .others');
-/***** arise a New Vote *****/
+	// [NOT DONE] dim all except calendar, for choose dates ()
+	$(".ui.page.dimmer").dimmer({
+		opacity:0.4
+	});
+
+	// arise vote button
 	var voteObj;
-	$('#Vote').click(function(){
+	//$('#Vote').click(function(){
+	$(document.getElementById('Vote')).click(function(){
 		voteObj = newVote();
 		CheckVoteDoneBtn(voteObj);
 		$('.first.modal').modal('show');
 	});
-	//// First step : ask what ////
-	$('#askDate').click(function(){
+	// choose ask type
+	// OTHER
+	//$('#askOther').click(function(){
+	$(document.getElementById('askOther')).click(function(){
+		//console.log("type[OTHERS]");
+		voteObj['type']='OTHERS';
+	})
+	// DATE
+	//$('#askDate').click(function(){
+	$(document.getElementById('askDate')).click(function(){
 		//console.log("type[DATE]");
 		voteObj['type']='DATE';
 		$('.first.modal').modal('hide');
 		$('.days').not('.disabledDays').addClass('');
-	})
-	$('#askOther').click(function(){
-		//console.log("type[OTHERS]");
-		voteObj['type']='OTHERS';
+		$(".ui.page.dimmer").dimmer("show");
+		$("#calendar").css("z-index","1002");
+		$("#calendar li").popup("false");
+		votedateFlag = true;
 	})
 
-	//// title ////////
+	// Other Title
 	$('.second.modal input.title').on('keyup',function(e){
 		if(e.keyCode ==13){ // enter
 			voteObj['title'] = $(this).val();
@@ -160,7 +173,8 @@ $(document).ready(function(){
 		//console.log('type[OTHERS]title: ' + $(this).val());
 		CheckVoteDoneBtn(voteObj);
 	})
-	//// options ////////
+
+	// Other Options
 	$('.second.modal input.option').on('keyup',function(e){
 		if(e.keyCode == 13){
 			if($(this).val())
@@ -175,7 +189,8 @@ $(document).ready(function(){
 			}
 		}
 	})
-	//// type OHTERS : remove options //////
+
+	// Other Remove Options
 	$('.second.modal .field.options').on('click','.delete.icon',function(){
 		var itema = $(this).parent('a');
 		var index = $('a.ui.label').index(itema)
@@ -185,17 +200,7 @@ $(document).ready(function(){
 		CheckVoteDoneBtn(voteObj);
 	})
 
-	// Jquery datepicker setting
-	$( "#datepicker" ).datepicker(
-		{	dateFormat:"yy-mm-dd",
-			onSelect: function(dataText,inst){
-				voteObj.deadline = dataText;
-				CheckVoteDoneBtn(voteObj);
-			},
-			minDate:0
-		}
-	);
-
+	// Other Done, Send Info To Back End
 	$('.second.modal .ui.done.button').on('click',function(){
 		console.log(voteObj);
 		$.ajax({
@@ -218,16 +223,23 @@ $(document).ready(function(){
 			}
 		});
 	})
-/////	END OF VOTE  	//////
 
-	$('#calendar li.days').not('.disabledDays').on('click',function(){
-		console.log($(this));
+	
+/**************[NOT DONE] Days Free/Busy of Everyone ****************/
+	$('#calendar li.days').not('.disabledDays').popup({
+	  	position: 'top center',
+		on    : 'click',
+		html:'<img class="ui avatar circular image" src="http://graph.facebook.com/100000362912714/picture?type=square"><img class="ui avatar circular image" src="http://graph.facebook.com/100000362912714/picture?type=square">'
+	});
+	$("#calendar li.days").on({
+		click: function(){
+			console.log($(this).attr('id'));
+		}
 	})
 
-/***** MEMBER ADDING ******/
-	$('#Add').click(function(){
+/************************ ADD MEMBER  *********************/
+	$(document.getElementById('Add')).click(function(){
 		var member_list = [];
-		console.log("hi");
 		$('div.item.active').each(function(index,data){
 			//console.log($('div.item.active')[index].innerHTML.split('>')[1].trim());
 			//console.log(data.innerHTML.split('>')[1].trim());
@@ -239,7 +251,7 @@ $(document).ready(function(){
 			$.ajax({
 		      url: "add_activity_member",
 		      data: {
-		        activity_id: document.location.search.slice(6),
+		        		activity_id: document.location.search.slice(6),
 		 				user_id: data.id
 					},
 		      type: "POST",
@@ -257,19 +269,12 @@ $(document).ready(function(){
 	});
 
 	//add selected effect
-	$('#addListMenu').on('click','.item',function(){
+	$(document.getElementById('addListMenu')).on('click','.item',function(){
 			if($(this).hasClass('active'))
 				$(this).addClass('selected');
 			else
 				$(this).removeClass('selected');
 	});
-
-	/*$('#Back').click(function(){
-		console.log('Back push');
-	});
-	$('#Logout').click(function(){
-		console.log('Logout push');
-	});*/
 
 
 	// vote column
@@ -287,6 +292,23 @@ function init(){
 	//initialize the memberList dropdown with parameters
 	$('.ui.dropdown.red.button').dropdown({useLabels: false, action: 'nothing'});
 	$('.ui.accordion').accordion();
+	// datepicker(jqeuryUI) setting
+	$( "#datepicker" ).datepicker(
+		{	dateFormat:"yy-mm-dd",
+			onSelect: function(dataText,inst){
+				voteObj.deadline = dataText;
+				CheckVoteDoneBtn(voteObj);
+			},
+			minDate:0
+		}
+	);
+	// progress initialization for entries of votes
+	$(".ui.progress").progress({
+		text:{
+			active: '{value} of {total} people voted',
+			success: 'Everyone has voted!'
+		}
+	})
 }
 
 function newVote(){
@@ -309,34 +331,51 @@ function CheckVoteDoneBtn(vote){
 
 
 function calendarDate(date){
-	$('#mon').text(months[date.getMonth()]);
-	$('#year').text(date.getFullYear());
+	var year = date.getFullYear();
+	var month = date.getMonth();
+	$('#mon').text(months[month]);
+	$('#year').text(year);
 	var days = $('#day li');
-	var firstDay = new Date(date.getFullYear(),date.getMonth());
-	var lastDate = new Date(date.getFullYear(),date.getMonth()+1,0);
-	var preMonlastDate = new Date(date.getFullYear(),date.getMonth(),0);
-	firstDay = firstDay.getDay();	// first day of this month is Mon,Tue...(0~6)
-	lastDate = lastDate.getDate();	// last day of this month
-	preMonlastDate = preMonlastDate.getDate();	// prev month has XX days
+	var month_begin = new Date(year,month);
+	var month_end = new Date(year,month+1,0);
+	var pre_month_end = new Date(year,month,0);
+	var next_month_begin = new Date(year,month+1);
+	var firstDay = month_begin.getDay();	// first day of this month is Mon,Tue...(0~6)
+	var lastDate = month_end.getDate();	// last day of this month
+	var preMonlastDate = pre_month_end.getDate();	// prev month has XX days
 	$(days).addClass('days');
 	// preMonDisplay
+	if(month<10)month='0'+month;
 	for(var i=0 ; i < firstDay ; i++){
-    	$(days[i]).text(preMonlastDate - firstDay + i + 1);
-    	$(days[i]).addClass('disabledDays');
+		var date_temp = preMonlastDate - firstDay + i + 1;
+		$(days[i]).addClass('disabledDays').text(date_temp);
+		if(date_temp<10)date_temp='0'+date_temp;
+		$(days[i]).attr('id',year + '-' +month + '-' + date_temp);
 	}
 	// thisMonth
+	month = (+month)+1;
+	if(month==13){
+		month=1;year+=1;
+	}
+	if(month<10)month='0'+month;
 	for(var i=1 ; i <= lastDate ; i++){
-    	$(days[firstDay + i-1]).text(i);
-    	$(days[firstDay + i-1]).removeClass('disabledDays');
+		var date_temp = i;
+		$(days[firstDay + i-1]).removeClass('disabledDays').text(date_temp);
+		if(date_temp<10)date_temp='0'+date_temp;
+		$(days[firstDay + i-1]).attr('id',year + '-' +month + '-' + date_temp);
 	}
 	// nextMon
+	month = (+month)+1;
+	if(month==13){month=1;year+=1;}
+	if(month<10)month='0'+month;
 	for(var i=firstDay+lastDate; i<= days.length ; i++){
-    	$(days[i]).text(i - (firstDay+lastDate) +1);
-    	$(days[i]).addClass('disabledDays');
+		var date_temp = i - (firstDay+lastDate) +1;
+		$(days[i]).addClass('disabledDays').text(date_temp);
+		if(date_temp<10)date_temp='0'+date_temp;
+		$(days[i]).attr('id',year + '-' +month + '-' + date_temp);
 	}
 }
-
-
+/*
 function searchActivity(val){
 	var regExp = new RegExp(val,'gi');
 	console.log("search regExp:" + regExp);
@@ -348,3 +387,4 @@ function searchActivity(val){
 	});
 	return;
 }
+*/

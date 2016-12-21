@@ -43,10 +43,10 @@
             <!-- VOTE PAGE -->
             <div id="votePage" style="display: none">
                 <div class="ui accordion">
-                <!-- List every vote from here -->
-                            <!-- Pass vote ID -->
-                 <div class="voteEntry" id="123456">
-                    <div class="title"><i class="dropdown icon"></i>WHERE TO GO <!-- Title of Vote -->
+                <!-- TODO: List every vote from here -->
+                                    <!-- vote ID -->
+                 <div class="voteEntry" id="">
+                    <div class="title"><i class="dropdown icon"></i>WHERE TO GO <!-- vote TITLE -->
                         <div class="ui tiny progress" data-value="2" data-total="4">
                         <!-- data-value: number people that has voted, data-total: total number of this activity -->
                           <div class="bar"></div>
@@ -54,14 +54,14 @@
                         </div>
                     </div>
                     <div class="content">
-                        <!-- every option begin (each div each option)-->
+                        <!-- every option (each div each option)-->
                         <div>
-                            <!-- need self id no matter had choosen this option or not -->
+                            <!-- need ID of self no matter had choosen this option or not -->
                             <!-- Choose: btn pass 'green' in class -->
                             <!--         img pass 'inline' in style display -->
                             <!-- Not Choose : img pass 'none' -->
                             <button class="ui tiny basic button" style="margin:7pt 0 3pt 0;">
-                            TAIPEI <!-- vote option -->
+                            TAIPEI <!-- vote OPTION -->
                             </button>
                             <img class="ui avatar image me" src="http://graph.facebook.com/100000362912714/picture?type=square" style="margin-right:-1pt;display:none;">
 
@@ -82,9 +82,6 @@
         </div>
     </div>
     <!-- Activity -->
-<div id="dialog" title="Choose dates now">
-  <p></p>
-</div>
  
     <!-- Control bar -->
     <div id="controller">
@@ -281,16 +278,15 @@
     </div>
     <!-- Canlendar -->
 
-    <!-- Voting 
+    <!-- Voting -->
     <div id="voteBoard">
-        <div class="ui top attached tabular menu">
-            <a class="item active">Vote</a>
-            <a class="item"> Voted </a>
-        </div>
-        <div class="ui bottom attached segment" style="height: 110pt;">
             <div id="voteArea">hello</div>
-        </div>
     </div>
     <!-- Voting -->
+
+    <div class="ui page dimmer"></div>
+
+</div>
+</div>
 </body>
 </html>
