@@ -245,7 +245,7 @@ $(document).ready(function(){
 			//console.log(data.innerHTML.split('>')[1].trim());
 			$(this).remove();
 			$('.ui.dropdown.search.selection').dropdown('restore defaults');
-			$('#memberList').append('<div id="'+data.id+'" class="item"> <img class="ui avatar image" src="http://graph.facebook.com/'+data.id+'/picture?type=small">'+data.textContent.trim()+'</div>');
+			$('#memberList').append('<div id="'+data.id+'" class="item"> <img class="ui avatar image" src="http://graph.facebook.com/'+data.id+'/picture?type=small">'+data.textContent.trim()+'<i class="delete right red large link icon" onclick="removeMember(this)"></i></div>');
 			//member_list.push(data.innerHTML.split('>')[1].trim());
 			//console.log(data.id);
 			$.ajax({
