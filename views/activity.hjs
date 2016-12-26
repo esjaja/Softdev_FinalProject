@@ -201,15 +201,31 @@
     <!-- Canlendar -->
     <div id="calendar" class="ui segments">
         <!-- Month and Year -->
+        <div id="monthLabel">
+            <a class="ui red label">1</a>
+            <a class="ui orange label">2</a>
+            <a class="ui yellow label">3</a>
+            <a class="ui olive label">4</a>
+            <a class="ui green label">5</a>
+            <a class="ui teal label">6</a>
+            <a class="ui blue label">7</a>
+            <a class="ui violet label">8</a>
+            <a class="ui purple label">9</a>
+            <a class="ui pink label">10</a>
+            <a class="ui brown label">11</a>
+            <a class="ui grey label">12</a>
+            
+                <div id="mon" class="ui label value">November</div>
+        </div>
         <div style="margin-bottom: -5pt;margin-top: -10pt">
             <div style="width: 150pt" class="ui mini blue statistic">
-                <div id="mon" class="value">November</div>
                 <div id="year" class="label">2017</div>
             </div>
             <button id="left" class="monthButton"><i class="chevron circle left icon"></i></button>
             <button id="right" class="monthButton"><i class="chevron circle right icon"></i></button>
         </div>
         <!-- Days -->
+        <div>
         <ul class="weekdays">
             <li>Sun</li>
             <li>Mon</li>
@@ -276,16 +292,15 @@
                 <li>1</li>
             </ul>
         </div>
+        </div>
     </div>
     <!-- Canlendar -->
 
-    <!-- Voting -->
+    <!-- Voting 
     <div id="voteBoard">
             <div id="voteArea">hello</div>
     </div>
     <!-- Voting -->
-
-    <div class="ui page dimmer"></div>
 
 </div>
 </div>

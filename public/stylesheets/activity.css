@@ -187,11 +187,12 @@ div > .choose:hover{
     margin-left: 28%;
     margin-right: 30%;
     background-color: white;
-    height: 275pt;
+    height: 300pt;
     width: 43%;
     padding: 10pt;
     border-radius: 10pt;
     !box-shadow: 2pt 2pt 5pt grey;
+    z-index: 2;
 }
 #calendar ul {
     list-style: none;
@@ -234,7 +235,9 @@ div > .choose:hover{
     height: 45px;
     background-color: !#F1DEDE;
 }
-
+.choosedays{
+    background-color: #ECF0CC;
+}
 .days:hover {
     color: white;
     background-color: #85B3E4;
@@ -266,6 +269,16 @@ div > .choose:hover{
     border: none;
     background-color: white;
     outline: none;
+}
+#monthLabel{
+    margin-top: -10pt;
+    float: left;
+    z-index: 1;
+    overflow: hidden;
+    text-align: justify;
+}
+#monthLabel > a{
+    margin:0 auto;
 }
 
 /*  not use  */
