@@ -45,6 +45,9 @@ $(document).ready(function(){
 		calendarDate(date);
 	})
 
+	$("#homePage .timetag").on('click',changeByTimetag);
+
+
 /******************* Activity controll ******************/
 	//$('#activityTitle').on({
 	$( document.getElementById("activityTitle") ).on({
@@ -390,6 +393,7 @@ function init(){
 			success: 'Everyone has voted!'
 		}
 	})
+	askDateLabel();
 }
 function newVote(){
 	var vote = {"type":"","title":"","options":[],"deadline":""};
@@ -434,7 +438,7 @@ function calendarDate(date){
 	var preMonlastDate = pre_month_end.getDate();	// prev month has XX days
 
 	/* reset days setting before display */
-	$(days).addClass('days').removeClass('choosedays');
+	$(days).removeClass().addClass('days');
 
 	// preMonDisplay
 	if(month<10)month='0'+month;
@@ -458,7 +462,7 @@ function calendarDate(date){
 			$(days[index]).addClass('choosedays');
 		}
 		if($(days[index]).attr('id') == today){
-			$(days[index]).append('<p style="color:#D8664B">today</p>');
+			$(days[index]).addClass('today').append('<p style="color:#D96449;">Today</p>');
 		}
 	}
 	// nextMon
@@ -489,6 +493,7 @@ function calendarDate(date){
 			data.activities.forEach(function(value,index){
 				//console.log(value,index);
 				var color = getRandomColor();
+				if(thisActivity == value.activity_id)color='purple';
 				var name = value.activity_id;
 				var datelength = value.date.length;
 				console.log('date len ' + datelength);
@@ -520,11 +525,10 @@ function getRandomColor() {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;*/
-    var colors = ['red','blue','green','olive','purple','gray','orange'];
+    var colors = ['red','blue','green','olive','gray','orange'];
     var color = colors[Math.floor(Math.random()*100%colors.length)];
     return color;
 }
-
 
 
 function searchActivity(val){
@@ -568,7 +572,9 @@ function askDateBtn(btn){
 	}
 	else if($(btn).attr('id') == "askDateDone"){
 		console.log('Done!');
+		votedateList.sort();
 		console.log('new votedateList is : ' + votedateList);
+		askDateLabel();
 		//pre_votedateList = votedateList;
 	}
 	$(btn).parent().remove();
@@ -576,4 +582,19 @@ function askDateBtn(btn){
 	$(document.getElementById('calendar')).css('height','300pt');
 	votedateFlag = false;
 	calendarDate(date);
+}
+function changeByTimetag(){
+	var tag = $(this).text().split('~')[0];
+	date = new Date(tag);
+	calendarDate(date);
+}
+function askDateLabel(){
+	$('#activityAskDate .labels').empty();
+	votedateList.forEach(function(value,index){
+		var div = document.createElement('div');
+		div.className = "ui label timetag";
+		div.innerHTML = value;
+		div.onclick = changeByTimetag;
+		$('#activityAskDate .labels').append(div);	
+	})
 }
