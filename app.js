@@ -16,6 +16,8 @@ var loop = require('node-while-loop');
 
 var app = express();
 var router = express.Router();
+/* audio player */
+var multipartMiddleware = multiparty();
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -33,6 +35,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hjs');
 app.use('/semantic', express.static(path.join(__dirname, 'semantic')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
+
 
 //mongoose.connect("mongodb://localhost/softdevDB");
 mongoose.connect('mongodb://softdev:softdev@ds157487.mlab.com:57487/softdev_db');

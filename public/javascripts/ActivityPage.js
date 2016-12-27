@@ -6,19 +6,23 @@ var dropdownFlag = true;
 var votedateFlag =false;
 var votedateList = ["2016-12-26"];
 var pre_votedateList = [];
+var voteObj = [];
 $(document).ready(function(){
 	init();
 
 /****************** Calendar control ********************/
+	/*
 	//Change Month
 	$('#calendar .monthButton').click(function(){
 		if(this.id == 'right')date.setMonth(date.getMonth()+1);
 		else if(this.id == 'left')date.setMonth(date.getMonth()-1);
 		calendarDate(date);
 	})
+	*/
+
 	// change calendar month by mouse scroll
 	//$('#calendar').on({
-	$( document.getElementById("calendar") ).on({
+	$(document.getElementById("calendar") ).on({
 		mousewheel : function(){
 			console.log(event.deltaY);
 			if(event.deltaY>0)date.setMonth(date.getMonth()+1);
@@ -26,6 +30,11 @@ $(document).ready(function(){
 			calendarDate(date);
 		}
 	});
+	// change month by click on month labels
+	$("#monthLabel > a").on('click',function(){
+		date.setMonth($(this).text()-1);
+		calendarDate(date);
+	})
 
 /******************* Activity controll ******************/
 	//$('#activityTitle').on({
@@ -130,7 +139,7 @@ $(document).ready(function(){
 	  .modal('attach events', '.first.modal .others');
 
 	// arise vote button
-	var voteObj;
+
 	//$('#Vote').click(function(){
 	$(document.getElementById('Vote')).click(function(){
 		voteObj = newVote();
@@ -256,14 +265,6 @@ $(document).ready(function(){
 			}
 		}
 	})
-	$("#monthLabel > a").on('click',function(){
-		var labelColor = $(this).attr('class').split(' ')[1];
-		date.setMonth($(this).text()-1);
-		$('#monthLabel a').removeClass('big');
-		$(this).addClass('big');
-		$("#mon").removeClass().addClass('ui label ' + labelColor);
-		calendarDate(date);
-	})
 /************************ ADD MEMBER  *********************/
 	$(document.getElementById('Add')).click(function(){
 		var member_list = [];
@@ -381,7 +382,7 @@ function init(){
 	})
 }
 function newVote(){
-	var vote = {"id":"","activity_id":"","type":"","title":"","options":[],"deadline":""};
+	var vote = {"type":"","title":"","options":[],"deadline":""};
 	$('.second.modal input.title').val('');
 	$('.second.modal input.option').val('');
 	$('.second.modal .field.options > a').remove();
@@ -405,8 +406,15 @@ function calendarDate(date){
 	/* use to compute previous month, this month and next month */
 	var year = date.getFullYear();
 	var month = date.getMonth();
-	$(document.getElementById('mon')).text(months[month]);
+
+	/* Change label display */
+	var monthlabels = $("#monthLabel a");
+	var labelColor = monthlabels.eq(month).attr('class').split(' ')[1];
+	monthlabels.removeClass('big').eq(month).addClass('big');
+	$(document.getElementById('mon')).removeClass().addClass('ui label ' + labelColor).text(months[month]);
 	$(document.getElementById('year')).text(year);
+
+
 	var month_begin = new Date(year,month);
 	var month_end = new Date(year,month+1,0);
 	var pre_month_end = new Date(year,month,0);
@@ -453,7 +461,49 @@ function calendarDate(date){
 		if(date_temp<10)date_temp='0'+date_temp;
 		$(days[i]).attr('id',year + '-' +month + '-' + date_temp);
 	}
+
+
+			//get activities in the month
+	$.ajax({
+		url: "get_activities_month",
+		data: {
+			month: date.getMonth()
+		},
+		type: "POST",
+		dataType: "json",
+		success: function(data, textStatus, jqXHR) {
+			// to be filled in what to do -----------------------
+			console.log("get month success!");
+			console.log(data);
+			data.activities.forEach(function(value,index){
+				console.log(value,index);
+				var color = getRandomColor();
+				var name = value.activity_id;
+				value.date.forEach(function(value2,index2){
+					console.log(value2,index2);
+					console.log($('#'+value2+' > div').length);
+					if(index2==0)
+						$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar">'+name+'</div>');
+					else
+						$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar"></div>');		
+				})
+			})
+		},
+		error: function() {
+			console.log("get month failed! QQ");
+		}
+	});
 }
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+
 /*
 function searchActivity(val){
 	var regExp = new RegExp(val,'gi');

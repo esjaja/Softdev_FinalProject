@@ -208,6 +208,7 @@ div > .choose:hover{
     border: 1px solid #ccc;
     margin-right: -1px;
     margin-bottom: -1px;
+    position: relative;
 }
 #calendar ul.weekdays {
     height: 40px;
@@ -225,6 +226,7 @@ div > .choose:hover{
 }
 #day{
     margin:-2px -3px 0 0;
+    display: block;
 }
 .days {
     text-align: left;
@@ -280,6 +282,21 @@ div > .choose:hover{
 #monthLabel > a{
     margin:0 auto;
 }
+
+.activityOnCalendar{
+    position: absolute;
+    color:white;
+    border-top: solid 1pt;
+    border-bottom: solid 1pt;
+    margin-left: -3pt;
+    line-height: 10pt;
+    bottom: 0;
+    width: 100%;
+    height: 12pt;
+    opacity: 0.5;
+}
+
+
 
 /*  not use  */
 #voteBoard {

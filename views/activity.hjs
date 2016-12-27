@@ -27,7 +27,10 @@
                 <div id="activityTitle" spellcheck="false" contenteditable>{{title}}</div>
                 <h5 class="ui header left floated dividing">Description</h5>
                 <textarea id="activityDescription" spellcheck="false">{{description}}</textarea>
-                <div><h5 class="ui header left floated dividing">Date</h5></div>
+
+                <div>
+                    <h5 class="ui header left floated dividing">Date</h5>
+                </div>
                 <br>
                 <!--div class="ui mini pink button"><i class="edit icon"></i>Edit</div-->
                 <div id="activityDate">
@@ -36,6 +39,12 @@
                           <div class="ui label">{{.}}</div>
                         {{/date}}
                     </div>
+                </div>
+
+                <div>
+                    <h5 class="ui header left floated dividing">Date(unconfirm)</h5>
+                </div>
+                <div id="activityAskDate">
                 </div>
             </div>
             <!-- Activity information -->
@@ -208,7 +217,7 @@
             <a class="ui olive label">4</a>
             <a class="ui green label">5</a>
             <a class="ui teal label">6</a>
-            <a class="ui blue label">7</a>
+            <a class="ui blue basic label">7</a>
             <a class="ui violet label">8</a>
             <a class="ui purple label">9</a>
             <a class="ui pink label">10</a>
@@ -221,8 +230,8 @@
             <div style="width: 150pt" class="ui mini blue statistic">
                 <div id="year" class="label">2017</div>
             </div>
-            <button id="left" class="monthButton"><i class="chevron circle left icon"></i></button>
-            <button id="right" class="monthButton"><i class="chevron circle right icon"></i></button>
+           <!-- <button id="left" class="monthButton"><i class="chevron circle left icon"></i></button>
+            <button id="right" class="monthButton"><i class="chevron circle right icon"></i></button>-->
         </div>
         <!-- Days -->
         <div>
