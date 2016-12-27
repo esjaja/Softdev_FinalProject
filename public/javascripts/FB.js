@@ -14,11 +14,6 @@ window.fbAsyncInit = function() {
         status: true,   //check login status
         version: 'v2.8' // use graph api version 2.8
     });
-    /*if(window.location.pathname=="/"){
-        FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-        });
-    }*/
     if(window.location.pathname=="/activity"){
         $(document).trigger('loadList');
     }
@@ -101,14 +96,18 @@ function friendsInApp(token){
   });
 }
 function membersInActivity(token){
+	var me = $('#Add').attr('name');
   //load members' names.
   $('#Member .menu .item').each(function(index, data){
 
-    FB.api(data.id, { fielss: 'name', access_token: token}, function (response) {
+    FB.api(data.id, { fields: 'name', access_token: token}, function (response) {
 
       if (response && !response.error) {
         var pre = data.innerHTML.split('>')[0];
-        data.innerHTML = pre + '>' + response.name;
+        if(data.id == me)
+        	data.innerHTML = pre + '>' + response.name;
+       	else
+       		data.innerHTML = pre + '>' + response.name +'<i class="delete right red large link icon" onclick="removeMember(this)"></i>';
       }else{
         console.log("error message: "+response.error.message);
       }
