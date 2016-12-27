@@ -24,12 +24,21 @@ $(document).ready(function(){
 	//$('#calendar').on({
 	$(document.getElementById("calendar") ).on({
 		mousewheel : function(){
-			console.log(event.deltaY);
-			if(event.deltaY>0)date.setMonth(date.getMonth()+1);
-			else date.setMonth(date.getMonth()-1);
-			calendarDate(date);
+			if($(document.getElementById("lock")).hasClass('unlock')){
+				if(event.deltaY>0)date.setMonth(date.getMonth()+1);
+				else date.setMonth(date.getMonth()-1);
+				calendarDate(date);
+			}
 		}
 	});
+	$("#monthLabel > i").on('click',function(){
+		if($(this).hasClass('repeat')){
+			calendarDate(new Date());
+		}
+		if($(this).hasClass('unlock') || $(this).hasClass('lock')){
+			$(this).toggleClass('unlock').toggleClass('lock');
+		}
+	})
 	// change month by click on month labels
 	$("#monthLabel > a").on('click',function(){
 		date.setMonth($(this).text()-1);

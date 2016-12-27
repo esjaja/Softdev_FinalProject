@@ -281,6 +281,11 @@ div > .choose:hover{
 }
 #monthLabel > a{
     margin:0 auto;
+    margin-left: -1pt;
+}
+#monthLabel > i{
+    cursor: pointer;
+    
 }
 
 .activityOnCalendar{

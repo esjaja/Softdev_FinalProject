@@ -210,7 +210,7 @@
     <!-- Canlendar -->
     <div id="calendar" class="ui segments">
         <!-- Month and Year -->
-        <div id="monthLabel">
+        <div id="monthLabel" style="width: 100%">
             <a class="ui red label">1</a>
             <a class="ui orange label">2</a>
             <a class="ui yellow label">3</a>
@@ -224,7 +224,9 @@
             <a class="ui brown label">11</a>
             <a class="ui grey label">12</a>
             
-                <div id="mon" class="ui label value">November</div>
+            <div id="mon" class="ui label value">November</div>
+            <i class="ui icon repeat float-right"></i>
+            <i class="ui icon unlock float-right" id="lock"></i>
         </div>
         <div style="margin-bottom: -5pt;margin-top: -10pt">
             <div style="width: 150pt" class="ui mini blue statistic">
