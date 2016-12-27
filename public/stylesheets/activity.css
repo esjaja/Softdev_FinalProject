@@ -286,18 +286,25 @@ div > .choose:hover{
 .activityOnCalendar{
     position: absolute;
     color:white;
-    border-top: solid 1pt;
-    border-bottom: solid 1pt;
     margin-left: -3pt;
     line-height: 10pt;
     bottom: 0;
     width: 100%;
     height: 12pt;
     opacity: 0.5;
+    overflow: hidden;
 }
-
-
-
+.left-border{
+    border-left: solid 1pt;
+    border-left-color: black;
+}
+.right-border{
+    border-right: solid 1pt;
+    border-right-color: black;
+}
+.text-hidden{
+    overflow: hidden;
+}
 /*  not use  */
 #voteBoard {
     margin-top: 10pt;

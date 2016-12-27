@@ -43,7 +43,8 @@ $(document).ready(function(){
 			$(this).focus();
 		},
 		keypress : function(e){
-			e.preventDefault();
+			if(e.keyCode==13)
+				e.preventDefault();
 		}
 	});
 
@@ -474,18 +475,27 @@ function calendarDate(date){
 		success: function(data, textStatus, jqXHR) {
 			// to be filled in what to do -----------------------
 			console.log("get month success!");
+			var thisActivity = document.location.search.slice(6);
 			console.log(data);
 			data.activities.forEach(function(value,index){
-				console.log(value,index);
+				//console.log(value,index);
 				var color = getRandomColor();
 				var name = value.activity_id;
+				var datelength = value.date.length;
+				console.log('date len ' + datelength);
 				value.date.forEach(function(value2,index2){
-					console.log(value2,index2);
-					console.log($('#'+value2+' > div').length);
-					if(index2==0)
+					var preFlag = $('#'+value2).prev().children('div').length;
+					var nextFlag = ($('#'+value2).next().attr('id') == value.date[index2+1]);
+					var li_index = $('#'+value2).parent().children().index($('#'+value2));
+					//console.log(preFlag);
+					console.log(li_index);
+					if(index2==0 || preFlag==0)
 						$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar">'+name+'</div>');
-					else
-						$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar"></div>');		
+					/*else if(nextFlag==false || li_index==6 )
+						$('#'+value2).append('<div style="background-color:'+color+'" class="text-hidden activityOnCalendar">'+'</div>');			
+					*/else
+						$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar">'+'</div>');		
+				
 				})
 			})
 		},
@@ -495,16 +505,19 @@ function calendarDate(date){
 	});
 }
 function getRandomColor() {
-    var letters = '0123456789ABCDEF';
+    /*var letters = '0123456789ABCDEF';
     var color = '#';
     for (var i = 0; i < 6; i++ ) {
         color += letters[Math.floor(Math.random() * 16)];
     }
+    return color;*/
+    var colors = ['red','blue','green','olive','purple','gray','orange'];
+    var color = colors[Math.floor(Math.random()*100%colors.length)];
     return color;
 }
 
 
-/*
+
 function searchActivity(val){
 	var regExp = new RegExp(val,'gi');
 	console.log("search regExp:" + regExp);
@@ -516,7 +529,7 @@ function searchActivity(val){
 	});
 	return;
 }
-*/
+
 function removemessage(message_id){
 	console.log(message_id);
 	$("#"+message_id).remove();

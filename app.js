@@ -16,8 +16,6 @@ var loop = require('node-while-loop');
 
 var app = express();
 var router = express.Router();
-/* audio player */
-var multipartMiddleware = multiparty();
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
