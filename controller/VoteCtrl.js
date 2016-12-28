@@ -131,11 +131,12 @@ var add_options = (req, res, next) => {
         });
     });
 }
-var remove_options = (req, res, next) => {
+var remove_option = (req, res, next) => {
     async.waterfall([
         (callback) => {
             //check vote_id exists and the options exists
-            let options = req.body.options;
+            let option = req.body.option_name;
+            console.log(req.body);
             Vote.findOne({id: req.body.vote_id}, (err, vote) => {
                 if(err){
                     console.log('Error: ' + err);
@@ -143,21 +144,25 @@ var remove_options = (req, res, next) => {
                 if(vote === null){
                     console.log('No Votes');
                 }
-                for(let option of vote.option){
-                    let idx = options.indexOf(option.name);
+                /*for(let option of vote.option){
+                    let idx = option.indexOf(option.name);
                     if(idx === -1){
                         //ignore un-exist options
                         options.slice(idx, 1);
                     }
-                }
-                callback(null, options);
+                }*/
+                /*if(vote.option.indexOf(req.body.option) === -1) return res.json({
+                    status: 100
+                });*/
+                let options = req.body.option;
+                callback(null);
             });
         },
-        (options, callback) => {
+        (callback) => {
             //update
-            Vote.update({id:req.body.vote_id}, {
+            Vote.update({id: req.body.vote_id}, {
                 $pull: {
-                    option: { name: { $in: options } }
+                    option: { name: req.body.option_name}
                 }
             }, (err) => {
                 if(err){
@@ -258,7 +263,7 @@ var update_vote = (req, res, next) => {
 module.exports = {
     create_vote: create_vote,
     add_options: add_options,
-    remove_options: remove_options,
+    remove_option: remove_option,
     update_vote: update_vote,
     delete_vote: delete_vote
 }

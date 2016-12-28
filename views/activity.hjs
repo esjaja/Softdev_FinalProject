@@ -57,17 +57,17 @@
                         <div class="content">
                             <!-- every option (each div each option)-->
                             {{#option}}
-                                <div>
+                                <div id={{name}}>
                                     <!-- need ID of self no matter had choosen this option or not -->
                                     <!-- Choose: btn pass 'green' in class -->
                                     <!--         img pass 'inline' in style display -->
                                     <!-- Not Choose : img pass 'none' -->
                                     {{#agree}}
-                                        <button class="ui tiny basic button green" style="margin:7pt 0 3pt 0;" value={{id}}+{{name}}>{{name}}<!-- vote OPTION --></button>
+                                        <button class="ui tiny basic button green" style="margin:7pt 0 3pt 0;">{{name}}<!-- vote OPTION --></button>
                                         <img class="ui avatar image me" src="http://graph.facebook.com/{{me_id}}/picture?type=square" style="margin-right:-1pt;display:inline-block;">
                                     {{/agree}}
                                     {{^agree}}
-                                        <button class="ui tiny basic button" style="margin:7pt 0 3pt 0;" value={{id}}+{{name}}>{{name}}<!-- vote OPTION --></button>
+                                        <button class="ui tiny basic button" style="margin:7pt 0 3pt 0;">{{name}}<!-- vote OPTION --></button>
                                         <img class="ui avatar image me" src="http://graph.facebook.com/{{me_id}}/picture?type=square" style="margin-right:-1pt;display:none;">
                                     {{/agree}}
 
@@ -75,6 +75,7 @@
                                     {{#attends}}
                                         <img class="ui avatar image" src="http://graph.facebook.com/{{.}}/picture?type=square" style="margin-right:-1pt;">
                                     {{/attends}}
+                                    <button id="optionremove" value={{name}}><i class="teal remove icon"></i></button>
                                 </div>
                             {{/option}}
                             <!-- every option end -->
