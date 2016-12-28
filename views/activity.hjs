@@ -30,7 +30,7 @@
 
                 <div>
                     <h5 class="ui header left floated dividing">Date
-                    </h5><i class="ui icon write"></i>
+                    </h5><i class="ui icon write" id="editDate"></i>
                 </div>
                 <!--div class="ui mini pink button"><i class="edit icon"></i>Edit</div-->
                 <br>
@@ -67,10 +67,10 @@
                               <div class="label"></div>
                             </div>
                         </div>
-                        <div class="content">
+                        <div class="content" id={{id}}>
                             <!-- every option (each div each option)-->
                             {{#option}}
-                                <div id={{name}}>
+                                <div id={{id}}>
                                     <!-- need ID of self no matter had choosen this option or not -->
                                     <!-- Choose: btn pass 'green' in class -->
                                     <!--         img pass 'inline' in style display -->
@@ -88,10 +88,15 @@
                                     {{#attends}}
                                         <img class="ui avatar image" src="http://graph.facebook.com/{{.}}/picture?type=square" style="margin-right:-1pt;">
                                     {{/attends}}
-                                    <button id="optionremove" value={{name}}><i class="teal remove icon"></i></button>
+                                    <button id="optionremove" value={{id}}><i class="teal remove icon"></i></button>
                                 </div>
                             {{/option}}
                             <!-- every option end -->
+                            <div class="ui mini icon input" id="addOption">
+                                <input type="text" placeholder="More Options..." class="addBox">
+                                <i class="add icon"></i>
+                            </div>
+                            <button class="ui tiny button red">Delete</button>
                         </div>
                     </div>
                 {{/voting}}
@@ -236,7 +241,7 @@
               {{/messages}}
           </div>
       </div>
-      <div id="chatBox">
+      <div id="chatBox" class="ui mini input">
           <input id="chatMsg" placeholder="Type Message..."></input>
       </div>
     </div>
@@ -262,7 +267,7 @@
             <a class="ui pink label">10</a>
             <a class="ui brown label">11</a>
             <a class="ui grey label">12</a>
-            
+
             <div id="mon" class="ui label value">November</div>
             <i class="ui icon repeat float-right"></i>
             <i class="ui icon unlock float-right" id="lock"></i>
@@ -346,7 +351,7 @@
     </div>
     <!-- Canlendar -->
 
-    <!-- Voting 
+    <!-- Voting
     <div id="voteBoard">
             <div id="voteArea">hello</div>
     </div>

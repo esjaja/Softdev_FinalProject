@@ -3,11 +3,14 @@
 var months = ["JANUARY","FEBUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
 var date = new Date();
 var dropdownFlag = true;
-var votedateFlag =false;
+var votedateFlag = false;
+var editdateFlag = false;
 var votedateList = ["2016-12-26"];
+var editdateList = ["2016-12-27"];
 var pre_votedateList = [];
+var pre_editdateList = [];
 var voteObj = [];
-$(document).ready(function(){
+$(document).ready( function(){
 	init();
 	$('#chatsight').scrollTop(9999999);
 
@@ -118,7 +121,7 @@ $(document).ready(function(){
 	})
 
 /****************	Votes Display Page ******************/
-	$("#votePage .ui.accordion").on('click','.button',function(e){
+	$("#votePage .ui.accordion").on('click','.basic.button',function(e){
 		// use entry to get control progress bar and others
 		var entry = $(this).parents('.voteEntry');
 		var progress = entry.find(".progress");
@@ -176,14 +179,20 @@ $(document).ready(function(){
 			data: {
 				activity_id: document.location.search.slice(6),
 				vote_id: voteId,
-				option_name: option
+				option_id: option
 			},
 			type: "POST",
 			dataType: "json",
 			success: function(data, textStatus, jqXHR) {
 				console.log(data);
 				console.log("success to remove the option");
-				//add the chat message into chat board??
+				var progress = entry.find(".progress");
+				var tmp = progress.progress('get value') - data.count;
+				if(tmp > 0) {
+					for(var i=0;i<tmp;i++){
+						progress.progress('decrement');
+					}
+				}
 			},
 			error: function() {
 				console.log("error!!");
@@ -273,6 +282,8 @@ $(document).ready(function(){
 			success: function(data, textStatus, jqXHR) {
 				console.log(data);
 				console.log("success to create vote");
+				//refresh
+				location.reload();
 			},
 			error: function() {
 				console.log("error!!");
@@ -307,24 +318,58 @@ $(document).ready(function(){
 		}
 		votedateFlag = true;
 	})
-	$("#calendar li.days").on({
+	$(document.getElementById('editDate')).click(function(){
+		console.log("type[DATE]");
+		pre_editdateList = editdateList.slice(0);
+		$('.first.modal').modal('hide');
+		if(editdateFlag == false){
+			$("#calendar").css("height","340pt");
+			$("#calendar").append('<div id="temp" style="width:100%;float:right;margin-top:5pt;">'+
+				'<div class="ui right pointing red basic label large" style="margin-top:1pt;">'+
+      			'Click on dates you want to choose or cancel</div>'+
+				'<button class="ui blue button" id="editDateDone" style="float:right" onclick="updateDateBtn($(this))">Done</button>'+
+				'<button class="ui button" id="editDateCancel" style="float:right" onclick="updateDateBtn($(this))">Cancel</button>'+
+				'</div>');
+			$("#calendar li").popup("false");
+		}
+		editdateFlag = true;
+	})
+	$("#day li").on({
 		click: function(){
+			console.log("QQQQQQQQQQQQQQQQQQQQQ");
 			var date = $(this).attr('id');
 			/* if now is on votedate status, click on days will change backgroundcolor*/
-			if(votedateFlag && !$(this).hasClass('disabledDays'))
+			if(votedateFlag && !$(this).hasClass('disabledDays') && !$(this).hasClass('eventDays'))
 			{
 				/* Check if this date has been choosen */
 				var index = $.inArray(date,votedateList);
 				if(index == -1){
 					votedateList.push(date);
 					$(this).addClass('choosedays');
-				}else{
+				} else{
 					votedateList.splice(index,1);
 					$(this).removeClass('choosedays');
 				}
 			}
 			else if($(this).has('choosedays')){
 				console.log('show member list!');
+			}
+			else ;
+			console.log(editdateFlag);
+			if(editdateFlag && !$(this).hasClass('disabledDays') && !$(this).hasClass('choosedays'))
+			{
+				/* Check if this date has been choosen */
+				var index = $.inArray(date, editdateList);
+				console.log(date);
+				console.log(editdateList);
+				if(index == -1){
+					editdateList.push(date);
+					$(this).addClass('eventDays');
+				}else{
+					console.log("YEE");
+					editdateList.splice(index,1);
+					$(this).removeClass('eventDays');
+				}
 			}
 		}
 	})
@@ -376,7 +421,7 @@ $(document).ready(function(){
 	})*/
 
 /************************* Chatboard **************************/
-	$("#chatMsg").keypress(function(e){
+	$("#chatMsg").on('keypress', function(e){
 		code = (e.keyCode ? e.keyCode : e.which);
 		if (code == 13){
 			var text = $(this).val();
@@ -415,13 +460,92 @@ $(document).ready(function(){
 			});
 		}
 	});
+
+	$(".addBox").keypress(function(e){
+		code = (e.keyCode ? e.keyCode : e.which);
+		var entry = $(this).parents('.voteEntry').attr('id');
+		if (code == 13){
+			var text = $(this).val();
+			console.log(text);
+			$(this).val('');
+			$.ajax({
+				url: "add_option",
+				data: {
+					activity_id: document.location.search.slice(6),
+					type: 'OTHERS',
+					vote_id: entry,
+					option: text
+				},
+				type: "POST",
+				dataType: "json",
+				success: function(data, textStatus, jqXHR) {
+					console.log($(this).parents('.content'));
+
+					//add the option into list //$('#'+data.vote_id+'.content').prepend
+					$('#'+data.vote_id+'.content').prepend(
+						'<div id='+data.option_id+'>'+
+							'<button class="ui tiny basic button" style="margin:7pt 0 3pt 0;">'+text+'</button>'+
+							' <img class="ui avatar image me" src="http://graph.facebook.com/'+data.user_id+'/picture?type=square" style="margin-right:-1pt;display:none;">'+
+							'<button id="optionremove" value='+data.option_id+'><i class="teal remove icon"></i></button>'+
+						'</div>'
+					  );
+					  //$(this).parents('.content').remove();
+					//bing related functions
+					console.log("success to add option");
+				},
+				error: function() {
+					console.log("error!!");
+				}
+			});
+		}
+	});
+
+
+	$("#votePage .ui.accordion").on('click','.button.red', function(){
+		var entry = $(this).parents('.voteEntry');
+		var vote_id = entry.attr('id');
+		entry.remove();
+		$.ajax({
+			url: "delete_vote",
+			data: {
+			  activity_id: document.location.search.slice(6),
+			vote_id: vote_id
+			},
+			type: "POST",
+			dataType: "json",
+			success: function(data, textStatus, jqXHR) {
+			console.log(data);
+			console.log("success delete vote");
+			},
+			error: function() {
+			console.log("error!!");
+			}
+		});
+	});
 });
-
-
 
 /***************** FUNCTIONS ***************/
 function init(){
-	calendarDate(date);
+	//get dates from back-end
+	//calendarDate(date);
+	$.ajax({
+      url: "get_vote_event_date",
+      data: {
+        activity_id: document.location.search.slice(6)
+	    },
+      type: "POST",
+        dataType: "json",
+		success: function(data, textStatus, jqXHR) {
+			votedateList = data.vote_date;
+			editdateList = data.event_date;
+			askDateLabel();
+			editDateLabel();
+			calendarDate(date);
+		},
+        error: function() {
+        console.log("error!!");
+      }
+    });
 	//initialize the addList dropdown with parameters
 	$('.ui.dropdown.search.selection').dropdown({useLabels: false,forceSelection: false});
 	//initialize the memberList dropdown with parameters
@@ -444,7 +568,6 @@ function init(){
 			success: 'Everyone has voted!'
 		}
 	})
-	askDateLabel();
 }
 function newVote(){
 	var vote = {"type":"","title":"","options":[],"deadline":""};
@@ -464,10 +587,10 @@ function CheckVoteDoneBtn(vote){
 	}
 }
 function calendarDate(date){
-	/* days selector */ 
+	/* days selector */
 	var days = $('#day li');
 	var today = $.datepicker.formatDate('yy-mm-dd', new Date());
-	
+
 	/* use to compute previous month, this month and next month */
 	var year = date.getFullYear();
 	var month = date.getMonth();
@@ -503,6 +626,8 @@ function calendarDate(date){
 	month = (+month)+1;
 	if(month==13){month=1;year+=1;}
 	if(month<10)month='0'+month;
+	//console.log("FUCK");
+	//console.log(editdateList);
 	for(var i=1 ; i <= lastDate ; i++){
 		var index = firstDay + i-1;
 		var date_temp = i;
@@ -511,6 +636,9 @@ function calendarDate(date){
 		$(days[index]).attr('id',year + '-' +month + '-' + date_temp);
 		if($.inArray($(days[index]).attr('id'),votedateList) != -1){
 			$(days[index]).addClass('choosedays');
+		}
+		if($.inArray($(days[index]).attr('id'), editdateList) != -1){
+			$(days[index]).addClass('eventDays');
 		}
 		if($(days[index]).attr('id') == today){
 			$(days[index]).addClass('today').append('<p style="color:#D96449;">Today</p>');
@@ -542,9 +670,11 @@ function calendarDate(date){
 			var thisActivity = document.location.search.slice(6);
 			console.log(data);
 			data.activities.forEach(function(value,index){
+				//console.log(value);
+				if(value.activity_id === document.location.search.slice(6))return;
 				//console.log(value,index);
 				var color = getRandomColor();
-				if(thisActivity == value.activity_id)color='purple';
+				//if(thisActivity == value.activity_id)color='purple';
 				var name = value.activity_id;
 				var datelength = value.date.length;
 				console.log('date len ' + datelength);
@@ -557,10 +687,10 @@ function calendarDate(date){
 					if(index2==0 || preFlag==0)
 						$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar">'+name+'</div>');
 					/*else if(nextFlag==false || li_index==6 )
-						$('#'+value2).append('<div style="background-color:'+color+'" class="text-hidden activityOnCalendar">'+'</div>');			
+						$('#'+value2).append('<div style="background-color:'+color+'" class="text-hidden activityOnCalendar">'+'</div>');
 					*/else
-						$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar">'+'</div>');		
-				
+						$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar">'+'</div>');
+
 				})
 			})
 		},
@@ -580,7 +710,6 @@ function getRandomColor() {
     var color = colors[Math.floor(Math.random()*100%colors.length)];
     return color;
 }
-
 
 function searchActivity(val){
 	var regExp = new RegExp(val,'gi');
@@ -620,6 +749,12 @@ function askDateBtn(btn){
 		console.log('reset votedateList to previous!' + pre_votedateList);
 		votedateList = pre_votedateList.splice(0);
 		console.log(votedateList);
+		$(btn).parent().remove();
+		$(document.getElementById('Vote')).removeClass('disabled');
+		$(document.getElementById('calendar')).css('height','300pt');
+		votedateFlag = false;
+		calendarDate(date);
+		return;
 	}
 	else if($(btn).attr('id') == "askDateDone"){
 		console.log('Done!');
@@ -627,12 +762,72 @@ function askDateBtn(btn){
 		console.log('new votedateList is : ' + votedateList);
 		askDateLabel();
 		//pre_votedateList = votedateList;
+		//back-end
+		$.ajax({
+	      url: "set_vote_date",
+	      data: {
+	          activity_id: document.location.search.slice(6),
+			  type: "time",
+			  options: votedateList
+		    },
+	      type: "POST",
+	        dataType: "json",
+	      success: function(data, textStatus, jqXHR) {
+	        console.log(data);
+	        console.log("success set vote date!");
+			$(btn).parent().remove();
+			$(document.getElementById('Vote')).removeClass('disabled');
+			$(document.getElementById('calendar')).css('height','300pt');
+			votedateFlag = false;
+			calendarDate(date);
+	      },
+	        error: function() {
+	        console.log("error!!");
+	      }
+	    });
 	}
-	$(btn).parent().remove();
-	$(document.getElementById('Vote')).removeClass('disabled');
-	$(document.getElementById('calendar')).css('height','300pt');
-	votedateFlag = false;
-	calendarDate(date);
+}
+function updateDateBtn(btn){
+	if($(btn).attr('id') == "editDateCancel"){
+		console.log('cancel!');
+		console.log('reset editdateList to previous!' + pre_editdateList);
+		editdateList = pre_editdateList.splice(0);
+		console.log(editdateList);
+		$(btn).parent().remove();
+		$(document.getElementById('calendar')).css('height','300pt');
+		editdateFlag = false;
+		calendarDate(date);
+		return;
+	}
+	else if($(btn).attr('id') == "editDateDone"){
+		console.log('Done!');
+		editdateList.sort();
+		console.log('new editdateList is : ' + editdateList);
+		editDateLabel();
+
+		//back-end
+		$.ajax({
+	      url: "edit_activity_dates",
+	      data: {
+	          activity_id: document.location.search.slice(6),
+			  type: "time",
+			  dates: editdateList
+		    },
+	      type: "POST",
+	        dataType: "json",
+	      success: function(data, textStatus, jqXHR) {
+	        console.log(data);
+	        console.log("success edit date!");
+			$(btn).parent().remove();
+			$(document.getElementById('calendar')).css('height','300pt');
+			editdateFlag = false;
+			calendarDate(date);
+	      },
+	        error: function() {
+	        console.log("error!!");
+	      }
+	    });
+	}
 }
 function changeByTimetag(){
 	var tag = $(this).text().split('~')[0];
@@ -646,7 +841,17 @@ function askDateLabel(){
 		div.className = "ui label timetag";
 		div.innerHTML = value;
 		div.onclick = changeByTimetag;
-		$('#activityAskDate .labels').append(div);	
+		$('#activityAskDate .labels').append(div);
+	})
+}
+function editDateLabel(){
+	$('#activityDate .labels').empty();
+	editdateList.forEach(function(value,index){
+		var div = document.createElement('div');
+		div.className = "ui label timetag";
+		div.innerHTML = value;
+		div.onclick = changeByTimetag;
+		$('#activityDate .labels').append(div);
 	})
 }
 function removeMember(event){
