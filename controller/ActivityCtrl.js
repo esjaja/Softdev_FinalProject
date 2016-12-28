@@ -415,6 +415,30 @@ var get_activities_month =  (req, res, next) => {
     });
 }
 
+var remove_activity_member = (req, res, next) => {
+    async.waterfall([
+        (callback) => {
+            Activity.update({id: req.body.activity_id},{//here 20161209 1:39
+                $pull: {
+                    user_id: req.body.user_id
+                }
+            },(err) => {
+                if(err) return console.log('Error: '+err);
+                callback(null);
+            });
+        }
+    ],
+    (err, result) => {
+        if(err){
+            console.log('Error: ' + err);
+        }
+        return res.json({
+            status: 200
+        });
+    });
+}
+
+
 module.exports = {
     display_index: display_index,
     display_activity: display_activity,
@@ -423,5 +447,6 @@ module.exports = {
     edit_activity_description: edit_activity_description,
     edit_activity_dates: edit_activity_dates,
     add_activity_member: add_activity_member,
-    get_activities_month: get_activities_month
+    get_activities_month: get_activities_month,
+    remove_activity_member: remove_activity_member
 }
