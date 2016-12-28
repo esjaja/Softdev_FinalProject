@@ -33,7 +33,8 @@ $(document).ready(function(){
 	});
 	$("#monthLabel > i").on('click',function(){
 		if($(this).hasClass('repeat')){
-			calendarDate(new Date());
+			date = new Date();
+			calendarDate(date);
 		}
 		if($(this).hasClass('unlock') || $(this).hasClass('lock')){
 			$(this).toggleClass('unlock').toggleClass('lock');
@@ -47,10 +48,9 @@ $(document).ready(function(){
 
 	$("#homePage .timetag").on('click',changeByTimetag);
 
-
 /******************* Activity controll ******************/
 	//$('#activityTitle').on({
-	$( document.getElementById("activityTitle") ).on({
+	$(document.getElementById("activityTitle") ).on({
 		click : function(){
 			$(this).focus();
 		},

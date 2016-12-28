@@ -29,10 +29,11 @@
                 <textarea id="activityDescription" spellcheck="false">{{description}}</textarea>
 
                 <div>
-                    <h5 class="ui header left floated dividing">Date</h5>
+                    <h5 class="ui header left floated dividing">Date
+                    </h5><i class="ui icon write"></i>
                 </div>
-                <br>
                 <!--div class="ui mini pink button"><i class="edit icon"></i>Edit</div-->
+                <br>
                 <div id="activityDate">
                     <div class="ui purple labels">
                         {{#date}}
