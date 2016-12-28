@@ -19,6 +19,8 @@
     "hjs": "~0.0.6",
     "mongoose": "^4.6.8",
     "node-while-loop": "^1.0.4",
-    "semantic-ui": "^2.2.6"
+    "semantic-ui": "^2.2.6",
+    "request": "^2.79.0",
+    "connect-multiparty": "^2.0.0"
   }
 }

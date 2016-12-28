@@ -121,3 +121,152 @@ function searchActivity(val){
 	});
 	return;
 }
+
+/*music player*/
+//https://www.webcodegeeks.com/html5/html5-audio-player-example/
+function showMusicPlayer(files, PlayerList, TitleList){
+    //console.log(PlayerList);
+    //console.log(TitleList);
+    document.getElementById('MusicList').innerHTML =
+    '<div id="playlist" style="text-align:center;">'+
+        '<p id="music_title"></p>'+
+        '<audio controls autoplay></audio>'+
+        '<button id="back" class="ui green button" style="width:25px;height:35px;font-size:20px;" >'+
+            '<i class="backward icon"></i>'+
+        '</button>'+
+        '<button id="next" class="ui green button" style="width:25px;height:35px;font-size:20px;" >'+
+            '<i class="forward icon"></i>'+
+        '</button>'+
+    '</div>';
+    var current = 0;
+    var playlistPlayer = document.querySelector("#playlist audio");
+    document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    function next() {
+        // Check for last media in the playlist
+       if (current === files.length - 1) {
+            current = 0;
+        } else {
+            current++;
+        }
+        // Change the audio element source
+        playlistPlayer.src = PlayerList[current];
+        document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    }
+    function PressNext() {
+        // Check for last media in the playlist
+       if (current === files.length - 1) {
+            current = 0;
+        } else {
+            current++;
+        }
+        // Change the audio element source
+        playlistPlayer.src = PlayerList[current];
+        document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    }
+    function PressBack() {
+        // Check for last media in the playlist
+       if (current == 0) {
+            current = files.length - 1;
+        } else {
+            current--;
+        }
+        // Change the audio element source
+        playlistPlayer.src = PlayerList[current];
+        document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    }
+    // Check if the player is in the DOM
+    if (playlistPlayer === null) {
+        throw "Playlist Player does not exists ...";
+    } else {
+        // Start the player
+        playlistPlayer.src = PlayerList[current];
+        // Listen for the playback ended event, to play the next media
+        playlistPlayer.addEventListener('ended', next, false)
+        document.getElementById('next').addEventListener('click', function(){
+            PressNext();
+        });
+
+        document.getElementById('back').addEventListener('click', function(){
+            PressBack();
+        });
+
+    }
+}
+
+function updateMusicList(){
+    document.getElementById("upload_button_text").disabled = true;
+    var XHR = new XMLHttpRequest();
+    XHR.onreadystatechange = function() {
+        if (XHR.readyState == 4 && XHR.status == 200){
+            var files = JSON.parse(XHR.responseText);
+            //clear list
+            var PlayerList=[];
+            var TitleList=[];
+            //append music into playlist
+            console.log();
+            var filename, filetitle, data_src="";
+            for(i=0;i<files.length;i++){
+                filename=files[i].filename;
+                data_src="/"+filename;
+                //console.log(data_src);
+                //console.log(data_src.toString());
+                PlayerList.push(data_src.toString());
+                filetitle = filename.split(".mp3")[0];
+                filetitle = filetitle.split(".wmv")[0];
+                TitleList.push(filetitle);
+            }
+            showMusicPlayer(files, PlayerList, TitleList);
+        }
+    }
+    var formData = new FormData();
+    formData.append("case", "2");
+
+    XHR.open('POST', '/index');
+    XHR.send(formData);
+}
+
+function updateMusicList_upload(files){
+    //clear playlist
+    var PlayerList=[];
+    var TitleList=[];
+    //append music into playlist
+    var filename, filetitle, data_src="";
+    for(i=0;i<files.length;i++){
+        filename=files[i].filename;
+        data_src="/"+filename;
+        //console.log(data_src);
+        //console.log(data_src.toString());
+        PlayerList.push(data_src.toString());
+        filetitle = filename.split(".mp3")[0];
+        filetitle = filetitle.split(".wmv")[0];
+        TitleList.push(filetitle);
+    }
+    //console.log(TitleList);
+    showMusicPlayer(files, PlayerList, TitleList);
+}
+
+function uploadMusic() {
+    var XHR = new XMLHttpRequest();
+    XHR.onreadystatechange = function() {
+        if (XHR.readyState == 4 && XHR.status == 200){
+            var responseJson = JSON.parse(XHR.responseText);
+            updateMusicList_upload(responseJson);
+            document.getElementById('upload_button_text').innerHTML="Upload Music";
+        }
+    }
+    document.getElementById('upload_button_text').innerHTML="Loading...";
+    var music_file = document.getElementById("myFile").files[0];
+    var formData = new FormData();
+    formData.append("case", "1");
+    formData.append("file", music_file);
+
+    XHR.open('POST', '/index');
+    XHR.send(formData);
+}
+function uploadButton_enable() {
+    if(document.getElementById('myFile').value === '')
+        document.getElementById("upload_button_text").disabled = true;
+    else{
+        document.getElementById("upload_button_text").disabled = false;
+    }
+}

@@ -1,10 +1,16 @@
 body {
     padding: 5pt;
     text-align: center;
-    font-family: sans-serif, "Heiti TC", "Microsoft JhengHei";
+    font-family: sans-serif, "Microsoft JhengHei","Heiti TC";
     font-size: 16px;
     background-image: linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,0.1)),url("/public/images/wood.jpg");
 }
+
+span{
+    font-family: "Microsoft JhengHei";
+    font-weight: bold;
+}
+
 .float-right {
     float: right;
 }
@@ -21,12 +27,15 @@ body {
     font-weight: bold;
 }
 #activity {
+    position: relative;
+    display: block;
     text-align: left;
     padding: 5pt;
     padding-top: 0;
     background-color: pink;
     height: 473pt;
     width:25%;
+    overflow-y: scroll;
     float: left;
     margin-right: 0;
     border-radius: 5pt;
@@ -76,6 +85,10 @@ body {
 #activityDate{
     margin-top:3pt;
 }
+#votePage{
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 
 /* Vote page in Activity */
 #votePage img:hover{
@@ -121,14 +134,14 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
 }
-#chatsight::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background-color: #F6A2B1;
 }
-#chatsight::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 5px;
     background-color: #F5F5F5;
 }
-#chatsight::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background-color: #73BBAF;
     !border: 1px solid #555555;
 }
@@ -176,15 +189,15 @@ div > .choose:hover{
 
 /* Calendar */
 #calendar {
-    margin-left: 28%;
+    margin-left: 27%;
     margin-right: 30%;
+    margin-top:30pt;
     background-color: white;
     height: 300pt;
-    width: 43%;
-    padding: 10pt;
-    border-radius: 10pt;
+    width: 45%;
+    padding:15pt 5pt 5pt 5pt;
+    border-radius: 5pt;
     !box-shadow: 2pt 2pt 5pt grey;
-    z-index: 2;
 }
 #calendar ul {
     list-style: none;
@@ -254,9 +267,8 @@ div > .choose:hover{
 }
 
 #monthLabel{
-    margin-top: -10pt;
+    margin-top: -41.5pt;
     float: left;
-    z-index: 1;
     overflow: hidden;
     text-align: justify;
 }
@@ -267,22 +279,80 @@ div > .choose:hover{
 #monthLabel > i{
     cursor: pointer;
 }
+.monthButton{
+    background-color: transparent;
+    border:none;
+}
+
+#votedPage button{
+    cursor: default;
+}
+.bottom-radius{
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
 .today{
     color:#000000;
     font-weight: bold;
     background-color: #7AC5DE;
 }
 .activityOnCalendar{
-    position: absolute;
-    color:white;
-    margin-left: -3pt;
-    line-height: 10pt;
-    bottom: 0;
-    width: 100%;
-    height: 12pt;
+    transform: translateY(6pt);
+    display: table-cell;
+    width: 8pt;
+    height: 8pt;
+    border-radius:100%;
     opacity: 0.8;
-    overflow: hidden;
-    animation: fadeIn .3s;
+}
+.tooltip{
+    position: relative;
+}
+.tooltip .tooltiptext{
+    width: 100px;
+    min-width: 100px;
+    max-width: 500px;
+    height: auto;
+    width: auto;
+    display: table-cell;
+    visibility: hidden;
+    background-color: #E7E1E1;
+    color:black;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute !important;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;  
+
+}
+.tooltip .tooltiptext::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #E7E1E1 transparent transparent transparent;
+}
+
+.tooltip.activityOnCalendar:hover .tooltiptext{
+    transform: translateX(-50%);
+    visibility: visible !important;
+}
+.show {
+    margin-bottom: -10pt;
+    transform: translateX(-50%);
+    visibility: visible !important;
+    cursor: default;
+}
+.tooltiptext img:hover{
+    opacity: 0.5;
+}
+.unattend{
+    opacity: 0.3;
 }
 
 .left-border{
@@ -310,46 +380,31 @@ div > .choose:hover{
   transform: translate(1px,1px);
 }
 
-
-
 .popup {
     position: relative;
     display: inline-block;
     cursor: pointer;
 }
-/* The actual popup (appears on top) */
-.popuptext {
-    width: 160px;
-    background-color: #555;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -80px;
+i{
+    cursor: pointer;
+}
+input[type=text] {
+    border:1px solid #CCB7B7;
+    color:black;
+    font-size: 10pt;
+    padding: 6pt;
+    width:70pt;
+    height:23pt;
+    border-radius: 2pt;
+    background-color: transparent;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
 }
 
-/* Popup arrow */
-.popuptext::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #555 transparent transparent transparent;
+input[type=text]:focus {
+    width: 70%;
 }
 
-/* Toggle this class when clicking on the popup container (hide and show the popup) */
-.popup .show {
-    visibility: visible;
-    -webkit-animation: fadeIn 1s;
-    animation: fadeIn 1s
-}
 
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
@@ -361,10 +416,41 @@ div > .choose:hover{
     from {opacity: 0;}
     to {opacity:1 ;}
 }
+@keyframes warning{
+    0%{
+        color: black;
+    }
+    100%{
+        color: red;
+    }
+}
 
+.warn{
+    animation: warning 1.3s 2 alternate;
+}
 
 /*dropdown style setting*/
 .ui.multiple.search.dropdown>.text{ margin: .45240952em 0 .45240952em 1.7em;}
 .ui.multiple.search.dropdown>input.search{margin: .45240952em 0 .45240952em 0;}
 .ui.selection.dropdown{ min-height: 2em; }
 .ui.multiple.dropdown{ padding: 0 2.1em 0 .35714286em; }
+
+/*music player*/
+#player {
+    margin-left: 28%;
+    margin-right: 30%;
+    background-color: rgb(230,255,200);
+    width: 43%;
+    padding: 10pt;
+    border-radius: 10pt;
+}
+button.ui.green.button i.backward.icon{
+    position: relative;
+    top:-10px;
+    right: 10px;
+}
+button.ui.green.button i.forward.icon{
+    position: relative;
+    top:-10px;
+    right: 5px;
+}

@@ -14,19 +14,24 @@ $(document).ready( function(){
 	init();
 	$('#chatsight').scrollTop(9999999);
 
-/****************** Calendar control ********************/
-	/*
+	/****************** Calendar control ********************/
 	//Change Month
 	$('#calendar .monthButton').click(function(){
 		if(this.id == 'right')date.setMonth(date.getMonth()+1);
 		else if(this.id == 'left')date.setMonth(date.getMonth()-1);
+		else if(this.id == 'today')date = new Date();
 		calendarDate(date);
 	})
-	*/
+	// change month by click on month labels
+	$("#monthLabel > a").on('click',function(){
+		date.setMonth($(this).text()-1);
+		calendarDate(date);
+	})
+	$("#activityDate .timetag").on('click',changeByTimetag);
 
 	// change calendar month by mouse scroll
 	//$('#calendar').on({
-	$(document.getElementById("calendar") ).on({
+	/*$(document.getElementById("calendar") ).on({
 		mousewheel : function(){
 			if($(document.getElementById("lock")).hasClass('unlock')){
 				if(event.deltaY>0)date.setMonth(date.getMonth()+1);
@@ -34,8 +39,9 @@ $(document).ready( function(){
 				calendarDate(date);
 			}
 		}
-	});
-	$("#monthLabel > i").on('click',function(){
+	});*/
+	// lock icon & today icon 
+/*	$("#dateinfo > i").on('click',function(){
 		if($(this).hasClass('repeat')){
 			date = new Date();
 			calendarDate(date);
@@ -43,25 +49,14 @@ $(document).ready( function(){
 		if($(this).hasClass('unlock') || $(this).hasClass('lock')){
 			$(this).toggleClass('unlock').toggleClass('lock');
 		}
-	})
-	// change month by click on month labels
-	$("#monthLabel > a").on('click',function(){
-		date.setMonth($(this).text()-1);
-		calendarDate(date);
-	})
 
-	$("#homePage .timetag").on('click',changeByTimetag);
 
-/******************* Activity controll ******************/
+	})*/
+  /******************* Activity controll ******************/
 	//$('#activityTitle').on({
 	$(document.getElementById("activityTitle") ).on({
-		click : function(){
-			$(this).focus();
-		},
-		keypress : function(e){
-			if(e.keyCode==13)
-				e.preventDefault();
-		}
+		click : function(){$(this).focus();},
+		keypress : function(e){if(e.keyCode==13)e.preventDefault();}
 	});
 
 	//$('#activityTitle').blur(function(){
@@ -113,15 +108,15 @@ $(document).ready( function(){
 		});
 	});
 
-/*****************  Menu in activity sight  *************/
+	/*****************  Menu in activity sight  *************/
 	$('#menu > a').click(function(){
 		$(this).addClass('active').siblings().removeClass('active');
 		var pageid = '#'+$(this).attr("id") + 'Page';
 		$(pageid).show().siblings().hide();
 	})
 
-/****************	Votes Display Page ******************/
-	$("#votePage .ui.accordion").on('click','.basic.button',function(e){
+	/****************	Votes Display Page ******************/
+	$("#votePage .ui.accordion").on('click','.button',function(e){
 		// use entry to get control progress bar and others
 		var entry = $(this).parents('.voteEntry');
 		var progress = entry.find(".progress");
@@ -200,7 +195,15 @@ $(document).ready( function(){
 		});
 	})
 
-/*********************** Rise Vote **********************/
+	$("#votePage input").on('keyup',function(e){
+		if(e.keyCode==13 && $.trim(this.value).length){
+			console.log($.trim(this.value));
+			$(this).val('');
+		}
+	})
+
+  /*********************** Rise Vote **********************/
+
 	//modal registration
 	$('.coupled.modal')
 	  .modal({
@@ -208,17 +211,18 @@ $(document).ready( function(){
 	  });
 	// choose option : 'others' will show second modal
 	$('.second.modal')
-	  .modal('attach events', '.first.modal .others');
+	  .modal(/*'attach events', '.first.modal .others'*/);
 
 	// arise vote button
 
 	//$('#Vote').click(function(){
 	$(document.getElementById('Vote')).click(function(){
 		voteObj = newVote();
+		voteObj['type']='OTHERS';
 		CheckVoteDoneBtn(voteObj);
-		$('.first.modal').modal('show');
+		$('.second.modal').modal('show');
 	});
-/**************** Vote OTHER type **************/
+	/**************** Vote OTHER type **************/
 	// OTHER
 	//$('#askOther').click(function(){
 	$(document.getElementById('askOther')).click(function(){
@@ -227,34 +231,31 @@ $(document).ready( function(){
 	})
 	//  Title
 	$('.second.modal input.title').on('keyup',function(e){
-		if(e.keyCode ==13){ // enter
-			voteObj['title'] = $(this).val();
+		if(e.keyCode ==13 && $.trim($(this).val()).length){ // enter
+			$(this).val($.trim($(this).val()));
+			voteObj['title'] = $.trim($(this).val());
 			var index = $('.inputs').index(this) + 1;
          	$('.inputs').eq(index).focus(); // to option input
 		}
 	})
 	$('.second.modal input.title').blur(function(){
-		voteObj['title'] = $(this).val();
-		//console.log('type[OTHERS]title: ' + $(this).val());
+		if($.trim($(this).val()).length)
+			voteObj['title'] = $.trim($(this).val());
 		CheckVoteDoneBtn(voteObj);
 	})
 
 	//  Options
 	$('.second.modal input.option').on('keyup',function(e){
-		if(e.keyCode == 13){
-			if($(this).val())
-			{
-				$('.field.options').append('<a class="ui large label opt">'
-						+ $(this).val() +
-						'<i class="delete icon"></i></a>');
-				voteObj['options'].push($(this).val());
-				console.log("type[OTHERS] options:" + $(this).val());
-				$(this).val('');
-				CheckVoteDoneBtn(voteObj);
-			}
+		if(e.keyCode == 13 && $.trim($(this).val()).length && $.inArray($.trim($(this).val()),voteObj['options'])==-1){
+			$('.field.options').append('<a class="ui large label opt">'
+					+ $.trim($(this).val()) +
+					'<i class="delete icon"></i></a>');
+			voteObj['options'].push($.trim($(this).val()));
+			console.log("type[OTHERS] options:" + $.trim($(this).val()));
+			$(this).val('');
+			CheckVoteDoneBtn(voteObj);
 		}
 	})
-
 	//  Remove Options
 	$('.second.modal .field.options').on('click','.delete.icon',function(){
 		var itema = $(this).parent('a');
@@ -292,7 +293,7 @@ $(document).ready( function(){
 	})
 
 
-/**************[NOT DONE] Days Free/Busy of Everyone ****************/
+	/**************[NOT DONE] Days Free/Busy of Everyone ****************/
 	/*$('#calendar li.days').not('.disabledDays').popup({
 	  	position: 'top center',
 		on    : 'click',
@@ -300,7 +301,8 @@ $(document).ready( function(){
 	});*/
 		// DATE
 	//$('#askDate').click(function(){
-	$(document.getElementById('askDate')).click(function(){
+
+	$(document.getElementById('VoteDate')).click(function(){
 		console.log("type[DATE]");
 		$(document.getElementById('Vote')).addClass('disabled');
 		pre_votedateList = votedateList.slice(0);
@@ -314,7 +316,6 @@ $(document).ready( function(){
 				'<button class="ui blue button" id="askDateDone" style="float:right" onclick="askDateBtn($(this))">Done</button>'+
 				'<button class="ui button" id="askDateCancel" style="float:right" onclick="askDateBtn($(this))">Cancel</button>'+
 				'</div>');
-			$("#calendar li").popup("false");
 		}
 		votedateFlag = true;
 	})
@@ -351,8 +352,35 @@ $(document).ready( function(){
 					$(this).removeClass('choosedays');
 				}
 			}
-			else if($(this).has('choosedays')){
-				console.log('show member list!');
+			else if($(this).hasClass('choosedays')){
+				if($(this).find('img').length==0){
+					/* do ajax here , add self img with onclick="imgClick(this) if self not attend , add unattend class. add other that are attend */
+
+					$.ajax({
+						url: "get_vote_one_day",
+						data: {
+							activity_id: document.location.search.slice(6),
+							date: $(this).attr('id')
+						},
+						type: "POST",
+						dataType: "json",
+						success: function(data, textStatus, jqXHR) {
+							console.log(data);
+							$(this).append('<span class="tooltiptext"></span>');
+							var sp = $(this).children('span');
+							var me = $('#Add').attr('name');
+							data.date.attend.forEach(function(user_id) {
+								if(me !== user_id) sp.append('<img class="ui avatar circular image" src="http://graph.facebook.com/'+user_id+'/picture?type=square">');
+							});
+							if(data.agree === true) sp.append('<img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/'+me+'/picture?type=square">');
+							else sp.append('<img onclick="imgClick(this)" class="ui avatar circular image unattend" src="http://graph.facebook.com/'+me+'/picture?type=square">');
+						},
+						error: function() {
+							console.log("error!!");
+						}
+					});
+				}
+				$(this).children('.tooltiptext').toggleClass('show');
 			}
 			else ;
 			console.log(editdateFlag);
@@ -372,8 +400,16 @@ $(document).ready( function(){
 				}
 			}
 		}
+	});
+
+	$(document).mouseup(function(e){
+		var tooltiptext = $('#calendar .tooltiptext.show');
+		console.log($(e.target));
+		console.log(tooltiptext);
+		var imgs = $('#calendar span')
+		if(!tooltiptext.is(e.target))tooltiptext.removeClass('show');
 	})
-/************************ ADD MEMBER  *********************/
+	/************************ ADD MEMBER  *********************/
 	$(document.getElementById('Add')).click(function(){
 		var member_list = [];
 		$('div.item.active').each(function(index,data){
@@ -412,7 +448,6 @@ $(document).ready( function(){
 				$(this).removeClass('selected');
 	});
 
-
 	// vote column
 	/*$('#voteBoard .item').click(function(){
 		$('.item').removeClass('active');
@@ -420,8 +455,8 @@ $(document).ready( function(){
 		$('#voteArea').text('This area is gonna to have other usage now');
 	})*/
 
-/************************* Chatboard **************************/
-	$("#chatMsg").on('keypress', function(e){
+	/************************* Chatboard **************************/
+	$("#chatMsg").keypress(function(e){
 		code = (e.keyCode ? e.keyCode : e.which);
 		if (code == 13){
 			var text = $(this).val();
@@ -460,7 +495,6 @@ $(document).ready( function(){
 			});
 		}
 	});
-
 	$(".addBox").keypress(function(e){
 		code = (e.keyCode ? e.keyCode : e.which);
 		var entry = $(this).parents('.voteEntry').attr('id');
@@ -499,7 +533,8 @@ $(document).ready( function(){
 			});
 		}
 	});
-
+});
+//end of $(document).ready
 
 	$("#votePage .ui.accordion").on('click','.button.red', function(){
 		var entry = $(this).parents('.voteEntry');
@@ -569,6 +604,7 @@ function init(){
 		}
 	})
 }
+
 function newVote(){
 	var vote = {"type":"","title":"","options":[],"deadline":""};
 	$('.second.modal input.title').val('');
@@ -577,6 +613,7 @@ function newVote(){
 	$( "#datepicker" ).datepicker({dateFormat:"yy-mm-dd"}).val('');
 	return vote;
 }
+
 function CheckVoteDoneBtn(vote){
 	if(vote.title && vote.options.length && vote.deadline )
 	{
@@ -599,9 +636,8 @@ function calendarDate(date){
 	var monthlabels = $("#monthLabel a");
 	var labelColor = monthlabels.eq(month).attr('class').split(' ')[1];
 	monthlabels.removeClass('big').eq(month).addClass('big');
-	$(document.getElementById('mon')).removeClass().addClass('ui label ' + labelColor).text(months[month]);
+	$(document.getElementById('mon')).removeClass().addClass('ui label float-left ' + labelColor).text(months[month]);
 	$(document.getElementById('year')).text(year);
-
 
 	var month_begin = new Date(year,month);
 	var month_end = new Date(year,month+1,0);
@@ -635,7 +671,7 @@ function calendarDate(date){
 		if(date_temp<10)date_temp='0'+date_temp;
 		$(days[index]).attr('id',year + '-' +month + '-' + date_temp);
 		if($.inArray($(days[index]).attr('id'),votedateList) != -1){
-			$(days[index]).addClass('choosedays');
+			$(days[index]).addClass('choosedays tooltip').append('<i class="ui icon idea warn"></i>');
 		}
 		if($.inArray($(days[index]).attr('id'), editdateList) != -1){
 			$(days[index]).addClass('eventDays');
@@ -679,19 +715,7 @@ function calendarDate(date){
 				var datelength = value.date.length;
 				console.log('date len ' + datelength);
 				value.date.forEach(function(value2,index2){
-					var preFlag = $('#'+value2).prev().children('div').length;
-					var nextFlag = ($('#'+value2).next().attr('id') == value.date[index2+1]);
-					var li_index = $('#'+value2).parent().children().index($('#'+value2));
-					//console.log(preFlag);
-					console.log(li_index);
-					if(index2==0 || preFlag==0)
-						$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar">'+name+'</div>');
-					/*else if(nextFlag==false || li_index==6 )
-						$('#'+value2).append('<div style="background-color:'+color+'" class="text-hidden activityOnCalendar">'+'</div>');
-					*/else
-						$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar">'+'</div>');
-
-				})
+  				$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar tooltip">'+'<span class="tooltiptext">'+name+'</span>'+'</div>');})
 			})
 		},
 		error: function() {
@@ -855,7 +879,7 @@ function editDateLabel(){
 	})
 }
 function removeMember(event){
-    console.log(event.parentNode.id);
+    //console.log(event.parentNode.id);
     //remove and enable add
     $("#"+event.parentNode.id).remove();
     //console.log();
@@ -870,11 +894,200 @@ function removeMember(event){
       type: "POST",
         dataType: "json",
       success: function(data, textStatus, jqXHR) {
+      	//check whether successful
         console.log(data);
-        console.log("Remove member successfully!");
+        //back to index when removing self
+        if(event.parentNode.id == $('#Add').attr('name'))
+        	window.location.assign("./");
       },
         error: function() {
         console.log("error!!");
       }
     });
+}
+
+//https://www.webcodegeeks.com/html5/html5-audio-player-example/
+function showMusicPlayer(files, PlayerList, TitleList){
+    //console.log(PlayerList);
+    //console.log(TitleList);
+    document.getElementById('MusicList').innerHTML =
+    '<div id="playlist" style="text-align:center;">'+
+        '<p id="music_title"></p>'+
+        '<audio controls autoplay></audio>'+
+        '<button id="back" class="ui green button" style="width:25px;height:35px;font-size:20px;" >'+
+            '<i class="backward icon"></i>'+
+        '</button>'+
+        '<button id="next" class="ui green button" style="width:25px;height:35px;font-size:20px;" >'+
+            '<i class="forward icon"></i>'+
+        '</button>'+
+    '</div>';
+    var current = 0;
+    var playlistPlayer = document.querySelector("#playlist audio");
+    document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    function next() {
+        // Check for last media in the playlist
+       if (current === files.length - 1) {
+            current = 0;
+        } else {
+            current++;
+        }
+        // Change the audio element source
+        playlistPlayer.src = PlayerList[current];
+        document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    }
+    function PressNext() {
+        // Check for last media in the playlist
+       if (current === files.length - 1) {
+            current = 0;
+        } else {
+            current++;
+        }
+        // Change the audio element source
+        playlistPlayer.src = PlayerList[current];
+        document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    }
+    function PressBack() {
+        // Check for last media in the playlist
+       if (current == 0) {
+            current = files.length - 1;
+        } else {
+            current--;
+        }
+        // Change the audio element source
+        playlistPlayer.src = PlayerList[current];
+        document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    }
+    // Check if the player is in the DOM
+    if (playlistPlayer === null) {
+        throw "Playlist Player does not exists ...";
+    } else {
+        // Start the player
+        playlistPlayer.src = PlayerList[current];
+        // Listen for the playback ended event, to play the next media
+        playlistPlayer.addEventListener('ended', next, false)
+        document.getElementById('next').addEventListener('click', function(){
+            PressNext();
+        });
+
+        document.getElementById('back').addEventListener('click', function(){
+            PressBack();
+        });
+
+    }
+}
+
+function updateMusicList(){
+    document.getElementById("upload_button_text").disabled = true;
+    var XHR = new XMLHttpRequest();
+    XHR.onreadystatechange = function() {
+        if (XHR.readyState == 4 && XHR.status == 200){
+            var files = JSON.parse(XHR.responseText);
+            //clear list
+            var PlayerList=[];
+            var TitleList=[];
+            //append music into playlist
+            console.log();
+            var filename, filetitle, data_src="";
+            for(i=0;i<files.length;i++){
+                filename=files[i].filename;
+                data_src="/"+filename;
+                //console.log(data_src);
+                // console.log(data_src.toString());
+                PlayerList.push(data_src.toString());
+                filetitle = filename.split(".mp3")[0];
+                filetitle = filetitle.split(".wmv")[0];
+                TitleList.push(filetitle);
+            }
+            showMusicPlayer(files, PlayerList, TitleList);
+        }
+    }
+    var formData = new FormData();
+    formData.append("case", "2");
+
+    XHR.open('POST', '/activity');
+    XHR.send(formData);
+}
+
+function updateMusicList_upload(files){
+    //clear playlist
+    var PlayerList=[];
+    var TitleList=[];
+    //append music into playlist
+    var filename, filetitle, data_src="";
+    for(i=0;i<files.length;i++){
+        filename=files[i].filename;
+        data_src="/"+filename;
+        //console.log(data_src);
+        //console.log(data_src.toString());
+        PlayerList.push(data_src.toString());
+        filetitle = filename.split(".mp3")[0];
+        filetitle = filetitle.split(".wmv")[0];
+        TitleList.push(filetitle);
+    }
+    //console.log(TitleList);
+    showMusicPlayer(files, PlayerList, TitleList);
+}
+
+function uploadMusic() {
+    var XHR = new XMLHttpRequest();
+    XHR.onreadystatechange = function() {
+        if (XHR.readyState == 4 && XHR.status == 200){
+            var responseJson = JSON.parse(XHR.responseText);
+            updateMusicList_upload(responseJson);
+            document.getElementById('upload_button_text').innerHTML="Upload Music";
+        }
+    }
+    document.getElementById('upload_button_text').innerHTML="Loading...";
+    var music_file = document.getElementById("myFile").files[0];
+    var formData = new FormData();
+    formData.append("case", "1");
+    formData.append("file", music_file);
+
+    XHR.open('POST', '/activity');
+    XHR.send(formData);
+}
+function uploadButton_enable() {
+    if(document.getElementById('myFile').value === '')
+        document.getElementById("upload_button_text").disabled = true;
+    else{
+        document.getElementById("upload_button_text").disabled = false;
+    }
+}
+
+function imgClick(img){
+	var vote_id = 'time_' + document.location.search.slice(6);
+	var date_id = $(img).parents('li').attr('id'); //here date is an option
+	/* member not attend - class unatend */ 
+	$(img).toggleClass('unattend');
+	var action = ($(img).hasClass('unattend'))?'attend':'unattend';
+	console.log(vote_id);
+	console.log(date_id);
+	console.log(action);
+	console.log((action == 'unattend')? 'false': 'true');
+	$.ajax({
+		url: "update_vote",
+		data: {
+			activity_id: document.location.search.slice(6),
+			vote_id: 'time_' + document.location.search.slice(6),
+			option_name: $(img).parents('li').attr('id'),
+			attend: (action == 'unattend')? 'false': 'true'
+		},
+		type: "POST",
+		dataType: "json",
+		success: function(data, textStatus, jqXHR) {
+			console.log(data);
+			console.log("go or not go successfully");
+			//add the chat message into chat board??
+		},
+		error: function() {
+			console.log("error!!");
+		}
+	});
+
+	/* TODO: update self attend */
+	if($(img).hasClass('unattend')){
+		console.log('沒空啦');
+	}else{
+		console.log('可能是有空吧');
+	}
 }
