@@ -206,6 +206,7 @@ var update_vote = (req, res, next) => {
                 if(vote === null){
                     console.log('No Votes');
                 }
+                console.log(req.body);
                 let op = vote.option.filter((option) => {
                     return option.name === req.body.option_name;
                 });
