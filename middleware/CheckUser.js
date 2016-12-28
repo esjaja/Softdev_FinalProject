@@ -12,7 +12,7 @@ var check_login = (req, res, next) => {
 					      {$set:{fb_token: JSON.parse(response.body).access_token}},
 					      (err) => {
 					          if(err) return console.log('Error: '+err);
-					          callback(null);
+					          //else console.log('refresh the token successfully')
 					      }
 					    );
 		        }else{
