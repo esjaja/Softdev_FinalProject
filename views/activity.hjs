@@ -20,7 +20,7 @@
           <a id="vote" class="item">Vote</a>
           <a id="voted" class="item">Voted</a>
         </div>
-        
+
         <div id="Pages">
             <!-- Activity information -->
             <div id="homePage">
@@ -45,43 +45,77 @@
                 <div class="ui accordion">
                 <!-- TODO: List every vote from here -->
                                     <!-- vote ID -->
-                 <div class="voteEntry" id="">
-                    <div class="title"><i class="dropdown icon"></i>WHERE TO GO <!-- vote TITLE -->
-                        <div class="ui tiny progress" data-value="2" data-total="4">
-                        <!-- data-value: number people that has voted, data-total: total number of this activity -->
-                          <div class="bar"></div>
-                          <div class="label"></div>
+                {{#voting}}
+                    <div class="voteEntry" id={{id}}>
+                        <div class="title"><i class="dropdown icon"></i>{{title}} <!-- vote TITLE -->
+                            <div class="ui tiny progress" data-value={{count}} data-total={{total}}>
+                            <!-- data-value: number people that has voted, data-total: total number of this activity -->
+                              <div class="bar"></div>
+                              <div class="label"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="content">
-                        <!-- every option (each div each option)-->
-                        <div>
-                            <!-- need ID of self no matter had choosen this option or not -->
-                            <!-- Choose: btn pass 'green' in class -->
-                            <!--         img pass 'inline' in style display -->
-                            <!-- Not Choose : img pass 'none' -->
-                            <button class="ui tiny basic button" style="margin:7pt 0 3pt 0;">
-                            TAIPEI <!-- vote OPTION -->
-                            </button>
-                            <img class="ui avatar image me" src="http://graph.facebook.com/100000362912714/picture?type=square" style="margin-right:-1pt;display:none;">
+                        <div class="content">
+                            <!-- every option (each div each option)-->
+                            {{#option}}
+                                <div>
+                                    <!-- need ID of self no matter had choosen this option or not -->
+                                    <!-- Choose: btn pass 'green' in class -->
+                                    <!--         img pass 'inline' in style display -->
+                                    <!-- Not Choose : img pass 'none' -->
+                                    {{#agree}}
+                                        <button class="ui tiny basic button green" style="margin:7pt 0 3pt 0;" value={{id}}+{{name}}>{{name}}<!-- vote OPTION --></button>
+                                        <img class="ui avatar image me" src="http://graph.facebook.com/{{me_id}}/picture?type=square" style="margin-right:-1pt;display:inline-block;">
+                                    {{/agree}}
+                                    {{^agree}}
+                                        <button class="ui tiny basic button" style="margin:7pt 0 3pt 0;" value={{id}}+{{name}}>{{name}}<!-- vote OPTION --></button>
+                                        <img class="ui avatar image me" src="http://graph.facebook.com/{{me_id}}/picture?type=square" style="margin-right:-1pt;display:none;">
+                                    {{/agree}}
 
-                            <!-- pass other users' id that have voted -->
-                            {{#user_id}}
-                            <img class="ui avatar image" src="http://graph.facebook.com/{{.}}/picture?type=square" style="margin-right:-1pt;">
-                            {{/user_id}}
+                                    <!-- pass other users' id that have voted -->
+                                    {{#attends}}
+                                        <img class="ui avatar image" src="http://graph.facebook.com/{{.}}/picture?type=square" style="margin-right:-1pt;">
+                                    {{/attends}}
+                                </div>
+                            {{/option}}
+                            <!-- every option end -->
                         </div>
-                        <!-- every option end -->
                     </div>
-                </div>
+                {{/voting}}
                 <!-- end of whole vote -->
               </div>
             </div>
             <!-- END OF VOTE PAGE -->
-            <div id="votedPage" style="display: none">voted</div>
+            <div id="votedPage" style="display: none">
+                {{#voted}}
+                    <div class="voteEntry" id={{id}}>
+                        <div class="title"><i class="dropdown icon"></i>{{title}} <!-- vote TITLE -->
+                            <div class="ui tiny progress" data-value={{count}} data-total={{total}}>
+                            <!-- data-value: number people that has voted, data-total: total number of this activity -->
+                              <div class="bar"></div>
+                              <div class="label"></div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <!-- every option (each div each option)-->
+                            {{#option}}
+                                <div>
+                                    <button class="ui tiny basic button active" style="margin:7pt 0 3pt 0;" value={{id}}+{{name}}>{{name}}<!-- vote OPTION --></button>
+                                    <!-- pass other users' id that have voted -->
+                                    {{#attends}}
+                                        <img class="ui avatar image" src="http://graph.facebook.com/{{.}}/picture?type=square" style="margin-right:-1pt;">
+                                    {{/attends}}
+                                </div>
+                            {{/option}}
+                            <!-- every option end -->
+                        </div>
+                    </div>
+                {{/voted}}
+
+            </div>
         </div>
     </div>
     <!-- Activity -->
- 
+
     <!-- Control bar -->
     <div id="controller">
         <div class="float-left">

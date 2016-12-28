@@ -10,7 +10,7 @@ var Vote = new Schema({
     option: [
         {
             name: String,
-            attend: [String]
+            attend: String
         }
     ]
 });

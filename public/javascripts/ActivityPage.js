@@ -6,6 +6,7 @@ var dropdownFlag = true;
 var votedateFlag =false;
 $(document).ready(function(){
 	init();
+	$('#chatsight').scrollTop(9999999);
 
 /****************** Calendar control *****************/
 	//Change Month
@@ -98,13 +99,14 @@ $(document).ready(function(){
 		// use entry to get control progress bar and others
 		var entry = $(this).parents('.voteEntry');
 		var progress = entry.find(".progress");
-		// 'preState' and 'myState' are used to check whether 
+		// 'preState' and 'myState' are used to check whether
 		// this user has vote any option in this vote.
 		var preState = entry.find(".green");
 		// change button & self img display
 		$(this).toggleClass("green");
 		$(this).siblings(".me").toggle('fast');
 		var myState = entry.find(".green");
+
 		if(myState.length==0){
 			progress.progress('decrement');
 		}else if(myState.length==1 && preState.length==0){
@@ -116,6 +118,25 @@ $(document).ready(function(){
 		var action = ($(this).hasClass('green'))?'select':'unselect';
 		console.log("VOTE ID : " + voteId);
 		console.log("Option : " + option + " " + action);
+		$.ajax({
+			url: "update_vote",
+			data: {
+				activity_id: document.location.search.slice(6),
+				vote_id: voteId,
+				option_name: option,
+				attend: (action == 'unselect')? 'false': 'true'
+			},
+			type: "POST",
+			dataType: "json",
+			success: function(data, textStatus, jqXHR) {
+				console.log(data);
+				console.log("success to toggle the vote");
+				//add the chat message into chat board??
+			},
+			error: function() {
+				console.log("error!!");
+			}
+		});
 	})
 
 
@@ -225,7 +246,7 @@ $(document).ready(function(){
 		});
 	})
 
-	
+
 /**************[NOT DONE] Days Free/Busy of Everyone ****************/
 	$('#calendar li.days').not('.disabledDays').popup({
 	  	position: 'top center',
@@ -316,6 +337,7 @@ $(document).ready(function(){
 	                  '</div>'+
 	                  '<div class="ui divider" style="margin: 0pt"></div>'+
 	                '</div>');
+					$('#chatsight').scrollTop(9999999);
 				},
 				error: function() {
 					console.log("error!!");
