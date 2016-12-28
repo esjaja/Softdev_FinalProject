@@ -97,26 +97,48 @@ var display_activity = (req, res, next) => {
                     let join = 0;
                     let member = [];
                     for(let j = 0; j < votes[i].option.length; j++){
-                        member.concat(votes[i].option[j].attend);
-                        if(votes[i].option[j].attend.indexOf(req.session.user_id) > 0) votes[i].option[j].agree = true;
+                        if(votes[i].option[j].attend.indexOf(req.session.user_id) >= 0) votes[i].option[j].agree = true;
                         else votes[i].option[j].agree = false;
-                    }
-                    member = member.filter((item, pos) => {
-                        return member.indexOf(item) == pos;
-                    });
-                    votes[i].count = member.length;
-                }
 
+                        if(votes[i].option[j].attend.length > 0) {
+                            let m = votes[i].option[j].attend.split('/');
+                            m.forEach((mem) => {
+                                if(member.indexOf(mem) < 0 && mem != '') member.push(mem);
+                            });
+                        }
+                    }
+
+                    votes[i]['count'] = member.length;
+                }
                 let dt = new Date();
                 //seperate into voting and voted
                 let voting = votes.filter((vote) => {
                     let deadline = new Date(vote.deadline);
                     return deadline.getTime() - dt.getTime() > 0;
                 });
+                for(let i = voting.length - 1; i >= 0; i--) {
+                    for(let j = voting[i].option.length - 1; j >= 0; j--){
+                        var k = voting[i].option[j].attend.indexOf(req.session.user_id);
+                        if(k !== -1) {
+                           voting[i].option[j].attend = voting[i].option[j].attend.replace(req.session.user_id+'/', '');
+                        }
+                        voting[i].option[j].attends = voting[i].option[j].attend.split('/').filter((user) => {
+                            return user !== '';
+                        });
+                    }
+                }
                 let voted = votes.filter((vote) => {
                     let deadline = new Date(vote.deadline);
                     return deadline.getTime() - dt.getTime() <= 0;
                 });
+                for(let i = voted.length - 1; i >= 0; i--) {
+                    for(let j = voted[i].option.length - 1; j >= 0; j--){
+                        voted[i].option[j].attends = voted[i].option[j].attend.split('/').filter((user) => {
+                            return user !== '';
+                        });
+                    }
+                }
+                //console.log(voted);
                 callback(null, activity, date, voting, voted);
             });
         },
@@ -142,6 +164,8 @@ var display_activity = (req, res, next) => {
             });
         }
     ], (err, activity, date, voting, voted, messages) => {
+        //console.log(activity.total);
+        //console.log(voting);
         return res.render('activity', {
             uid: req.session.user_id,
             token: req.session.token,
@@ -152,7 +176,8 @@ var display_activity = (req, res, next) => {
             total: activity.total,
             voting: voting,
             voted: voted,
-            messages: messages
+            messages: messages,
+            me_id: req.session.user_id
         });
     });
 }
@@ -361,7 +386,10 @@ var get_activities_month =  (req, res, next) => {
                         let m = parseInt(req.body.month) + 1;
                         if(parseInt(str.slice(5,7)) === m){
                             if(typeof activities_new[act.id] === 'undefined' || activities_new[act.id] === null){
-                                check.push(act.id);
+                                check.push({
+                                    id: act.id,
+                                    title: act.title
+                                });
                                 activities_new[act.id] = [str];
                             }
                             else activities_new[act.id].push(str);
@@ -371,9 +399,11 @@ var get_activities_month =  (req, res, next) => {
                 let result = [];
                 for(let act of check){
                     result.push({
-                        activity_id: act,
-                        date: activities_new[act]
+                        activity_id: act.id,
+                        title: act.title,
+                        date: activities_new[act.id]
                     });
+                    //console.log(result);
                 }
                 callback(null, result);
             });

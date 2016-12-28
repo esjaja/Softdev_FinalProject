@@ -35,7 +35,7 @@ var create_vote = (req, res, next) => {
             for(let opt of req.body['options[]']){
                 option.push({
                     name: opt,
-                    attend: []
+                    attend: ""
                 });
             }
             let md5 = crypto.createHash('md5');
@@ -108,7 +108,7 @@ var add_options = (req, res, next) => {
             let op = options.map((option) => {
                 return {
                     name: option,
-                    attend: []
+                    attend: ""
                 };
             });
             Vote.update({id:req.body.vote_id}, {
@@ -131,11 +131,12 @@ var add_options = (req, res, next) => {
         });
     });
 }
-var remove_options = (req, res, next) => {
+var remove_option = (req, res, next) => {
     async.waterfall([
         (callback) => {
             //check vote_id exists and the options exists
-            let options = req.body.options;
+            let option = req.body.option_name;
+            console.log(req.body);
             Vote.findOne({id: req.body.vote_id}, (err, vote) => {
                 if(err){
                     console.log('Error: ' + err);
@@ -143,21 +144,25 @@ var remove_options = (req, res, next) => {
                 if(vote === null){
                     console.log('No Votes');
                 }
-                for(let option of vote.option){
-                    let idx = options.indexOf(option.name);
+                /*for(let option of vote.option){
+                    let idx = option.indexOf(option.name);
                     if(idx === -1){
                         //ignore un-exist options
                         options.slice(idx, 1);
                     }
-                }
-                callback(null, options);
+                }*/
+                /*if(vote.option.indexOf(req.body.option) === -1) return res.json({
+                    status: 100
+                });*/
+                let options = req.body.option;
+                callback(null);
             });
         },
-        (options, callback) => {
+        (callback) => {
             //update
-            Vote.update({id:req.body.vote_id}, {
+            Vote.update({id: req.body.vote_id}, {
                 $pull: {
-                    option: { name: { $in: options } }
+                    option: { name: req.body.option_name}
                 }
             }, (err) => {
                 if(err){
@@ -206,27 +211,23 @@ var update_vote = (req, res, next) => {
                 });
                 if(op.length === 0){
                     console.log('No Options');
+                    return res.json({status: 100});
                 }
+                //console.log(op);
+                console.log(req.body.attend);
                 let idx = op[0].attend.indexOf(req.session.user_id);
-                if(idx !== -1 && req.body.attend === true) return res.json({status: 100});
-                if(idx === -1 && req.body.attend === false) return res.json({status: 100});
-                callback(null, op);
+                if(idx !== -1 && req.body.attend === "true") return res.json({status: 100});
+                if(idx === -1 && req.body.attend === "false") return res.json({status: 100});
+                if(req.body.attend === "true") op[0].attend += req.session.user_id + '/';
+                if(req.body.attend === "false") op[0].attend = op[0].attend.replace(req.session.user_id+'/', '');
+                callback(null, op[0]);
             });
         },
         (option, callback) => {
-            if(req.body.attend === true) Vote.update({"id":req.body.vote_id, "option.name": req.body.option_name}, {
-                $push: {
-                    "option.$.attend": req.session.user_id
-                }
-            }, (err) => {
-                if(err){
-                    console.log('Error: ' + err);
-                }
-                callback(null);
-            });
-            else Vote.update({id:req.body.vote_id}, {
-                $pull: {
-                    "option.$.attend": req.session.user_id
+            //console.log(option.attend);
+            Vote.update({"id":req.body.vote_id, "option": { $elemMatch: { "name": req.body.option_name}}}, {
+                $set: {
+                    "option.$.attend": option.attend
                 }
             }, (err) => {
                 if(err){
@@ -262,7 +263,7 @@ var update_vote = (req, res, next) => {
 module.exports = {
     create_vote: create_vote,
     add_options: add_options,
-    remove_options: remove_options,
+    remove_option: remove_option,
     update_vote: update_vote,
     delete_vote: delete_vote
 }

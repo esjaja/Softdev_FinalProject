@@ -9,6 +9,7 @@ var pre_votedateList = [];
 var voteObj = [];
 $(document).ready(function(){
 	init();
+	$('#chatsight').scrollTop(9999999);
 
 /****************** Calendar control ********************/
 	/*
@@ -121,24 +122,73 @@ $(document).ready(function(){
 		// use entry to get control progress bar and others
 		var entry = $(this).parents('.voteEntry');
 		var progress = entry.find(".progress");
-		// 'preState' and 'myState' are used to check whether 
+		// 'preState' and 'myState' are used to check whether
 		// this user has vote any option in this vote.
 		var preState = entry.find(".green");
 		// change button & self img display
 		$(this).toggleClass("green");
 		$(this).siblings(".me").toggle('fast');
 		var myState = entry.find(".green");
+
 		if(myState.length==0){
 			progress.progress('decrement');
-		}else if(myState.length==1 && preState.length==0){
+		} else if(myState.length==1 && preState.length==0){
 			progress.progress('increment');
 		}
-	/* TODO: infomation for back-end update  */
+		/* infomation for back-end update  */
 		var voteId = entry.attr("id");
 		var option = $(this).text();
 		var action = ($(this).hasClass('green'))?'select':'unselect';
 		console.log("VOTE ID : " + voteId);
 		console.log("Option : " + option + " " + action);
+		$.ajax({
+			url: "update_vote",
+			data: {
+				activity_id: document.location.search.slice(6),
+				vote_id: voteId,
+				option_name: option,
+				attend: (action == 'unselect')? 'false': 'true'
+			},
+			type: "POST",
+			dataType: "json",
+			success: function(data, textStatus, jqXHR) {
+				console.log(data);
+				console.log("success to toggle the vote");
+				//add the chat message into chat board??
+			},
+			error: function() {
+				console.log("error!!");
+			}
+		});
+	})
+
+	$("#votePage .ui.accordion").on('click','#optionremove',function(e){
+		// use entry to get control progress bar and others
+		var entry = $(this).parents('.voteEntry');
+		/* infomation for back-end update  */
+		var voteId = entry.attr("id");
+		var option = $(this).val();
+		console.log("VOTE ID : " + voteId);
+		console.log("Option : " + option);
+		$(this).parents('#'+option).remove();
+		$.ajax({
+			url: "remove_option",
+			data: {
+				activity_id: document.location.search.slice(6),
+				vote_id: voteId,
+				option_name: option
+			},
+			type: "POST",
+			dataType: "json",
+			success: function(data, textStatus, jqXHR) {
+				console.log(data);
+				console.log("success to remove the option");
+				//add the chat message into chat board??
+			},
+			error: function() {
+				console.log("error!!");
+			}
+		});
 	})
 
 /*********************** Rise Vote **********************/
@@ -229,6 +279,7 @@ $(document).ready(function(){
 			}
 		});
 	})
+
 
 /**************[NOT DONE] Days Free/Busy of Everyone ****************/
 	/*$('#calendar li.days').not('.disabledDays').popup({
@@ -356,6 +407,7 @@ $(document).ready(function(){
 	                  '</div>'+
 	                  '<div class="ui divider" style="margin: 0pt"></div>'+
 	                '</div>');
+					$('#chatsight').scrollTop(9999999);
 				},
 				error: function() {
 					console.log("error!!");

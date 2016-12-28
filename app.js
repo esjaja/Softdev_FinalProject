@@ -69,8 +69,11 @@ app.post('/edit_activity_description', ActivityCtrl.edit_activity_description);
 app.post('/edit_activity_dates', ActivityCtrl.edit_activity_dates);
 app.post('/add_activity_member', ActivityCtrl.add_activity_member);
 app.post('/get_activities_month', ActivityCtrl.get_activities_month);
+
 app.post('/remove_activity_member',ActivityCtrl.remove_activity_member);
 app.post('/create_vote', VoteCtrl.create_vote);
+app.post('/update_vote', VoteCtrl.update_vote);
+app.post('/remove_option', VoteCtrl.remove_option);
 
 app.post('/add_message', MessageCtrl.add_message);
 app.post('/delete_message', MessageCtrl.delete_message);
