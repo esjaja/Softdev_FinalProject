@@ -62,11 +62,17 @@ app.post('/edit_activity_description', ActivityCtrl.edit_activity_description);
 app.post('/edit_activity_dates', ActivityCtrl.edit_activity_dates);
 app.post('/add_activity_member', ActivityCtrl.add_activity_member);
 app.post('/get_activities_month', ActivityCtrl.get_activities_month);
+//app.post('/get_activity_date', ActivityCtrl.get_activity_date);
 
 app.post('/remove_activity_member',ActivityCtrl.remove_activity_member);
 app.post('/create_vote', VoteCtrl.create_vote);
 app.post('/update_vote', VoteCtrl.update_vote);
 app.post('/remove_option', VoteCtrl.remove_option);
+app.post('/set_vote_date', VoteCtrl.set_vote_date);
+app.post('/add_option', VoteCtrl.add_option);
+app.post('/delete_vote', VoteCtrl.delete_vote);
+app.post('/get_vote_one_day', VoteCtrl.get_vote_one_day);
+app.post('/get_vote_event_date', VoteCtrl.get_vote_event_date);
 
 app.post('/add_message', MessageCtrl.add_message);
 app.post('/delete_message', MessageCtrl.delete_message);

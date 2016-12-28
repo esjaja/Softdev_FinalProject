@@ -146,14 +146,21 @@ span{
     !border: 1px solid #555555;
 }
 #chatBox{
-    margin:0 auto;
-    margin-top: 5pt;
-    margin-bottom: 5pt;
+    margin:5pt 0pt 5pt 8pt;
     height:5%;
-    width:95%;
-    }
+    width:90%;
+}
 #chatMsg{
     width: 100%;
+}
+#addOption {
+    margin:7pt 0 3pt 0;
+    height:5%;
+    width: 75%;
+}
+#removeVote {
+    width: 22%;
+    margin:7pt 0 3pt 0;
 }
 
 
@@ -236,6 +243,12 @@ div > .choose:hover{
     background-color: !#F1DEDE;
 }
 .choosedays{
+    background-color: #ECF0CC;
+}
+.eventDays{
+    background-color: #ECCCF0;
+}
+.ays{
     background-color: #ECF0CC;
 }
 .days:hover {

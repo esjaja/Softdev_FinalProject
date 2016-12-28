@@ -57,13 +57,16 @@ var display_activity = (req, res, next) => {
                 if(typeof activity === 'undefined' || activity === null){
                     return console.log('Unavailable Activity');
                 }
+                if(activity.user_id.indexOf(req.session.user_id)) return res.redirect('/index');
+
+
                 activity.total = activity.user_id.length;
                 let date = [];
                 if(typeof activity.date !== 'undefined'){
                     let dt = activity.date.map((dt, i) => {
-                        let str = dt.toISOString().slice(0,10);
+                        let str = dt;
                         let timestamp = new Date(str);
-                        timestamp.setDate(dt.getDate() + activity.date.length - i);
+                        timestamp.setDate(timestamp.getDate() + activity.date.length - i);
                         return {
                             date: str,
                             timestamp: timestamp.getTime()
@@ -205,7 +208,7 @@ var display_index = (req, res, next) => {
                         title: act.title,
                         description: act.description
                     };
-                    if(act.date.length > 0) act_new.date = act.date[0].toISOString().slice(0,10);
+                    if(act.date.length > 0) act_new.date = act.date[0];
                     else act_new.date = "";
                     return act_new;
                 });
@@ -333,15 +336,17 @@ var edit_activity_dates = (req, res, next) => {
                 if(typeof activity === 'undefined' || activity === null){
                     console.log('Unavailable Activity');
                 }
-                for(let dt of req.body.dates) {
+                let dates = req.body['dates[]'];
+                console.log(dates);
+                for(let dt of dates) {
                     if(dt.match(/(\d{4})-(\d{2})-(\d{2})/) === null) return console.log('Invalid Input');
                 }
-                callback(null);
+                callback(null, dates);
             });
         },
-        (callback) => {
+        (dates, callback) => {
             Activity.update({id: req.body.activity_id},
-                {$set:{date: req.body.dates}},
+                {$set: {date: dates} },
                 (err) => {
                     if(err) return console.log('Error: '+err);
                     callback(null);
@@ -382,7 +387,7 @@ var get_activities_month =  (req, res, next) => {
                 for(let act of activities) {
                     if(typeof act.date === 'undefined' || act.date === null) continue;
                     act.date.forEach((date, index, array) => {
-                        let str = date.toISOString().slice(0,10);
+                        let str = date;
                         let m = parseInt(req.body.month) + 1;
                         if(parseInt(str.slice(5,7)) === m){
                             if(typeof activities_new[act.id] === 'undefined' || activities_new[act.id] === null){
@@ -448,6 +453,23 @@ var remove_activity_member = (req, res, next) => {
     });
 }
 
+/*var get_activity_date = (req, res, next) => {
+    async.waterfall([
+        (callback) => {
+            //get activities details
+            Activity.findOne({id: req.body.activity_id}, (err, activity) => {
+                if(err || activity === null){
+                    console.log('Error: ' + err);
+                }
+                callback(null, activity.date);
+            });
+        }
+    ], (err, result) => {
+        return res.json({
+            dates: result
+        });
+    });
+}*/
 
 module.exports = {
     display_index: display_index,

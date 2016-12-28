@@ -5,7 +5,7 @@ var Activity = new Schema({
     id: String,
     user_id: [String],
     title: String,
-    date: [Date],
+    date: [String],
     description: String,
     vote_id: [String]
 });
