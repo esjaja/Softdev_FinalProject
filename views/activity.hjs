@@ -12,7 +12,7 @@
     <script src="/public/javascripts/ActivityPage.js"></script>
     <script src="/public/javascripts/FB.js"></script>
 </head>
-<body>
+<body onload="updateMusicList()">
      <!-- Activity -->
     <div id="activity">
         <div id="menu" class="ui secondary three item menu">
@@ -346,11 +346,13 @@
     </div>
     <!-- Canlendar -->
 
-    <!-- Voting 
-    <div id="voteBoard">
-            <div id="voteArea">hello</div>
-    </div>
-    <!-- Voting -->
+    <div id="player" style="text-align:center;" >
+        <div id="MusicList" style="text-align:center;"></div>
+        <div id="upload_button">
+            <button id="upload_button_text"  onclick="uploadMusic()" class="ui olive button">Upload Music</button>
+            <input type="file" id="myFile" onchange="uploadButton_enable()">
+        </div>
+    <div>
 
 </div>
 </div>

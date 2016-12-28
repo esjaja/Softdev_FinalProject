@@ -11,7 +11,7 @@ $(document).ready(function(){
 	init();
 	$('#chatsight').scrollTop(9999999);
 
-/****************** Calendar control ********************/
+	/****************** Calendar control ********************/
 	/*
 	//Change Month
 	$('#calendar .monthButton').click(function(){
@@ -49,7 +49,7 @@ $(document).ready(function(){
 
 	$("#homePage .timetag").on('click',changeByTimetag);
 
-/******************* Activity controll ******************/
+	/******************* Activity controll ******************/
 	//$('#activityTitle').on({
 	$(document.getElementById("activityTitle") ).on({
 		click : function(){
@@ -110,14 +110,14 @@ $(document).ready(function(){
 		});
 	});
 
-/*****************  Menu in activity sight  *************/
+	/*****************  Menu in activity sight  *************/
 	$('#menu > a').click(function(){
 		$(this).addClass('active').siblings().removeClass('active');
 		var pageid = '#'+$(this).attr("id") + 'Page';
 		$(pageid).show().siblings().hide();
 	})
 
-/****************	Votes Display Page ******************/
+	/****************	Votes Display Page ******************/
 	$("#votePage .ui.accordion").on('click','.button',function(e){
 		// use entry to get control progress bar and others
 		var entry = $(this).parents('.voteEntry');
@@ -191,7 +191,7 @@ $(document).ready(function(){
 		});
 	})
 
-/*********************** Rise Vote **********************/
+	/*********************** Rise Vote **********************/
 	//modal registration
 	$('.coupled.modal')
 	  .modal({
@@ -209,7 +209,7 @@ $(document).ready(function(){
 		CheckVoteDoneBtn(voteObj);
 		$('.first.modal').modal('show');
 	});
-/**************** Vote OTHER type **************/
+	/**************** Vote OTHER type **************/
 	// OTHER
 	//$('#askOther').click(function(){
 	$(document.getElementById('askOther')).click(function(){
@@ -281,7 +281,7 @@ $(document).ready(function(){
 	})
 
 
-/**************[NOT DONE] Days Free/Busy of Everyone ****************/
+	/**************[NOT DONE] Days Free/Busy of Everyone ****************/
 	/*$('#calendar li.days').not('.disabledDays').popup({
 	  	position: 'top center',
 		on    : 'click',
@@ -289,6 +289,7 @@ $(document).ready(function(){
 	});*/
 		// DATE
 	//$('#askDate').click(function(){
+	//here
 	$(document.getElementById('askDate')).click(function(){
 		console.log("type[DATE]");
 		$(document.getElementById('Vote')).addClass('disabled');
@@ -328,7 +329,7 @@ $(document).ready(function(){
 			}
 		}
 	})
-/************************ ADD MEMBER  *********************/
+	/************************ ADD MEMBER  *********************/
 	$(document.getElementById('Add')).click(function(){
 		var member_list = [];
 		$('div.item.active').each(function(index,data){
@@ -375,7 +376,7 @@ $(document).ready(function(){
 		$('#voteArea').text('This area is gonna to have other usage now');
 	})*/
 
-/************************* Chatboard **************************/
+	/************************* Chatboard **************************/
 	$("#chatMsg").keypress(function(e){
 		code = (e.keyCode ? e.keyCode : e.which);
 		if (code == 13){
@@ -416,7 +417,7 @@ $(document).ready(function(){
 		}
 	});
 });
-
+//end of $(document).ready
 
 
 /***************** FUNCTIONS ***************/
@@ -446,6 +447,7 @@ function init(){
 	})
 	askDateLabel();
 }
+
 function newVote(){
 	var vote = {"type":"","title":"","options":[],"deadline":""};
 	$('.second.modal input.title').val('');
@@ -454,6 +456,7 @@ function newVote(){
 	$( "#datepicker" ).datepicker({dateFormat:"yy-mm-dd"}).val('');
 	return vote;
 }
+
 function CheckVoteDoneBtn(vote){
 	if(vote.title && vote.options.length && vote.deadline )
 	{
@@ -464,10 +467,10 @@ function CheckVoteDoneBtn(vote){
 	}
 }
 function calendarDate(date){
-	/* days selector */ 
+	/* days selector */
 	var days = $('#day li');
 	var today = $.datepicker.formatDate('yy-mm-dd', new Date());
-	
+
 	/* use to compute previous month, this month and next month */
 	var year = date.getFullYear();
 	var month = date.getMonth();
@@ -560,7 +563,6 @@ function calendarDate(date){
 						$('#'+value2).append('<div style="background-color:'+color+'" class="text-hidden activityOnCalendar">'+'</div>');			
 					*/else
 						$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar">'+'</div>');		
-				
 				})
 			})
 		},
@@ -675,4 +677,152 @@ function removeMember(event){
         console.log("error!!");
       }
     });
+}
+
+//https://www.webcodegeeks.com/html5/html5-audio-player-example/
+function showMusicPlayer(files, PlayerList, TitleList){
+    //console.log(PlayerList);
+    //console.log(TitleList);
+    document.getElementById('MusicList').innerHTML =
+    '<div id="playlist" style="text-align:center;">'+
+        '<p id="music_title"></p>'+
+        '<audio controls autoplay></audio>'+
+        '<button id="back" class="ui green button" style="width:25px;height:35px;font-size:20px;" >'+
+            '<i class="backward icon"></i>'+
+        '</button>'+
+        '<button id="next" class="ui green button" style="width:25px;height:35px;font-size:20px;" >'+
+            '<i class="forward icon"></i>'+
+        '</button>'+
+    '</div>';
+    var current = 0;
+    var playlistPlayer = document.querySelector("#playlist audio");
+    document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    function next() {
+        // Check for last media in the playlist
+       if (current === files.length - 1) {
+            current = 0;
+        } else {
+            current++;
+        }
+        // Change the audio element source
+        playlistPlayer.src = PlayerList[current];
+        document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    }
+    function PressNext() {
+        // Check for last media in the playlist
+       if (current === files.length - 1) {
+            current = 0;
+        } else {
+            current++;
+        }
+        // Change the audio element source
+        playlistPlayer.src = PlayerList[current];
+        document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    }
+    function PressBack() {
+        // Check for last media in the playlist
+       if (current == 0) {
+            current = files.length - 1;
+        } else {
+            current--;
+        }
+        // Change the audio element source
+        playlistPlayer.src = PlayerList[current];
+        document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
+    }
+    // Check if the player is in the DOM
+    if (playlistPlayer === null) {
+        throw "Playlist Player does not exists ...";
+    } else {
+        // Start the player
+        playlistPlayer.src = PlayerList[current];
+        // Listen for the playback ended event, to play the next media
+        playlistPlayer.addEventListener('ended', next, false)
+        document.getElementById('next').addEventListener('click', function(){
+            PressNext();
+        });
+
+        document.getElementById('back').addEventListener('click', function(){
+            PressBack();
+        });
+
+    }
+}
+
+function updateMusicList(){
+    document.getElementById("upload_button_text").disabled = true;
+    var XHR = new XMLHttpRequest();
+    XHR.onreadystatechange = function() {
+        if (XHR.readyState == 4 && XHR.status == 200){
+            var files = JSON.parse(XHR.responseText);
+            //clear list
+            var PlayerList=[];
+            var TitleList=[];
+            //append music into playlist
+            console.log();
+            var filename, filetitle, data_src="";
+            for(i=0;i<files.length;i++){
+                filename=files[i].filename;
+                data_src="/"+filename;
+                //console.log(data_src);
+                // console.log(data_src.toString());
+                PlayerList.push(data_src.toString());
+                filetitle = filename.split(".mp3")[0];
+                filetitle = filetitle.split(".wmv")[0];
+                TitleList.push(filetitle);
+            }
+            showMusicPlayer(files, PlayerList, TitleList);
+        }
+    }
+    var formData = new FormData();
+    formData.append("case", "2");
+
+    XHR.open('POST', '/activity');
+    XHR.send(formData);
+}
+
+function updateMusicList_upload(files){
+    //clear playlist
+    var PlayerList=[];
+    var TitleList=[];
+    //append music into playlist
+    var filename, filetitle, data_src="";
+    for(i=0;i<files.length;i++){
+        filename=files[i].filename;
+        data_src="/"+filename;
+        //console.log(data_src);
+        //console.log(data_src.toString());
+        PlayerList.push(data_src.toString());
+        filetitle = filename.split(".mp3")[0];
+        filetitle = filetitle.split(".wmv")[0];
+        TitleList.push(filetitle);
+    }
+    //console.log(TitleList);
+    showMusicPlayer(files, PlayerList, TitleList);
+}
+
+function uploadMusic() {
+    var XHR = new XMLHttpRequest();
+    XHR.onreadystatechange = function() {
+        if (XHR.readyState == 4 && XHR.status == 200){
+            var responseJson = JSON.parse(XHR.responseText);
+            updateMusicList_upload(responseJson);
+            document.getElementById('upload_button_text').innerHTML="Upload Music";
+        }
+    }
+    document.getElementById('upload_button_text').innerHTML="Loading...";
+    var music_file = document.getElementById("myFile").files[0];
+    var formData = new FormData();
+    formData.append("case", "1");
+    formData.append("file", music_file);
+
+    XHR.open('POST', '/activity');
+    XHR.send(formData);
+}
+function uploadButton_enable() {
+    if(document.getElementById('myFile').value === '')
+        document.getElementById("upload_button_text").disabled = true;
+    else{
+        document.getElementById("upload_button_text").disabled = false;
+    }
 }

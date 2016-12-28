@@ -355,3 +355,23 @@ div > .choose:hover{
 .ui.multiple.search.dropdown>input.search{margin: .45240952em 0 .45240952em 0;}
 .ui.selection.dropdown{ min-height: 2em; }
 .ui.multiple.dropdown{ padding: 0 2.1em 0 .35714286em; }
+
+/*music player*/
+#player {
+    margin-left: 28%;
+    margin-right: 30%;
+    background-color: rgb(230,255,200);
+    width: 43%;
+    padding: 10pt;
+    border-radius: 10pt;
+}
+button.ui.green.button i.backward.icon{
+    position: relative;
+    top:-10px;
+    right: 10px;
+}
+button.ui.green.button i.forward.icon{
+    position: relative;
+    top:-10px;
+    right: 5px;
+}
