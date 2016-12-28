@@ -322,9 +322,33 @@ $(document).ready(function(){
 				}
 			}
 			else if($(this).hasClass('choosedays')){
-				if($(this).find('img').length==0)
+				if($(this).find('img').length==0){
 					/* do ajax here , add self img with onclick="imgClick(this) if self not attend , add unattend class. add other that are attend */
-					$(this).append('<span class="tooltiptext"><img onclick="imgClick(this)" class="ui avatar circular image unattend" src="http://graph.facebook.com/123456789/picture?type=square"><img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/123456789/picture?type=square"><img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/123456789/picture?type=square"><img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/123456789/picture?type=square"><img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/123456789/picture?type=square"><img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/123456789/picture?type=square"><img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/123456789/picture?type=square"><img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/123456789/picture?type=square"><img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/123456789/picture?type=square"><img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/123456789/picture?type=square"></span>');
+
+					$.ajax({
+						url: "get_vote_one_day",
+						data: {
+							activity_id: document.location.search.slice(6),
+							date: $(this).attr('id')
+						},
+						type: "POST",
+						dataType: "json",
+						success: function(data, textStatus, jqXHR) {
+							console.log(data);
+							$(this).append('<span class="tooltiptext"></span>');
+							var sp = $(this).children('span');
+							var me = $('#Add').attr('name');
+							data.date.attend.forEach(function(user_id) {
+								if(me !== user_id) sp.append('<img class="ui avatar circular image" src="http://graph.facebook.com/'+user_id+'/picture?type=square">');
+							});
+							if(data.agree === true) sp.append('<img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/'+me+'/picture?type=square">');
+							else sp.append('<img onclick="imgClick(this)" class="ui avatar circular image unattend" src="http://graph.facebook.com/'+me+'/picture?type=square">');
+						},
+						error: function() {
+							console.log("error!!");
+						}
+					});
+				}
 				$(this).children('.tooltiptext').toggleClass('show');
 			}
 		}
@@ -673,7 +697,6 @@ function removeMember(event){
 function imgClick(img){
 	var vote_id = 'time_' + document.location.search.slice(6);
 	var date_id = $(img).parents('li').attr('id'); //here date is an option
-	//here
 	/* member not attend - class unatend */ 
 	$(img).toggleClass('unattend');
 	var action = ($(img).hasClass('unattend'))?'attend':'unattend';
