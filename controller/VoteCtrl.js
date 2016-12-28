@@ -452,9 +452,12 @@ var get_vote_one_day = (req, res, next) => {
                     if(date[0].attend.indexOf(req.session.user_id) !== -1) agree = true;
                     let atnd = date[0].attend.split('/');
                     let idx = atnd.indexOf('');
-                    if(idx !== -1) atnd = atnd.slice(idx, 1);
-                    date[0].atnd = atnd;
-                    callback(null, date[0], agree);
+                    while (idx !== -1) {
+                        console.log(idx);
+                        atnd.splice(idx, 1);
+                        idx = atnd.indexOf('');
+                    }
+                    callback(null, atnd, agree);
                 }
             });
         }
@@ -462,7 +465,7 @@ var get_vote_one_day = (req, res, next) => {
         if(err) console.log('Error: ' + err);
         return res.json({
             status: 200,
-            date: result,
+            atnd: result,
             agree: agree
         });
     });

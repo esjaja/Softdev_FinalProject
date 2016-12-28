@@ -40,7 +40,7 @@ $(document).ready( function(){
 			}
 		}
 	});*/
-	// lock icon & today icon 
+	// lock icon & today icon
 /*	$("#dateinfo > i").on('click',function(){
 		if($(this).hasClass('repeat')){
 			date = new Date();
@@ -370,18 +370,19 @@ $(document).ready( function(){
 							caller.append('<span class="tooltiptext"></span>');
 							var sp = caller.children('span');
 							var me = $('#Add').attr('name');
-							data.date.atnd.forEach(function(user_id) {
+							data.atnd.forEach(function(user_id) {
 								if(me !== user_id) sp.append('<img class="ui avatar circular image" src="http://graph.facebook.com/'+user_id+'/picture?type=square">');
 							});
 							if(data.agree === true) sp.append('<img onclick="imgClick(this)" class="ui avatar circular image" src="http://graph.facebook.com/'+me+'/picture?type=square">');
 							else sp.append('<img onclick="imgClick(this)" class="ui avatar circular image unattend" src="http://graph.facebook.com/'+me+'/picture?type=square">');
+							caller.children('.tooltiptext').toggleClass('show');
 						},
 						error: function() {
 							console.log("error!!");
 						}
 					});
 				}
-				$(this).children('.tooltiptext').toggleClass('show');
+				else $(this).children('.tooltiptext').toggleClass('show');
 			}
 			else ;
 			console.log(editdateFlag);
@@ -1057,7 +1058,7 @@ function uploadButton_enable() {
 function imgClick(img){
 	var vote_id = 'time_' + document.location.search.slice(6);
 	var date_id = $(img).parents('li').attr('id'); //here date is an option
-	/* member not attend - class unatend */ 
+	/* member not attend - class unatend */
 	$(img).toggleClass('unattend');
 	var action = ($(img).hasClass('unattend'))?'attend':'unattend';
 	console.log(vote_id);
