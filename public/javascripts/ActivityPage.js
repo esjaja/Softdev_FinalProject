@@ -650,7 +650,7 @@ function askDateLabel(){
 	})
 }
 function removeMember(event){
-    console.log(event.parentNode.id);
+    //console.log(event.parentNode.id);
     //remove and enable add
     $("#"+event.parentNode.id).remove();
     //console.log();
@@ -665,8 +665,11 @@ function removeMember(event){
       type: "POST",
         dataType: "json",
       success: function(data, textStatus, jqXHR) {
+      	//check whether successful
         console.log(data);
-        console.log("Remove member successfully!");
+        //back to index when removing self
+        if(event.parentNode.id == $('#Add').attr('name'))
+        	window.location.assign("./");
       },
         error: function() {
         console.log("error!!");
