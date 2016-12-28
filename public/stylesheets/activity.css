@@ -57,10 +57,10 @@ body {
     overflow-x: hidden;
     white-space: pre-line;
     resize: none;
-    outline-color: #D17C7C
+    outline-color: #D17C7C;
 }
 #activityDescription:focus {
-    background-color: !#F6A2B1;
+    background-color: !#EEB7C0;
 }
 #activityDescription::-webkit-scrollbar-track {
     background-color: #F6A2B1;
@@ -76,6 +76,7 @@ body {
 #activityDate{
     margin-top:3pt;
 }
+
 /* Vote page in Activity */
 #votePage img:hover{
     opacity: 0.5;
@@ -156,42 +157,18 @@ div > .choose:hover{
     text-align: center;
     float: right;
 }
-/*
-#calendar {
-    margin-left: 25%;
-    margin-right: 30%;
-    background-color: white;
-    height: 260pt;
-    width: 45%;
-}
 
-#upcomingActivity {
-    margin-left: 25%;
-    margin-right: 30%;
-    background-color: teal;
-    height: 160pt;
-    width: 45%;
-}
-
-
-
-
-#month {
-    font-size: 20pt;
-    color: orange;
-    text-align: left;
-}
-
-/* Calendar in middle */
+/* Calendar */
 #calendar {
     margin-left: 28%;
     margin-right: 30%;
     background-color: white;
-    height: 275pt;
+    height: 300pt;
     width: 43%;
     padding: 10pt;
     border-radius: 10pt;
     !box-shadow: 2pt 2pt 5pt grey;
+    z-index: 2;
 }
 #calendar ul {
     list-style: none;
@@ -207,6 +184,7 @@ div > .choose:hover{
     border: 1px solid #ccc;
     margin-right: -1px;
     margin-bottom: -1px;
+    position: relative;
 }
 #calendar ul.weekdays {
     height: 40px;
@@ -224,6 +202,7 @@ div > .choose:hover{
 }
 #day{
     margin:-2px -3px 0 0;
+    display: block;
 }
 .days {
     text-align: left;
@@ -234,7 +213,9 @@ div > .choose:hover{
     height: 45px;
     background-color: !#F1DEDE;
 }
-
+.choosedays{
+    background-color: #ECF0CC;
+}
 .days:hover {
     color: white;
     background-color: #85B3E4;
@@ -249,25 +230,50 @@ div > .choose:hover{
     background-color: #C0B5C0;
     cursor: default;
 }
-.voteDays{
-    text-align: left;
-    padding: 0pt 3pt;
-    font-size: 5pt;
-    color: #355261;
-    font-family: sans-serif;
-    height: 45px;
-    background-color: #F3C5D2;
-    transform: translateY(-1px);
-    box-shadow:1pt 1pt #30305F;
+
+#monthLabel{
+    margin-top: -10pt;
+    float: left;
+    z-index: 1;
+    overflow: hidden;
+    text-align: justify;
 }
-.monthButton {
-    margin: 0;
-    padding: 0;
-    border: none;
-    background-color: white;
-    outline: none;
+#monthLabel > a{
+    margin:0 auto;
+    margin-left: -1pt;
+}
+#monthLabel > i{
+    cursor: pointer;
+}
+.today{
+    color:#000000;
+    font-weight: bold;
+    background-color: #7AC5DE;
+}
+.activityOnCalendar{
+    position: absolute;
+    color:white;
+    margin-left: -3pt;
+    line-height: 10pt;
+    bottom: 0;
+    width: 100%;
+    height: 12pt;
+    opacity: 0.8;
+    overflow: hidden;
+    animation: fadeIn .3s;
 }
 
+.left-border{
+    border-left: solid 1pt;
+    border-left-color: black;
+}
+.right-border{
+    border-right: solid 1pt;
+    border-right-color: black;
+}
+.text-hidden{
+    overflow: hidden;
+}
 /*  not use  */
 #voteBoard {
     margin-top: 10pt;
@@ -277,6 +283,12 @@ div > .choose:hover{
     width: 43%;
     border-radius: 3pt;
 }
+
+.timetag:active{
+  transform: translate(1px,1px);
+}
+
+
 
 .popup {
     position: relative;
@@ -328,32 +340,6 @@ div > .choose:hover{
     to {opacity:1 ;}
 }
 
-/*
-#calendar {
-    margin-left: 25%;
-    margin-right: 30%;
-    background-color: white;
-    height: 260pt;
-    width: 45%;
-}
-
-#upcomingActivity {
-    margin-left: 25%;
-    margin-right: 30%;
-    background-color: teal;
-    height: 160pt;
-    width: 45%;
-}
-
-
-
-
-#month {
-    font-size: 20pt;
-    color: orange;
-    text-align: left;
-}
-*/
 
 /*dropdown style setting*/
 .ui.multiple.search.dropdown>.text{ margin: .45240952em 0 .45240952em 1.7em;}

@@ -26,14 +26,27 @@
                 <div id="activityTitle" spellcheck="false" contenteditable>{{title}}</div>
                 <h5 class="ui header left floated dividing">Description</h5>
                 <textarea id="activityDescription" spellcheck="false">{{description}}</textarea>
-                <div><h5 class="ui header left floated dividing">Date</h5></div>
-                <br>
+
+                <div>
+                    <h5 class="ui header left floated dividing">Date
+                    </h5><i class="ui icon write"></i>
+                </div>
                 <!--div class="ui mini pink button"><i class="edit icon"></i>Edit</div-->
+                <br>
                 <div id="activityDate">
                     <div class="ui purple labels">
                         {{#date}}
-                          <div class="ui label">{{.}}</div>
+                          <div class="ui label timetag">{{.}}</div>
                         {{/date}}
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="ui header left floated dividing">Date(unconfirm)</h5>
+                </div>
+                <br>
+                <div id="activityAskDate">
+                    <div class="ui green labels">
                     </div>
                 </div>
             </div>
@@ -200,15 +213,33 @@
     <!-- Canlendar -->
     <div id="calendar" class="ui segments">
         <!-- Month and Year -->
+        <div id="monthLabel" style="width: 100%">
+            <a class="ui red label">1</a>
+            <a class="ui orange label">2</a>
+            <a class="ui yellow label">3</a>
+            <a class="ui olive label">4</a>
+            <a class="ui green label">5</a>
+            <a class="ui teal label">6</a>
+            <a class="ui blue basic label">7</a>
+            <a class="ui violet label">8</a>
+            <a class="ui purple label">9</a>
+            <a class="ui pink label">10</a>
+            <a class="ui brown label">11</a>
+            <a class="ui grey label">12</a>
+            
+            <div id="mon" class="ui label value">November</div>
+            <i class="ui icon repeat float-right"></i>
+            <i class="ui icon unlock float-right" id="lock"></i>
+        </div>
         <div style="margin-bottom: -5pt;margin-top: -10pt">
             <div style="width: 150pt" class="ui mini blue statistic">
-                <div id="mon" class="value">November</div>
                 <div id="year" class="label">2017</div>
             </div>
-            <button id="left" class="monthButton"><i class="chevron circle left icon"></i></button>
-            <button id="right" class="monthButton"><i class="chevron circle right icon"></i></button>
+           <!-- <button id="left" class="monthButton"><i class="chevron circle left icon"></i></button>
+            <button id="right" class="monthButton"><i class="chevron circle right icon"></i></button>-->
         </div>
         <!-- Days -->
+        <div>
         <ul class="weekdays">
             <li>Sun</li>
             <li>Mon</li>
@@ -275,16 +306,15 @@
                 <li>1</li>
             </ul>
         </div>
+        </div>
     </div>
     <!-- Canlendar -->
 
-    <!-- Voting -->
+    <!-- Voting 
     <div id="voteBoard">
             <div id="voteArea">hello</div>
     </div>
     <!-- Voting -->
-
-    <div class="ui page dimmer"></div>
 
 </div>
 </div>

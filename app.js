@@ -34,6 +34,7 @@ app.set('view engine', 'hjs');
 app.use('/semantic', express.static(path.join(__dirname, 'semantic')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+
 //mongoose.connect("mongodb://localhost/softdevDB");
 mongoose.connect('mongodb://softdev:softdev@ds157487.mlab.com:57487/softdev_db');
 var db = mongoose.connection;
