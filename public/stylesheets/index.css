@@ -132,3 +132,23 @@ body {
     background-color: white;
     outline:none;
 }
+
+/*music player*/
+#player {
+    margin-left: 28%;
+    margin-right: 30%;
+    background-color: rgb(230,255,200);
+    width: 43%;
+    padding: 10pt;
+    border-radius: 10pt;
+}
+button.ui.green.button i.backward.icon{
+    position: relative;
+    top:-10px;
+    right: 10px;
+}
+button.ui.green.button i.forward.icon{
+    position: relative;
+    top:-10px;
+    right: 5px;
+}

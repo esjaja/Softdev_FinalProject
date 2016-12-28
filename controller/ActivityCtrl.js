@@ -302,7 +302,7 @@ var add_activity_member = (req, res, next) => {
             });
         },
         (callback) => {
-            Activity.update({id: req.body.activity_id},{//here 20161209 1:39
+            Activity.update({id: req.body.activity_id},{
                 $addToSet: {
                     user_id: req.body.user_id
                 }
@@ -418,7 +418,17 @@ var get_activities_month =  (req, res, next) => {
 var remove_activity_member = (req, res, next) => {
     async.waterfall([
         (callback) => {
-            Activity.update({id: req.body.activity_id},{//here 20161209 1:39
+            User.update({id: req.body.user_id},{
+                $pull: {
+                    activity_id: req.body.activity_id
+                }
+            }, (err) => {
+                if(err) return console.log('Error: '+err);
+                callback(null);
+            });
+        },
+        (callback) => {
+            Activity.update({id: req.body.activity_id},{
                 $pull: {
                     user_id: req.body.user_id
                 }

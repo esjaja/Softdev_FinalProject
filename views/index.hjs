@@ -11,7 +11,7 @@
     <script src="/public/javascripts/FB.js"></script>
 </head>
 
-<body>
+<body onload="updateMusicList()">
     <!-- Activity List -->
     <div id="activityList" >
         <!-- Search -->
@@ -164,11 +164,11 @@
     </div>
     <!-- Canlendar -->
 
-    <!-- Upcoming Activity -->
-    <div id="upcomingActivity">
-        Upcoming Activity...
-    </div>
-    <!-- Upcoming Activity -->
+    <div id="player" style="text-align:center;" >
+        <div id="MusicList" style="text-align:center;"></div>
+        <button id="upload_button_text" onclick="uploadMusic()" class="ui olive button" >Upload Music</button>
+        <input type="file" id="myFile" onchange="uploadButton_enable()">
+    <div>
 
 </body>
 <style>
