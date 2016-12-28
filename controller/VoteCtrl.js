@@ -445,11 +445,15 @@ var get_vote_one_day = (req, res, next) => {
                 let dates = [];
                 if(vote === null) console.log('No Vote');
                 else {
-                    date = vote.option.filter((opt) => {
+                    let date = vote.option.filter((opt) => {
                         return opt.name === req.body.date;
                     })
                     let agree = false;
                     if(date[0].attend.indexOf(req.session.user_id) !== -1) agree = true;
+                    let atnd = date[0].attend.split('/');
+                    let idx = atnd.indexOf('');
+                    if(idx !== -1) atnd = atnd.slice(idx, 1);
+                    date[0].atnd = atnd;
                     callback(null, date[0], agree);
                 }
             });

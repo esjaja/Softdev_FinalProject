@@ -57,7 +57,7 @@ var display_activity = (req, res, next) => {
                 if(typeof activity === 'undefined' || activity === null){
                     return console.log('Unavailable Activity');
                 }
-                if(activity.user_id.indexOf(req.session.user_id)) return res.redirect('/index');
+                if(activity.user_id.indexOf(req.session.user_id) === -1) return res.redirect('/index');
 
 
                 activity.total = activity.user_id.length;
