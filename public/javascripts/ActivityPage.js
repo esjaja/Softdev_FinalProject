@@ -116,7 +116,7 @@ $(document).ready( function(){
 	})
 
 	/****************	Votes Display Page ******************/
-	$("#votePage .ui.accordion").on('click','.button',function(e){
+	$("#votePage .ui.accordion").on('click','.basic.button',function(e){
 		// use entry to get control progress bar and others
 		var entry = $(this).parents('.voteEntry');
 		var progress = entry.find(".progress");
