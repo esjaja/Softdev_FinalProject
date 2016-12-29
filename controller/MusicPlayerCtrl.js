@@ -72,11 +72,17 @@ var parse_request = (req, res) => {
 }
 
 var access_music = (req, res) => {
-    if(req.param('name') === 'favicon.ico') return res.json({});
+    //if(req.param('name') === 'favicon.ico') return res.json({});
 	//console.log('Receive get http request for file.');
 	var readstream = gfs.createReadStream({
 	  filename: req.param('name')
 	});
+	
+	readstream.on('error', function(err){
+		console.log('access music error, return null');
+		return res.json({});
+	});
+	
 	readstream.pipe(res);
 }
 
