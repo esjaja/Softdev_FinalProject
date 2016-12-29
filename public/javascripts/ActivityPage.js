@@ -259,7 +259,7 @@ $(document).ready( function(){
 	//  Remove Options
 	$('.second.modal .field.options').on('click','.delete.icon',function(){
 		var itema = $(this).parent('a');
-		var index = $('a.ui.label').index(itema)
+		var index = $('a.ui.label.opt').index(itema);
 		//console.log("type[OPTIONS] options removed :" + itema.text());
 		voteObj.options.splice(index,1);
 		$(this).parent('a').remove();
@@ -268,7 +268,11 @@ $(document).ready( function(){
 
 	//  Done, Send Info To Back End
 	$('.second.modal .ui.done.button').on('click',function(){
-		console.log(voteObj);
+		console.log(voteObj.options.length);
+		console.log(voteObj.options);
+		if(voteObj.options.length === 1) {
+			voteObj.options.push('');
+		}
 		$.ajax({
 			url: "create_vote",
 			data: {

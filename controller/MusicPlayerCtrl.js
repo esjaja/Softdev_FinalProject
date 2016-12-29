@@ -37,7 +37,7 @@ var parse_request = (req, res) => {
 	       content_type: req.files.file.mimetype,
 	       metadata: req.body
 	    });
-	    var readstream = fs.createReadStream(req.files.file.path).pipe(writestream); 
+	    var readstream = fs.createReadStream(req.files.file.path).pipe(writestream);
 	    writestream.on('data', function (chunk){
 	        console.log('Writing some data, just dont know what');
 	    });
@@ -72,6 +72,7 @@ var parse_request = (req, res) => {
 }
 
 var access_music = (req, res) => {
+    if(req.param('name') === 'favicon.ico') return res.json({});
 	//console.log('Receive get http request for file.');
 	var readstream = gfs.createReadStream({
 	  filename: req.param('name')

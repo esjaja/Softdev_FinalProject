@@ -43,6 +43,7 @@ var create_vote = (req, res, next) => {
                     tmp.push(name);
                 }
             }
+            console.log(option);
             let md5 = crypto.createHash('md5');
             let vote_id = md5.update(new Date().getTime().toString() + req.session.user_id + req.body.activity_id).digest('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
             var vote = new Vote({
