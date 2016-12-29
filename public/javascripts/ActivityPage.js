@@ -337,7 +337,7 @@ $(document).ready( function(){
 	})
 	$("#day li").on({
 		click: function(){
-			console.log("QQQQQQQQQQQQQQQQQQQQQ");
+
 			var date = $(this).attr('id');
 			/* if now is on votedate status, click on days will change backgroundcolor*/
 			if(votedateFlag && !$(this).hasClass('disabledDays') && !$(this).hasClass('eventDays'))
@@ -365,8 +365,9 @@ $(document).ready( function(){
 						type: "POST",
 						dataType: "json",
 						success: function(data, textStatus, jqXHR) {
+							console.log('attend condition');
 							console.log(data);
-							console.log(caller);
+							//console.log(caller);
 							caller.append('<span class="tooltiptext"></span>');
 							var sp = caller.children('span');
 							var me = $('#Add').attr('name');
@@ -406,8 +407,6 @@ $(document).ready( function(){
 
 	$(document).mouseup(function(e){
 		var tooltiptext = $('#calendar .tooltiptext.show');
-		console.log($(e.target));
-		console.log(tooltiptext);
 		var imgs = $('#calendar span')
 		if(!tooltiptext.is(e.target))tooltiptext.removeClass('show');
 	})
@@ -703,7 +702,7 @@ function calendarDate(date){
 		dataType: "json",
 		success: function(data, textStatus, jqXHR) {
 			// to be filled in what to do -----------------------
-			console.log("get month success!");
+			//console.log("get month success!");
 			var thisActivity = document.location.search.slice(6);
 			console.log(data);
 			data.activities.forEach(function(value,index){
@@ -714,7 +713,7 @@ function calendarDate(date){
 				//if(thisActivity == value.activity_id)color='purple';
 				var name = value.activity_id;
 				var datelength = value.date.length;
-				console.log('date len ' + datelength);
+				//console.log('date len ' + datelength);
 				value.date.forEach(function(value2,index2){
   				$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar tooltip">'+'<span class="tooltiptext">'+name+'</span>'+'</div>');})
 			})
@@ -1060,35 +1059,23 @@ function imgClick(img){
 	var date_id = $(img).parents('li').attr('id'); //here date is an option
 	/* member not attend - class unatend */
 	$(img).toggleClass('unattend');
-	var action = ($(img).hasClass('unattend'))?'attend':'unattend';
-	console.log(vote_id);
-	console.log(date_id);
-	console.log(action);
-	console.log((action == 'unattend')? 'false': 'true');
+	var action = ($(img).hasClass('unattend'))?'unattend':'attend';
+	console.log('not go?: '+ (action == 'unattend')? 'false': 'true');
 	$.ajax({
 		url: "update_vote",
 		data: {
 			activity_id: document.location.search.slice(6),
-			vote_id: 'time_' + document.location.search.slice(6),
-			option_name: $(img).parents('li').attr('id'),
+			vote_id: vote_id,
+			option_name: date_id,
 			attend: (action == 'unattend')? 'false': 'true'
 		},
 		type: "POST",
 		dataType: "json",
 		success: function(data, textStatus, jqXHR) {
 			console.log(data);
-			console.log("go or not go successfully");
-			//add the chat message into chat board??
 		},
 		error: function() {
 			console.log("error!!");
 		}
 	});
-
-	/* TODO: update self attend */
-	if($(img).hasClass('unattend')){
-		console.log('沒空啦');
-	}else{
-		console.log('可能是有空吧');
-	}
 }
