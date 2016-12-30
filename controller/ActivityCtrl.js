@@ -338,13 +338,18 @@ var edit_activity_dates = (req, res, next) => {
                 }
                 let dates = req.body['dates[]'];
                 console.log(dates);
-                for(let dt of dates) {
-                    if(dt.match(/(\d{4})-(\d{2})-(\d{2})/) === null) return console.log('Invalid Input');
+                if(dates === '') callback(null, []);
+                else {
+                    for(let dt of dates) {
+                        if(dt === '') dates.splice('', 1);
+                        else if(dt.match(/(\d{4})-(\d{2})-(\d{2})/) === null) return console.log('Invalid Input');
+                    }
+                    callback(null, dates);
                 }
-                callback(null, dates);
             });
         },
         (dates, callback) => {
+            console.log(dates);
             Activity.update({id: req.body.activity_id},
                 {$set: {date: dates} },
                 (err) => {

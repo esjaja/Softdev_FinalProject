@@ -833,13 +833,16 @@ function updateDateBtn(btn){
 		console.log('new editdateList is : ' + editdateList);
 		editDateLabel();
 
+		var fake_editdateList = editdateList;
+		if(fake_editdateList.length < 2) fake_editdateList.push('');
+
 		//back-end
 		$.ajax({
 	      url: "edit_activity_dates",
 	      data: {
 	          activity_id: document.location.search.slice(6),
 			  type: "time",
-			  dates: editdateList
+			  dates: fake_editdateList
 		    },
 	      type: "POST",
 	        dataType: "json",
