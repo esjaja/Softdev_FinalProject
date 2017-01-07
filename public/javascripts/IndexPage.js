@@ -2,6 +2,10 @@
 
 var months = ["JANUARY","FEBUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
 var date = new Date();
+var votedateList = [];
+var editdateList = [];
+var pre_votedateList = [];
+var pre_editdateList = [];
 $(document).ready(function(){
 
 	init();

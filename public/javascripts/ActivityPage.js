@@ -384,11 +384,11 @@ $(document).ready( function(){
 							console.log("error!!");
 						}
 					});
-				}		else $(this).children('.tooltiptext').toggleClass('show');
-			}		else ;
+				}	else $(this).children('.tooltiptext').toggleClass('show');
+			}	else ;
 			console.log(editdateFlag);
 			if(editdateFlag && !$(this).hasClass('disabledDays') && !$(this).hasClass('choosedays'))
-			{/* Check if this date has been choosen */
+			{	/* Check if this date has been choosen */
 				var index = $.inArray(date, editdateList);
 				console.log(date);
 				console.log(editdateList);
@@ -703,6 +703,7 @@ function calendarDate(date){
 			// to be filled in what to do -----------------------
 			//console.log("get month success!");
 			var thisActivity = document.location.search.slice(6);
+			console.log('get activity of month [' + date.getMonth()+1 + '] : ');
 			console.log(data);
 			var color_used = [];
 			data.activities.forEach(function(value,index){
@@ -713,7 +714,7 @@ function calendarDate(date){
                 while (color_used.indexOf(color) !== -1) color = getRandomColor();
                 color_used.push(color);
                 //if(thisActivity == value.activity_id)color='purple';
-				var name = value.activity_id;
+				var name = value.title;
 				var datelength = value.date.length;
 				//console.log('date len ' + datelength);
 				value.date.forEach(function(value2,index2){
@@ -828,6 +829,7 @@ function updateDateBtn(btn){
 	else if($(btn).attr('id') == "editDateDone"){
 		console.log('Done!');
 		editdateList.sort();
+		editdateList.clean("").clean('').clean(undefined);
 		console.log('new editdateList is : ' + editdateList);
 		editDateLabel();
 		var fake_editdateList = editdateList;
@@ -1082,3 +1084,14 @@ function imgClick(img){
 		}
 	});
 }
+
+/* extend array define */
+Array.prototype.clean = function(deleteValue) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i] == deleteValue) {         
+      this.splice(i, 1);
+      i--;
+    }
+  }
+  return this;
+};
