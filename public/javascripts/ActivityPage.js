@@ -335,7 +335,7 @@ $(document).ready( function(){
 			$("#calendar").append('<div id="temp" style="width:100%;float:right;margin-top:5pt;">'+
 				'<div class="ui right pointing red basic label" style="margin-top:1pt;">'+
       			'Click on dates you want to choose or cancel</div>'+
-				'<button class="ui blue right floated mini button" onclick="updateDateBtn($(this))">Done</button>'+
+				'<button class="ui blue right floated mini button" id="editDateDone" onclick="updateDateBtn($(this))">Done</button>'+
 				'<button class="ui right floated mini button" id="editDateCancel" onclick="updateDateBtn($(this))">Cancel</button>'+
 				'</div>');
 			$("#calendar li").popup("false");
