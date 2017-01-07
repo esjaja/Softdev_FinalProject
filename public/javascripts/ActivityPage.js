@@ -309,6 +309,7 @@ $(document).ready( function(){
 	$(document.getElementById('VoteDate')).click(function(){
 		console.log("type[DATE]");
 		$(document.getElementById('Vote')).addClass('disabled');
+		$(document.getElementById('editDate')).addClass('disabled');
 		pre_votedateList = votedateList.slice(0);
 		voteObj['type']='DATE';
 		$('.first.modal').modal('hide');
@@ -325,6 +326,8 @@ $(document).ready( function(){
 	})
 	$(document.getElementById('editDate')).click(function(){
 		console.log("type[DATE]");
+		$(document.getElementById('Vote')).addClass('disabled');
+		$(document.getElementById('VoteDate')).addClass('disabled');
 		pre_editdateList = editdateList.slice(0);
 		$('.first.modal').modal('hide');
 		if(editdateFlag == false){
@@ -770,6 +773,7 @@ function removemessage(message_id){
   });
 }
 
+/* 不確定日期的取消/選取 更新 */
 function askDateBtn(btn){
 	if($(btn).attr('id') == "askDateCancel"){
 		console.log('cancel!');
@@ -778,6 +782,7 @@ function askDateBtn(btn){
 		console.log(votedateList);
 		$(btn).parent().remove();
 		$(document.getElementById('Vote')).removeClass('disabled');
+		$(document.getElementById('editDate')).removeClass('disabled');
 		$(document.getElementById('calendar')).css('height','300pt');
 		votedateFlag = false;
 		calendarDate(date);
@@ -814,6 +819,8 @@ function askDateBtn(btn){
 	    });
 	}
 }
+
+/* 確定日期的取消/選取 更新 */
 function updateDateBtn(btn){
 	if($(btn).attr('id') == "editDateCancel"){
 		console.log('cancel!');
@@ -821,6 +828,8 @@ function updateDateBtn(btn){
 		editdateList = pre_editdateList.splice(0);
 		console.log(editdateList);
 		$(btn).parent().remove();
+		$(document.getElementById('Vote')).removeClass('disabled');
+		$(document.getElementById('VoteDate')).removeClass('disabled');
 		$(document.getElementById('calendar')).css('height','300pt');
 		editdateFlag = false;
 		calendarDate(date);
@@ -829,7 +838,6 @@ function updateDateBtn(btn){
 	else if($(btn).attr('id') == "editDateDone"){
 		console.log('Done!');
 		editdateList.sort();
-		editdateList.clean("").clean('').clean(undefined);
 		console.log('new editdateList is : ' + editdateList);
 		editDateLabel();
 		var fake_editdateList = editdateList;

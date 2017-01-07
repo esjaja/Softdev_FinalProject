@@ -43,7 +43,7 @@
                 </div>
 
                 <div>
-                    <h5 class="ui header left floated dividing">Date(unconfirm)</h5>
+                    <h5 class="ui header left floated dividing">Asking available dates</h5>
                 </div>
                 <br>
                 <div id="activityAskDate">
@@ -264,7 +264,7 @@
             <a class="ui olive label">4</a>
             <a class="ui green label">5</a>
             <a class="ui teal label">6</a>
-            <a class="ui blue basic label">7</a>
+            <a class="ui blue label">7</a>
             <a class="ui violet label">8</a>
             <a class="ui purple label">9</a>
             <a class="ui pink label">10</a>
@@ -293,13 +293,13 @@
         <div id="day">
             <!-- Generate days by js-->
             <ul>
-                <li><a>1</a></li>
-                <li><a>1</a></li>
-                <li><a>1</a></li>
-                <li><a>1</a></li>
-                <li><a>1</a></li>
-                <li><a>1</a></li>
-                <li><a>1</a></li>
+                <li>1</li>
+                <li>1</li>
+                <li>1</li>
+                <li>1</li>
+                <li>1</li>
+                <li>1</li>
+                <li>1</li>
             </ul>
             <ul>
                 <li>1</li>
