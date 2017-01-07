@@ -1,16 +1,302 @@
 body {
-    padding: 5pt;
+    padding: 10pt;
+    padding-left: 20pt;
     text-align: center;
     font-family: sans-serif, "Microsoft JhengHei","Heiti TC";
     font-size: 16px;
     background-image: linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,0.1)),url("/public/images/wood.jpg");
 }
 
+#activity {
+    height: 475pt;
+    width: 250pt;
+    float: left;
+    padding: 5pt;
+    padding-top: 0;
+}
+#activityTitle {
+    margin: 10pt 0 10pt 0;
+    font-size: 20pt;
+}
+#activityDescription {
+    padding: 5pt 5pt 0 10pt;
+    margin: -3pt 0 5pt 0;
+    width: 100%;
+    height: 75pt;
+}
+#controller {
+    margin-left: 270pt;
+    height: 35pt;
+    width: 700pt;
+    padding: 4pt;
+}
+
+#calendar {
+    float:left;
+    margin-left: 20pt;
+    margin-top:30pt;
+    height: 280pt;
+    width: 420pt;
+    padding:15pt 5pt 5pt 5pt;
+}
+#calendar ul.weekdays {
+    height: 40px;
+}
+#calendar ul.weekdays li {
+    line-height: 20px;
+    padding: 10px 7px;
+    font-size: 13px;
+}
+#calendar .msg{
+    height:330pt;
+}
+#day{
+    margin:-2px -3px 0 0;
+    display: block;
+}
+.days {
+    padding: 0pt 3pt;
+    font-size: 5pt;
+    height: 45px;
+}
+#monthLabel{
+    margin-top: -41.5pt;
+}
+.activityOnCalendar{
+    transform: translateY(6pt);
+    width: 8pt;
+    height: 8pt;
+}
+
+#chatboard {
+    margin-top: 25pt;
+    margin-left:710pt;
+    width: 260pt;
+    height: 415pt;
+}
+#chatsight{
+    height:92%;
+    padding:15pt 10pt 0 10pt;
+}
+#chatBox{
+    margin:5pt 0pt 5pt 8pt;
+    height:5%;
+    width:90%;
+}
+#chatMsg{
+    width: 100%;
+}
+
+#player {
+    margin-top:-95pt;
+    margin-left:270pt;
+    width:420pt;
+    height:95pt;
+    padding: 5pt;
+}
+#playlist button{
+    width:23px;
+    height:33px;
+    font-size: 20px;
+}
+
+@media screen and (max-width: 1300px){
+    #activity {
+        height: 475pt;
+        width: 220pt;
+        float: left;
+        padding: 5pt;
+        padding-top: 0;
+    }
+    #activityTitle {
+        margin: 10pt 0 10pt 0;
+        font-size: 20pt;
+    }
+    #activityDescription {
+        padding: 5pt 5pt 0 10pt;
+        margin: -3pt 0 5pt 0;
+        width: 100%;
+        height: 75pt;
+        font-size:10pt;
+    }
+    #controller {
+        margin-left: 240pt;
+        height: 35pt;
+        width: 650pt;
+        padding: 4pt;
+    }
+
+    #calendar {
+        float:left;
+        margin-left: 20pt;
+        margin-top:35pt;
+        height: 280pt;
+        width: 400pt;
+        padding:15pt 5pt 5pt 5pt;
+    }
+    #player {
+        margin-top:-95pt;
+        margin-left:240pt;
+        width:400pt;
+        height:95pt;
+        padding: 5pt;
+    }
+    #playlist button{
+        width:20px;
+        height:30px;
+        font-size: 18px;
+    }
+    #calendar ul.weekdays {
+        height: 40px;
+    }
+    #calendar ul.weekdays li {
+        line-height: 20px;
+        padding: 10px 7px;
+        font-size: 13px;
+    }
+    #day{
+        margin:-2px -3px 0 0;
+        display: block;
+    }
+    .days {
+        padding: 0pt 3pt;
+        font-size: 5pt;
+        height: 45px;
+    }
+    #monthLabel{
+        margin-top: -41.5pt;
+    }
+    .activityOnCalendar{
+        transform: translateY(6pt);
+        width: 8pt;
+        height: 8pt;
+    }
+
+    #chatboard {
+        margin-top: 25pt;
+        margin-left:650pt;
+        width: 240pt;
+        height: 415pt;
+    }
+    #chatsight{
+        height:92%;
+    }
+    #chatBox{
+        margin:5pt 0pt 5pt 8pt;
+        height:5%;
+        width:90%;
+    }
+    #chatMsg{
+        width: 100%;
+    }
+}
+@media screen and (max-width: 1220px){
+    body{
+        margin-left: 30pt;
+    }
+    #activity {
+        height: 455pt;
+        width: 200pt;
+        float: left;
+        padding: 5pt;
+        padding-top: 0;
+    }
+    #activityTitle {
+        margin: 10pt 0 10pt 0;
+        font-size: 16pt;
+    }
+    #activityDescription {
+        padding: 5pt 5pt 0 10pt;
+        margin: -3pt 0 5pt 0;
+        width: 100%;
+        height: 75pt;
+    }
+    #controller {
+        margin-left: 210pt;
+        height: 35pt;
+        width: 530pt;
+        padding: 4pt;
+    }
+    #controller .button{
+        width:80px;
+        font-size: 5px;
+        height:40px;
+    }
+    #calendar {
+        float:left;
+        margin-left: 10pt;
+        margin-top:35pt;
+        height: 280pt;
+        width: 340pt;
+        padding:15pt 5pt 5pt 5pt;
+    }
+    #player {
+        margin-top:-95pt;
+        margin-left:210pt;
+        width:340pt;
+        height:95pt;
+        padding: 5pt;
+        font-size:10px;
+    }
+    #calendar ul.weekdays {
+        height: 40px;
+    }
+    #calendar ul.weekdays li {
+        line-height: 20px;
+        padding: 10px 7px;
+        font-size: 13px;
+    }
+    #day{
+        margin:-2px -3px 0 0;
+        display: block;
+    }
+    .days {
+        padding: 0pt 3pt;
+        font-size: 5pt;
+        height: 45px;
+    }
+    #monthLabel{
+        margin-top: -41.5pt;
+    }
+    .activityOnCalendar{
+        transform: translateY(6pt);
+        width: 6pt;
+        height: 6pt;
+    }
+
+    #chatboard {
+        margin-top: 25pt;
+        margin-left:560pt;
+        width: 180pt;
+        height: 395pt;
+        font-size: 10px;
+    }
+    #chatsight{
+        height:92%;
+    }
+    #chatBox{
+        margin:5pt 0pt 5pt 8pt;
+        height:5%;
+        width:90%;
+    }
+    #chatMsg{
+        width: 100%;
+    }
+}
+@media screen and (max-width: 1120px){
+    body{
+        margin-left: 0pt;
+    }
+}
+@media screen and (max-width: 1050px){
+    body{
+        margin-left: -10pt;
+    }
+}
 span{
     font-family: "Microsoft JhengHei";
     font-weight: bold;
 }
-
 .float-right {
     float: right;
 }
@@ -26,50 +312,34 @@ span{
 #menu >a.active{
     font-weight: bold;
 }
+.timetag:active{
+  transform: translate(1px,1px);
+}
 #activity {
     position: relative;
     display: block;
-    text-align: left;
-    padding: 5pt;
-    padding-top: 0;
-    background-color: pink;
-    height: 473pt;
-    width:25%;
     overflow-y: scroll;
-    float: left;
-    margin-right: 0;
+    text-align: left;
+    background-color: pink;
     border-radius: 5pt;
 }
 #activityTitle {
     text-align: center;
-    background-color: !#F6A2B1;
-    margin: 20pt 0 10pt 0;
-    !border-bottom-style: solid;
-    !border-bottom-width: 2pt;
-    !padding-bottom: 2pt;
     outline: none;
-    font-size: 20pt;
     text-decoration: underline;
 }
 #activityDescription {
     background-color: pink;
-    padding: 5pt 5pt 0 10pt;
-    margin: -3pt 0 5pt 0;
     text-align: left;
     border: none;
     border-left-style: solid;
     border-left-width: 3pt;
     border-left-color: #73BBAF;
-    width: 100%;
-    height: 75pt;
     overflow-y: auto;
     overflow-x: hidden;
     white-space: pre-line;
     resize: none;
     outline-color: #D17C7C;
-}
-#activityDescription:focus {
-    background-color: !#EEB7C0;
 }
 #activityDescription::-webkit-scrollbar-track {
     background-color: #F6A2B1;
@@ -80,7 +350,6 @@ span{
 }
 #activityDescription::-webkit-scrollbar-thumb {
     background-color: #73BBAF;
-    !border: 1px solid #555555;
 }
 #activityDate{
     margin-top:3pt;
@@ -100,40 +369,47 @@ span{
 #votePage .title.active{
     color:#9E2F2F;
 }
-
-/*  */
+#votedPage button{
+    cursor: default;
+}
+/* VotePage add options input */
+input[type=text] {
+    border:1px solid #CCB7B7;
+    color:black;
+    font-size: 10pt;
+    padding: 6pt;
+    width:50pt;
+    height:23pt;
+    border-radius: 2pt;
+    background-color: transparent;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+input[type=text]:focus {
+    width: 70%;
+}
+/* Controller */
 #controller {
-    margin-left: 28%;
     background-color: orange;
-    height: 35pt;
-    width: 72%;
-    padding: 4pt;
     border-radius: 5pt;
     border-width: 1pt;
     text-align: right;
 }
-
-
 /* Chatting sight */
 #chatboard {
     position:relative;
     padding: 0;
     text-align: left;
-    margin-top: 10pt;
-    float: right;
     background-color: #E8E8F3;
-    width: 27%;
-    height: 428pt;
     border-radius: 10pt 0 0 10pt;
     display: block;
     flex-direction: column;
 }
 #chatsight{
-    height:92%;
-    padding:15pt 10pt 0 10pt;
     overflow-y: auto;
     overflow-x: hidden;
 }
+/* global scrollbar setting */
 ::-webkit-scrollbar-track {
     background-color: #F6A2B1;
 }
@@ -143,16 +419,10 @@ span{
 }
 ::-webkit-scrollbar-thumb {
     background-color: #73BBAF;
-    !border: 1px solid #555555;
 }
-#chatBox{
-    margin:5pt 0pt 5pt 8pt;
-    height:5%;
-    width:90%;
-}
-#chatMsg{
-    width: 100%;
-}
+
+
+
 #addOption {
     margin:7pt 0 3pt 0;
     height:5%;
@@ -162,7 +432,6 @@ span{
     width: 22%;
     margin:7pt 0 3pt 0;
 }
-
 
 /* vote modal */
 div > .choose:hover{
@@ -177,7 +446,6 @@ div > .choose:hover{
     text-align: center;
     float: right;
 }
-
 #optionremove {
     background-color: rgba(120,120,120, 0);
     border: 0px;
@@ -189,16 +457,29 @@ div > .choose:hover{
 
 /* Calendar */
 #calendar {
-    margin-left: 27%;
-    margin-right: 30%;
-    margin-top:30pt;
     background-color: white;
-    height: 300pt;
-    width: 45%;
-    padding:15pt 5pt 5pt 5pt;
     border-radius: 5pt;
-    !box-shadow: 2pt 2pt 5pt grey;
 }
+/* labels on calendar */
+#monthLabel{
+    float: left;
+    overflow: hidden;
+    text-align: justify;
+}
+#monthLabel > a{
+    margin:0 auto;
+    margin-left: -1pt;
+}
+#monthLabel > i{
+    cursor: pointer;
+}
+
+.bottom-radius{
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/*  calendar content basic setting */
 #calendar ul {
     list-style: none;
     padding: 0;
@@ -216,31 +497,34 @@ div > .choose:hover{
     position: relative;
 }
 #calendar ul.weekdays {
-    height: 40px;
     background: pink;
     cursor: default;
 }
 #calendar ul.weekdays li {
     text-align: center;
     text-transform: uppercase;
-    line-height: 20px;
     border: none !important;
-    padding: 10px 7px;
     color: #fff;
-    font-size: 13px;
 }
-#day{
-    margin:-2px -3px 0 0;
-    display: block;
-}
+
+/*  days normal look */
 .days {
     text-align: left;
-    padding: 0pt 3pt;
-    font-size: 5pt;
     color: #355261;
     font-family: sans-serif;
-    height: 45px;
-    background-color: !#F1DEDE;
+}
+
+.days:hover {
+    color: white;
+    background-color: #85B3E4;
+    cursor: pointer;
+}
+
+/* special days color */
+.today{
+    color:#000000;
+    font-weight: bold;
+    background-color: #7AC5DE;
 }
 .choosedays{
     background-color: #ECF0CC;
@@ -250,11 +534,6 @@ div > .choose:hover{
 }
 .ays{
     background-color: #ECF0CC;
-}
-.days:hover {
-    color: white;
-    background-color: #85B3E4;
-    cursor: pointer;
 }
 .disabledDays {
     color: #E2DDDD;
@@ -266,45 +545,14 @@ div > .choose:hover{
     cursor: default;
 }
 
-#monthLabel{
-    margin-top: -41.5pt;
-    float: left;
-    overflow: hidden;
-    text-align: justify;
-}
-#monthLabel > a{
-    margin:0 auto;
-    margin-left: -1pt;
-}
-#monthLabel > i{
-    cursor: pointer;
-}
-.monthButton{
-    background-color: transparent;
-    border:none;
-}
-
-#votedPage button{
-    cursor: default;
-}
-.bottom-radius{
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.today{
-    color:#000000;
-    font-weight: bold;
-    background-color: #7AC5DE;
-}
+/* dots on calendar */
 .activityOnCalendar{
-    transform: translateY(6pt);
     display: table-cell;
-    width: 8pt;
-    height: 8pt;
     border-radius:100%;
     opacity: 0.8;
 }
+
+/* tooltip setting */
 .tooltip{
     position: relative;
 }
@@ -348,6 +596,8 @@ div > .choose:hover{
     visibility: visible !important;
     cursor: default;
 }
+
+/* attend member setting*/
 .tooltiptext img:hover{
     opacity: 0.5;
 }
@@ -366,46 +616,17 @@ div > .choose:hover{
 .text-hidden{
     overflow: hidden;
 }
-/*  not use  */
-#voteBoard {
-    margin-top: 10pt;
-    margin-left: 28%;
-    background-color: #CFDEEF;
-    height: 120pt;
-    width: 43%;
-    border-radius: 3pt;
-}
 
-.timetag:active{
-  transform: translate(1px,1px);
-}
-
+/*
 .popup {
     position: relative;
     display: inline-block;
     cursor: pointer;
-}
+}*/
+
 i{
     cursor: pointer;
 }
-input[type=text] {
-    border:1px solid #CCB7B7;
-    color:black;
-    font-size: 10pt;
-    padding: 6pt;
-    width:70pt;
-    height:23pt;
-    border-radius: 2pt;
-    background-color: transparent;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
-}
-
-input[type=text]:focus {
-    width: 70%;
-}
-
-
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
     from {opacity: 0;}
@@ -437,12 +658,8 @@ input[type=text]:focus {
 
 /*music player*/
 #player {
-    margin-left: 28%;
-    margin-right: 30%;
     background-color: rgb(230,255,200);
-    width: 43%;
-    padding: 10pt;
-    border-radius: 10pt;
+    border-radius: 5pt;
 }
 button.ui.green.button i.backward.icon{
     position: relative;

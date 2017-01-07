@@ -8,93 +8,170 @@ var pre_votedateList = [];
 var pre_editdateList = [];
 $(document).ready(function(){
 
-	init();
+    init();
 
-	// change calendar month
-	$('.monthButton').click(function(){
-		if(this.id == 'right')date.setMonth(date.getMonth()+1);
-		else if(this.id == 'left')date.setMonth(date.getMonth()-1);
-		calendarDate(date);
-	})
-	// change calendar month by mouse scroll
-	$('#calendar').on('mousewheel',function(){
-		console.log(event.deltaY);
-		if(event.deltaY>0)date.setMonth(date.getMonth()+1);
-		else date.setMonth(date.getMonth()-1);
-		calendarDate(date);
-	})
+    //Change Month
+    $('#calendar .monthButton').click(function(){
+        if(this.id == 'right')date.setMonth(date.getMonth()+1);
+        else if(this.id == 'left')date.setMonth(date.getMonth()-1);
+        else if(this.id == 'today')date = new Date();
+        calendarDate(date);
+    })
+    // change month by click on month labels
+    $("#monthLabel > a").on('click',function(){
+        date.setMonth($(this).text()-1);
+        calendarDate(date);
+    })
+    $("#activityDate .timetag").on('click',changeByTimetag);
 
-	// search and display
-	$('#activityList input').on('input',function(){
-		var act = searchActivity($(this).val());
-		//showActivity(act);
-	});
+    // change calendar month by mouse scroll
+    /*$('#calendar').on('mousewheel',function(){
+        console.log(event.deltaY);
+        if(event.deltaY>0)date.setMonth(date.getMonth()+1);
+        else date.setMonth(date.getMonth()-1);
+        calendarDate(date);
+    })
+*/
 
-	$('.item').click(function(){
-		console.log(this);
-	})
+    // search and display
+    $('#activityList input').on('input',function(){
+        var act = searchActivity($(this).val());
+        //showActivity(act);
+    });
+
+    $('.item').click(function(){
+        console.log(this);
+    })
 
 });
 
 function init(){
-	calendarDate(date);
+    calendarDate(date);
 }
 
 
 function calendarDate(date){
-	$('#mon').text(months[date.getMonth()]);
-	$('#year').text(date.getFullYear());
-		var days = $('#day li');
-		var firstDay = new Date(date.getFullYear(),date.getMonth());
-		var lastDate = new Date(date.getFullYear(),date.getMonth()+1,0);
-		var preMonlastDate = new Date(date.getFullYear(),date.getMonth(),0);
-		firstDay = firstDay.getDay();
-		lastDate = lastDate.getDate();
-		preMonlastDate = preMonlastDate.getDate();
-		// preMonDisplay
-		for(var i=0 ; i < firstDay ; i++){
-			$(days[i]).text(preMonlastDate - firstDay + i +1);
-			$(days[i]).addClass('disabledDays');
-		}
-		// thisMon
-		for(var i=1 ; i <= lastDate ; i++){
-			$(days[firstDay + i-1]).text(i);
-			$(days[firstDay + i-1]).removeClass('disabledDays');
-		}
-		// nextMon
-		for(var i=firstDay+lastDate; i<= days.length ; i++){
-			$(days[i]).text(i - (firstDay+lastDate) +1);
-			$(days[i]).addClass('disabledDays');
-		}
+    /* days selector */
+    var days = $('#day li');
+    var today = $.datepicker.formatDate('yy-mm-dd', new Date());
 
-		//get activities in the month
-		$.ajax({
-			url: "get_activities_month",
-			data: {
-				month: date.getMonth()
-			},
-			type: "POST",
-			dataType: "json",
-			success: function(data, textStatus, jqXHR) {
-				// to be filled in what to do -----------------------
-				console.log("get month success!");
-				console.log(data);
-			},
-			error: function() {
-				console.log("get month failed! QQ");
-			}
-		});
+    /* use to compute previous month, this month and next month */
+    var year = date.getFullYear();
+    var month = date.getMonth();
+
+    /* Change label display */
+    var monthlabels = $("#monthLabel a");
+    var labelColor = monthlabels.eq(month).attr('class').split(' ')[1];
+    monthlabels.removeClass('big').eq(month).addClass('big');
+    $(document.getElementById('mon')).removeClass().addClass('ui label float-left ' + labelColor).text(months[month]);
+    $(document.getElementById('year')).text(year);
+
+    var month_begin = new Date(year,month);
+    var month_end = new Date(year,month+1,0);
+    var pre_month_end = new Date(year,month,0);
+    var next_month_begin = new Date(year,month+1);
+    var firstDay = month_begin.getDay();    // first day of this month is Mon,Tue...(0~6)
+    var lastDate = month_end.getDate(); // last day of this month
+    var preMonlastDate = pre_month_end.getDate();   // prev month has XX days
+
+    /* reset days setting before display */
+    $(days).removeClass().addClass('days');
+
+    // preMonDisplay
+    if(month<10)month='0'+month;
+    for(var i=0 ; i < firstDay ; i++){
+        var date_temp = preMonlastDate - firstDay + i + 1;
+        $(days[i]).addClass('disabledDays').text(date_temp);
+        if(date_temp<10)date_temp='0'+date_temp;
+        $(days[i]).attr('id',year + '-' +month + '-' + date_temp);
+    }
+    // thisMonth
+    month = (+month)+1;
+    if(month==13){month=1;year+=1;}
+    if(month<10)month='0'+month;
+    //console.log("FUCK");
+    //console.log(editdateList);
+    for(var i=1 ; i <= lastDate ; i++){
+        var index = firstDay + i-1;
+        var date_temp = i;
+        $(days[index]).removeClass('disabledDays').text(date_temp);
+        if(date_temp<10)date_temp='0'+date_temp;
+        $(days[index]).attr('id',year + '-' +month + '-' + date_temp);
+        if($.inArray($(days[index]).attr('id'),votedateList) != -1){
+            $(days[index]).addClass('choosedays tooltip').append('<i class="ui icon idea warn"></i>');
+        }
+        if($.inArray($(days[index]).attr('id'), editdateList) != -1){
+            $(days[index]).addClass('eventDays');
+        }
+        if($(days[index]).attr('id') == today){
+            $(days[index]).addClass('today').append('<p style="color:#D96449;">Today</p>');
+        }
+    }
+    // nextMon
+    month = (+month)+1;
+    if(month==13){month=1;year+=1;}
+    if(month<10)month='0'+month;
+    for(var i=firstDay+lastDate; i<= days.length ; i++){
+        var date_temp = i - (firstDay+lastDate) +1;
+        $(days[i]).addClass('disabledDays').text(date_temp);
+        if(date_temp<10)date_temp='0'+date_temp;
+        $(days[i]).attr('id',year + '-' +month + '-' + date_temp);
+    }
+
+
+            //get activities in the month
+    $.ajax({
+        url: "get_activities_month",
+        data: {
+            month: date.getMonth()
+        },
+        type: "POST",
+        dataType: "json",
+        success: function(data, textStatus, jqXHR) {
+            // to be filled in what to do -----------------------
+            //console.log("get month success!");
+            var thisActivity = document.location.search.slice(6);
+            console.log(data);
+            var color_used = [];
+            data.activities.forEach(function(value,index){
+                //console.log(value);
+                if(value.activity_id === document.location.search.slice(6))return;
+                //console.log(value,index);
+                var color = getRandomColor();
+                while(color_used.indexOf(color)!== -1)color = getRandomColor();
+                color_used.push(color);
+                //if(thisActivity == value.activity_id)color='purple';
+                var name = value.title;
+                var datelength = value.date.length;
+                //console.log('date len ' + datelength);
+                value.date.forEach(function(value2,index2){
+                $('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar tooltip">'+'<span class="tooltiptext">'+name+'</span>'+'</div>');})
+            })
+        },
+        error: function() {
+            console.log("get month failed! QQ");
+        }
+    });
 }
-
-
+function getRandomColor() {
+    /*var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;*/
+    var colors = ['red','blue','green','olive','gray','orange','teal','brown','pink','black','yellow','violet'];
+    var color = colors[Math.floor(Math.random()*100%colors.length)];
+    return color;
+}
 function showActivity(activity){
-	$(".ui.link.items").text("");
-	$.each(activity,activityAdd);
+    $(".ui.link.items").text("");
+    $.each(activity,activityAdd);
 }
 
 function activityAdd(){
-		//console.log(this.name+" "+this.date );
-		var item = '<div class="item">\
+        //console.log(this.name+" "+this.date );
+        var item = '<div class="item">\
                 <div class="content">\
                     <div class="header">'+this.name+'</div>\
                     <div class="content">\
@@ -106,24 +183,24 @@ function activityAdd(){
                     </div>\
                 </div>\
             </div> <div class="ui divider"></div>';
-		$(".ui.link.items").append(item);
+        $(".ui.link.items").append(item);
 }
 
 function searchActivity(val){
-	var regExp = new RegExp(val,'gi');
-	console.log("search regExp:" + regExp);
-	$('#activities > .item').each((index, element) => {
-		let string = $(element).text();
-		console.log(string);
-		if(string.match(regExp)!==null) {
-			$(element).css('display', 'block');
-			// display a line between activities
-			$(element).next().css('display','block');
-		}
-		else {console.log("noo"); $(element).css('display', 'none');
-		$(element).next().css('display','none');}
-	});
-	return;
+    var regExp = new RegExp(val,'gi');
+    console.log("search regExp:" + regExp);
+    $('#activities > .item').each((index, element) => {
+        let string = $(element).text();
+        console.log(string);
+        if(string.match(regExp)!==null) {
+            $(element).css('display', 'block');
+            // display a line between activities
+            $(element).next().css('display','block');
+        }
+        else {console.log("noo"); $(element).css('display', 'none');
+        $(element).next().css('display','none');}
+    });
+    return;
 }
 
 /*music player*/
@@ -273,4 +350,9 @@ function uploadButton_enable() {
     else{
         document.getElementById("upload_button_text").disabled = false;
     }
+}
+function changeByTimetag(){
+    var tag = $(this).text().split('~')[0];
+    date = new Date(tag);
+    calendarDate(date);
 }

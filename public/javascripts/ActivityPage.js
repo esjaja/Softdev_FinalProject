@@ -314,12 +314,12 @@ $(document).ready( function(){
 		voteObj['type']='DATE';
 		$('.first.modal').modal('hide');
 		if(votedateFlag == false){
-			$("#calendar").css("height","340pt");
+			$("#calendar").css("height","305pt");
 			$("#calendar").append('<div id="temp" style="width:100%;float:right;margin-top:5pt;">'+
-				'<div class="ui right pointing red basic label large" style="margin-top:1pt;">'+
+				'<div class="ui right pointing red basic label" style="margin-top:1pt;">'+
       			'Click on dates you want to choose or cancel</div>'+
-				'<button class="ui blue button" id="askDateDone" style="float:right" onclick="askDateBtn($(this))">Done</button>'+
-				'<button class="ui button" id="askDateCancel" style="float:right" onclick="askDateBtn($(this))">Cancel</button>'+
+				'<button class="ui blue right floated mini button" id="askDateDone"  onclick="askDateBtn($(this))">Done</button>'+
+				'<button class="ui right floated mini button" id="askDateCancel"  onclick="askDateBtn($(this))">Cancel</button>'+
 				'</div>');
 		}
 		votedateFlag = true;
@@ -331,12 +331,12 @@ $(document).ready( function(){
 		pre_editdateList = editdateList.slice(0);
 		$('.first.modal').modal('hide');
 		if(editdateFlag == false){
-			$("#calendar").css("height","340pt");
+			$("#calendar").css("height","305pt");
 			$("#calendar").append('<div id="temp" style="width:100%;float:right;margin-top:5pt;">'+
-				'<div class="ui right pointing red basic label large" style="margin-top:1pt;">'+
+				'<div class="ui right pointing red basic label" style="margin-top:1pt;">'+
       			'Click on dates you want to choose or cancel</div>'+
-				'<button class="ui blue button" id="editDateDone" style="float:right" onclick="updateDateBtn($(this))">Done</button>'+
-				'<button class="ui button" id="editDateCancel" style="float:right" onclick="updateDateBtn($(this))">Cancel</button>'+
+				'<button class="ui blue right floated mini button" onclick="updateDateBtn($(this))">Done</button>'+
+				'<button class="ui right floated mini button" id="editDateCancel" onclick="updateDateBtn($(this))">Cancel</button>'+
 				'</div>');
 			$("#calendar li").popup("false");
 		}
@@ -783,7 +783,7 @@ function askDateBtn(btn){
 		$(btn).parent().remove();
 		$(document.getElementById('Vote')).removeClass('disabled');
 		$(document.getElementById('editDate')).removeClass('disabled');
-		$(document.getElementById('calendar')).css('height','300pt');
+		$(document.getElementById('calendar')).css('height','280pt');
 		votedateFlag = false;
 		calendarDate(date);
 		return;
@@ -809,7 +809,8 @@ function askDateBtn(btn){
 	        console.log("success set vote date!");
 			$(btn).parent().remove();
 			$(document.getElementById('Vote')).removeClass('disabled');
-			$(document.getElementById('calendar')).css('height','300pt');
+			$(document.getElementById('editDate')).removeClass('disabled');
+			$(document.getElementById('calendar')).css('height','280pt');
 			votedateFlag = false;
 			calendarDate(date);
 	      },
@@ -830,7 +831,7 @@ function updateDateBtn(btn){
 		$(btn).parent().remove();
 		$(document.getElementById('Vote')).removeClass('disabled');
 		$(document.getElementById('VoteDate')).removeClass('disabled');
-		$(document.getElementById('calendar')).css('height','300pt');
+		$(document.getElementById('calendar')).css('height','280pt');
 		editdateFlag = false;
 		calendarDate(date);
 		return;
@@ -856,7 +857,7 @@ function updateDateBtn(btn){
 	        console.log(data);
 	        console.log("success edit date!");
 			$(btn).parent().remove();
-			$(document.getElementById('calendar')).css('height','300pt');
+			$(document.getElementById('calendar')).css('height','280pt');
 			editdateFlag = false;
 			calendarDate(date);
 	      },
@@ -923,17 +924,6 @@ function removeMember(event){
 function showMusicPlayer(files, PlayerList, TitleList){
     //console.log(PlayerList);
     //console.log(TitleList);
-    document.getElementById('MusicList').innerHTML =
-    '<div id="playlist" style="text-align:center;">'+
-        '<p id="music_title"></p>'+
-        '<audio controls autoplay></audio>'+
-        '<button id="back" class="ui green button" style="width:25px;height:35px;font-size:20px;" >'+
-            '<i class="backward icon"></i>'+
-        '</button>'+
-        '<button id="next" class="ui green button" style="width:25px;height:35px;font-size:20px;" >'+
-            '<i class="forward icon"></i>'+
-        '</button>'+
-    '</div>';
     var current = 0;
     var playlistPlayer = document.querySelector("#playlist audio");
     document.getElementById('music_title').innerHTML = "<strong>"+TitleList[current]+"</strong>";
@@ -978,14 +968,8 @@ function showMusicPlayer(files, PlayerList, TitleList){
         playlistPlayer.src = PlayerList[current];
         // Listen for the playback ended event, to play the next media
         playlistPlayer.addEventListener('ended', next, false)
-        document.getElementById('next').addEventListener('click', function(){
-            PressNext();
-        });
-
-        document.getElementById('back').addEventListener('click', function(){
-            PressBack();
-        });
-
+        document.getElementById('next').addEventListener('click',PressNext);
+        document.getElementById('back').addEventListener('click',PressBack);
     }
 }
 

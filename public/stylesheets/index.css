@@ -1,20 +1,218 @@
 body {
     padding: 10pt;
+    padding-left: 20pt;
     text-align: center;
     font-family: sans-serif;
     font-size: 16px;
     background-image: linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,0.1)),url("/public/images/wood.jpg");
-   ! opacity: 0.8;
 }
 
 #activityList {
-    height: 470pt;
-    width: 25%;
+    height: 475pt;
+    width: 250pt;
     float: left;
+    padding: 5pt;
+}
+#control {
+    height: 35pt;
+    margin-left: 270pt;
+    width: 650pt;
+    padding: 4pt;
+}
+#calendar {
+    margin-left:20pt;
+    float:left;
+    height: 300pt;
+    width: 460pt;
+    margin-top:30pt;
+    padding:15pt 5pt 5pt 5pt;
+}
+#calendar ul.weekdays {
+    height: 40px;
+}
+#calendar ul.weekdays li {
+    line-height: 20px;
+    padding: 10px 7px;
+    font-size: 13px;
+}
+#monthLabel{
+    margin-top: -41.5pt;
+}
+#day{
+    margin:-2px -3px 0 0;
+    display: block;
+}
+.days {
+    padding: 0pt 3pt;
+    font-size: 5pt;
+    height: 45px;
+}
+.activityOnCalendar{
+    transform: translateY(6pt);
+    width: 8pt;
+    height: 8pt;
+}
+
+#personalinfo {
+    margin-top: 25pt;
+    margin-left:720pt;
+    width: 220pt;
+    height: 390pt;
+    padding: 20pt;
+    padding-top: 5pt;
+}
+#player {
+    margin-top:-80pt;
+    margin-left:270pt;
+    width:460pt;
+    height:95pt;
+    padding: 5pt;
+}
+
+@media screen and (max-width: 1260px){
+    body{
+        padding-left: 40pt;
+    }
+    #activityList {
+        height: 450pt;
+        width: 210pt;
+        float: left;
+        padding: 5pt;
+    }
+
+    #control {
+        height: 35pt;
+        margin-left: 220pt;
+        width: 540pt;
+        padding: 4pt;
+    }
+    #calendar {
+        margin-left:10pt;
+        float:left;
+        height: 260pt;
+        width: 360pt;
+        margin-top:30pt;
+        padding:15pt 5pt 5pt 5pt;
+    }
+    #calendar ul.weekdays {
+        height: 40px;
+    }
+    #calendar ul.weekdays li {
+        line-height: 10px;
+        padding: 10px 7px;
+        font-size: 13px;
+    }
+    #monthLabel{
+        margin-top: -41.5pt;
+    }
+    #day{
+        margin:-2px -3px 0 0;
+        display: block;
+    }
+    .days {
+        padding: 0pt 3pt;
+        font-size: 5pt;
+        height: 40px;
+    }
+    .activityOnCalendar{
+        transform: translateY(3pt);
+        width: 6pt;
+        height: 6pt;
+    }
+    #personalinfo {
+        margin-top: 25pt;
+        margin-left:580pt;
+        width: 200pt;
+        height: 240pt;
+        padding: 20pt;
+        padding-top: 5pt;
+    }
+    #player {
+        margin-top:50pt;
+        margin-left:220pt;
+        width:360pt;
+        height:95pt;
+        padding: 5pt;
+    }
+
+}
+/* phone */
+@media screen and (max-width:480px){}
+/* pad */
+@media screen and (min-width:481px) and (max-width:768px){}
+
+@media screen and (max-width: 1080px){
+    body{
+        padding-left: 10pt;
+    }
+    #activityList {
+        height: 450pt;
+        width: 200pt;
+        float: left;
+        padding: 5pt;
+    }
+
+    #control {
+        height: 35pt;
+        margin-left: 210pt;
+        width: 530pt;
+        padding: 4pt;
+    }
+    #calendar {
+        margin-left:10pt;
+        float:left;
+        height: 260pt;
+        width: 360pt;
+        margin-top:30pt;
+        padding:15pt 5pt 5pt 5pt;
+    }
+    #calendar ul.weekdays {
+        height: 40px;
+    }
+    #calendar ul.weekdays li {
+        line-height: 10px;
+        padding: 10px 7px;
+        font-size: 13px;
+    }
+    #monthLabel{
+        margin-top: -41.5pt;
+    }
+    #day{
+        margin:-2px -3px 0 0;
+        display: block;
+    }
+    .days {
+        padding: 0pt 3pt;
+        font-size: 5pt;
+        height: 40px;
+    }
+    .activityOnCalendar{
+        transform: translateY(3pt);
+        width: 6pt;
+        height: 6pt;
+    }
+    #personalinfo {
+        margin-top: 25pt;
+        margin-left:560pt;
+        width: 200pt;
+        height: 240pt;
+        padding: 20pt;
+        padding-top: 5pt;
+    }
+    #player {
+        margin-top:50pt;
+        margin-left:210pt;
+        width:360pt;
+        height:95pt;
+        padding: 5pt;
+    }
+
+}
+
+#activityList {
     background-color: #EAF2EE;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 5pt 5pt 5pt 5pt;
     text-align: left;
     border-radius: 5pt;
     border-width: 1pt;
@@ -22,125 +220,171 @@ body {
 }
 
 #control {
-    margin-left: 28%;
     background-color: orange;
-    height: 35pt;
-    width: 72%;
-    padding: 4pt;
     border-radius: 5pt;
     border-width: 1pt;
     text-align: right;
 }
-
-#month {
-    font-size: 20pt;
-    color: orange;
-    text-align: left;
-    margin-bottom: 3pt;
-}
-
+/* Calendar */
 #calendar {
-    margin-left: 28%;
-    margin-right: 30%;
     background-color: white;
-    height: 275pt;
-    width: 43%;
-    padding: 10pt;
-    border-radius: 10pt;
+    border-radius: 5pt;
+    border-width: 1pt;
 }
-#upcomingActivity {
-    margin-left: 28%;
-    margin-right: 30%;
-    background-color: teal;
-    height: 140pt;
-    width: 43%;
-    border-radius: 10pt;
+/* labels on calendar */
+#monthLabel{
+    float: left;
+    overflow: hidden;
+    text-align: justify;
 }
+#monthLabel > a{
+    margin:0 auto;
+    margin-left: -1pt;
+}
+#monthLabel > i{
+    cursor: pointer;
+}
+.bottom-radius{
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+#dateinfo > i{
+    cursor: pointer;
+}
+
+/*  calendar content basic setting */
 #calendar ul {
     list-style: none;
     padding: 0;
     margin: 0;
     width: 100%;
 }
-#day{
-    margin:-2px -4px 0 0;
-}
 #calendar li {
     display: block;
     float: left;
     width: 14.36%;
-    padding: 5px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     margin-right: -1px;
     margin-bottom: -1px;
+    position: relative;
 }
-
 #calendar ul.weekdays {
-    height: 40px;
     background: pink;
+    cursor: default;
 }
-
 #calendar ul.weekdays li {
     text-align: center;
     text-transform: uppercase;
-    line-height: 20px;
     border: none !important;
-    padding: 10px 7px;
     color: #fff;
-    font-size: 13px;
 }
-
-#calendar .days li {
+/*  days normal look */
+.days {
     text-align: left;
-    padding: 0pt 5pt;
-    font-size: 5pt;
-    color: #220A0A;
+    color: #355261;
     font-family: sans-serif;
-    height: 45px;
+}
+.days:hover {
+    color: white;
+    background-color: #85B3E4;
+    cursor: pointer;
+}
+/* special days color */
+.today{
+    color:#000000;
+    font-weight: bold;
+    background-color: #7AC5DE;
+}
+.choosedays{
+    background-color: #ECF0CC;
+}
+.eventDays{
+    background-color: #ECCCF0;
+}
+.ays{
+    background-color: #ECF0CC;
+}
+.disabledDays {
+    color: #E2DDDD;
+    background-color: #C0B5C0;
+}
+.disabledDays:hover {
+    color: #E2DDDD;
+    background-color: #C0B5C0;
+    cursor: default;
+}
+/* dots on calendar */
+.activityOnCalendar{
+    display: table-cell;
+    border-radius:100%;
+    opacity: 0.8;
+}
+/* tooltip setting */
+.tooltip{
+    position: relative;
+}
+.tooltip .tooltiptext{
+    width: 100px;
+    min-width: 100px;
+    max-width: 500px;
+    height: auto;
+    width: auto;
+    display: table-cell;
+    visibility: hidden;
+    background-color: #E7E1E1;
+    color:black;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute !important;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;  
+}
+.tooltip .tooltiptext::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #E7E1E1 transparent transparent transparent;
+}
+.tooltip.activityOnCalendar:hover .tooltiptext{
+    transform: translateX(-50%);
+    visibility: visible !important;
+}
+.show {
+    margin-bottom: -10pt;
+    transform: translateX(-50%);
+    visibility: visible !important;
+    cursor: default;
+}
+/* attend member setting*/
+.tooltiptext img:hover{
+    opacity: 0.5;
+}
+.unattend{
+    opacity: 0.3;
 }
 
-#calendar .days li:hover {
-    background: #d3d3d3;
-}
-
-.disabledDays{
-    color:#48A3A7;
-    background-color:#C0B5C0;
-}
-
-
-#invite {
-    margin-top: 10pt;
-    float: right;
-    background-color: transparent;!pink;
-    width: 25%;
-    height: 400pt;
+#personalinfo {
+    background-color: transparent;
     border-radius: 10pt;
-    padding: 20pt;
-    padding-top: 5pt;
 }
 
 ::-webkit-scrollbar {
     display: none;
 }
 
-.monthButton{
-    margin: 0;
-    padding: 0;
-    border:none;
-    background-color: white;
-    outline:none;
-}
 
 /*music player*/
+
 #player {
-    margin-left: 28%;
-    margin-right: 30%;
     background-color: rgb(230,255,200);
-    width: 43%;
-    padding: 10pt;
-    border-radius: 10pt;
+    border-radius: 5pt;
 }
 button.ui.green.button i.backward.icon{
     position: relative;
