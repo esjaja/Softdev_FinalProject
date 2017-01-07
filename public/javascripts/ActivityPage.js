@@ -5,8 +5,8 @@ var date = new Date();
 var dropdownFlag = true;
 var votedateFlag = false;
 var editdateFlag = false;
-var votedateList = ["2016-12-26"];
-var editdateList = ["2016-12-27"];
+var votedateList = [];
+var editdateList = [];
 var pre_votedateList = [];
 var pre_editdateList = [];
 var voteObj = [];
@@ -345,8 +345,7 @@ $(document).ready( function(){
 			var date = $(this).attr('id');
 			/* if now is on votedate status, click on days will change backgroundcolor*/
 			if(votedateFlag && !$(this).hasClass('disabledDays') && !$(this).hasClass('eventDays'))
-			{
-				/* Check if this date has been choosen */
+			{/* Check if this date has been choosen */
 				var index = $.inArray(date,votedateList);
 				if(index == -1){
 					votedateList.push(date);
@@ -355,8 +354,7 @@ $(document).ready( function(){
 					votedateList.splice(index,1);
 					$(this).removeClass('choosedays');
 				}
-			}
-			else if($(this).hasClass('choosedays')){
+			} else if($(this).hasClass('choosedays')){
 				if($(this).find('img').length==0){
 					/* do ajax here , add self img with onclick="imgClick(this) if self not attend , add unattend class. add other that are attend */
 					var caller = $(this);
@@ -386,14 +384,11 @@ $(document).ready( function(){
 							console.log("error!!");
 						}
 					});
-				}
-				else $(this).children('.tooltiptext').toggleClass('show');
-			}
-			else ;
+				}		else $(this).children('.tooltiptext').toggleClass('show');
+			}		else ;
 			console.log(editdateFlag);
 			if(editdateFlag && !$(this).hasClass('disabledDays') && !$(this).hasClass('choosedays'))
-			{
-				/* Check if this date has been choosen */
+			{/* Check if this date has been choosen */
 				var index = $.inArray(date, editdateList);
 				console.log(date);
 				console.log(editdateList);
@@ -709,12 +704,15 @@ function calendarDate(date){
 			//console.log("get month success!");
 			var thisActivity = document.location.search.slice(6);
 			console.log(data);
+			var color_used = [];
 			data.activities.forEach(function(value,index){
 				//console.log(value);
 				if(value.activity_id === document.location.search.slice(6))return;
 				//console.log(value,index);
 				var color = getRandomColor();
-				//if(thisActivity == value.activity_id)color='purple';
+                while (color_used.indexOf(color) !== -1) color = getRandomColor();
+                color_used.push(color);
+                //if(thisActivity == value.activity_id)color='purple';
 				var name = value.activity_id;
 				var datelength = value.date.length;
 				//console.log('date len ' + datelength);
@@ -734,8 +732,8 @@ function getRandomColor() {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;*/
-    var colors = ['red','blue','green','olive','gray','orange'];
-    var color = colors[Math.floor(Math.random()*100%colors.length)];
+    var colors = ['red', 'blue', 'green', 'olive', 'gray', 'orange', 'teal', 'brown', 'pink', 'black', 'yellow', 'violet'];
+    var color = colors[Math.floor(Math.random() * 100 % colors.length)];
     return color;
 }
 
@@ -832,14 +830,15 @@ function updateDateBtn(btn){
 		editdateList.sort();
 		console.log('new editdateList is : ' + editdateList);
 		editDateLabel();
-
+		var fake_editdateList = editdateList;
+        if (fake_editdateList.length < 2) fake_editdateList.push('');
 		//back-end
 		$.ajax({
 	      url: "edit_activity_dates",
 	      data: {
 	          activity_id: document.location.search.slice(6),
 			  type: "time",
-			  dates: editdateList
+			  dates: fake_editdateList
 		    },
 	      type: "POST",
 	        dataType: "json",
@@ -892,7 +891,7 @@ function removeMember(event){
     $.ajax({
       url: "remove_activity_member",
       data: {
-        activity_id: document.location.search.slice(6),
+          activity_id: document.location.search.slice(6),
 	      user_id: event.parentNode.id
 	    },
       type: "POST",
