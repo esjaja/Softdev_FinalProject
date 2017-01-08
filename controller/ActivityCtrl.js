@@ -169,6 +169,10 @@ var display_activity = (req, res, next) => {
     ], (err, activity, date, voting, voted, messages) => {
         //console.log(activity.total);
         //console.log(voting);
+        for(let i of date) {
+            if(date[i] === '') date.splice(i, 1);
+        }
+
         return res.render('activity', {
             uid: req.session.user_id,
             token: req.session.token,
@@ -338,8 +342,9 @@ var edit_activity_dates = (req, res, next) => {
                 }
                 let dates = req.body['dates[]'];
                 console.log(dates);
-                for(let dt of dates) {
-                    if(dt.match(/(\d{4})-(\d{2})-(\d{2})/) === null) return console.log('Invalid Input');
+                for(let dt in dates) {
+                    if(dates[dt] === '') dates.splice(dt, 1);
+                    else if(dates[dt].match(/(\d{4})-(\d{2})-(\d{2})/) === null) return console.log('Invalid Input');
                 }
                 callback(null, dates);
             });

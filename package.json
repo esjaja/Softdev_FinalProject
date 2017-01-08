@@ -17,7 +17,7 @@
     "express-validator": "^2.21.0",
     "gridfs-stream": "^1.1.1",
     "hjs": "~0.0.6",
-    "mongoose": "^4.6.8",
+    "mongoose": "4.6.8",
     "node-while-loop": "^1.0.4",
     "semantic-ui": "^2.2.6",
     "request": "^2.79.0",

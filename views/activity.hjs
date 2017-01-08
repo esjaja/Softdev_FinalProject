@@ -36,10 +36,12 @@
                 <br>
                 <div id="activityDate">
                     <div class="ui purple labels">
-                        {{#date}}
-                          <div class="ui label timetag">{{.}}</div>
-                        {{/date}}
-                    </div>
+                        {{#date.length}}
+                            {{#date}}
+                                <div class="ui label timetag">{{.}}</div>
+                            {{/date}}
+                        {{/date.length}}
+                    </div>                    
                 </div>
 
                 <div>
@@ -319,7 +321,7 @@
         </div>
     </div>
     <!-- Canlendar -->
-    
+
     <!-- Chatting -->
     <div id="chatboard">
         <div id="chatsight">
