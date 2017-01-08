@@ -104,7 +104,7 @@ function calendarDate(date){
             $(days[index]).addClass('eventDays');
         }
         if($(days[index]).attr('id') == today){
-            $(days[index]).addClass('today').append('<p style="color:#D96449;">Today</p>');
+            $(days[index]).addClass('today').append('<span style="color:#123456;float:right">Today</span>');
         }
     }
     // nextMon

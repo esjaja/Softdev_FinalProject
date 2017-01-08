@@ -683,7 +683,7 @@ function calendarDate(date){
 			$(days[index]).addClass('eventDays');
 		}
 		if($(days[index]).attr('id') == today){
-			$(days[index]).addClass('today').append('<p style="color:#D96449;">Today</p>');
+			$(days[index]).addClass('today').append('<span style="color:#123456;float:right">Today</span>');
 		}
 	}
 	// nextMon
@@ -725,7 +725,9 @@ function calendarDate(date){
 				var datelength = value.date.length;
 				//console.log('date len ' + datelength);
 				value.date.forEach(function(value2,index2){
-  				$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar tooltip">'+'<span class="tooltiptext">'+name+'</span>'+'</div>');})
+					console.log('++++++ ' + value2);
+  					$('#'+value2).append('<div style="background-color:'+color+'" class="activityOnCalendar tooltip">'+'<span class="tooltiptext">'+name+'</span>'+'</div>');
+  				})
 			})
 		},
 		error: function() {
