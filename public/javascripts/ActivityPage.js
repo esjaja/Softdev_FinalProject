@@ -868,10 +868,12 @@ function updateDateBtn(btn){
 	      success: function(data, textStatus, jqXHR) {
 	        console.log(data);
 	        console.log("success edit date!");
-			$(btn).parent().remove();
-			$(document.getElementById('calendar')).css('height','280pt');
-			editdateFlag = false;
-			calendarDate(date);
+					$(btn).parent().remove();
+					$(document.getElementById('Vote')).removeClass('disabled');
+					$(document.getElementById('VoteDate')).removeClass('disabled');
+					$(document.getElementById('calendar')).css('height','280pt');
+					editdateFlag = false;
+					calendarDate(date);
 	      },
 	        error: function() {
 	        console.log("error!!");
