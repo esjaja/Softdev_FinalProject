@@ -599,7 +599,7 @@ function init(){
 				voteObj.deadline = dataText;
 				CheckVoteDoneBtn(voteObj);
 			},
-			minDate:0
+			minDate:"+1d"
 		}
 	);
 	// progress initialization for entries of votes
