@@ -3,6 +3,7 @@ var async = require('async');
 var crypto = require('crypto');
 var Vote = require('../model/Vote.js');
 var Activity = require('../model/Activity.js');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 var create_vote = (req, res, next) => {
     async.waterfall([
@@ -97,10 +98,12 @@ var add_option = (req, res, next) => {
                     let reg = /(\d{4})-(\d{2})-(\d{2})/;
                     if(option.match(reg) === null) return console.log('Error: not correct time');
                 }
-                let idx = vote.option.indexOf(option);
-                if(idx !== -1){
-                    //ignore duplicate options
-                    return res.json({status: 300});
+                //let idx = vote.option.indexOf(option);
+                let opts = vote.option;
+                console.log(opts);
+                for(let i=0; i < opts.length; i++){
+                    console.log(opts[i].name);
+                    if(opts[i].name === option) return res.json({status: 300});
                 }
                 callback(null, option);
             });
@@ -124,7 +127,6 @@ var add_option = (req, res, next) => {
         },
         (option, callback) => {
             Vote.findOne({id: req.body.vote_id}, (err, vote) => {
-                console.log(vote);
                 let option_id = vote.option.filter((opt) => {
                     return opt.name === option;
                 })[0]._id;
@@ -276,12 +278,13 @@ var set_vote_date = (req, res, next) => {
         (callback) => {
             //check input
             if(req.body.type !== "time") return console.log('Error: '+"Wrong Type");
-            else {
+            /*else {
                 let reg = /(\d{4})-(\d{2})-(\d{2})/;
                 for(let opt in req.body.options){
-                    if(opt.match(reg) === null) return console.log('Error: '+err);
+                    //if(opt === '') dates.splice(dt, 1);
+                    if(opt.match(reg) === null) return console.log('Invalid input');
                 }
-            }
+            }*/
             callback(null);
         },
         (callback) => {
@@ -301,17 +304,19 @@ var set_vote_date = (req, res, next) => {
         (exist, title, callback) => {
             if( !exist ){
                 //create
+                let reg = /(\d{4})-(\d{2})-(\d{2})/;
                 let option = [];
                 let tmp = [];
                 for(let opt of req.body['options[]']){
                     let name = opt.replace(/\r\n|\n/g,"").replace(/\s+/g, "");
-                    if(name != "" && tmp.indexOf(name) === -1) {
+                    if(name !== "" && tmp.indexOf(name) === -1) {
                         option.push({
                             name: opt,
                             attend: ""
                         });
                         tmp.push(name);
                     }
+                    if(name !== "" && name.match(reg) === null) return console.log('Invalid input');
                 }
                 let vote_id = 'time_'+req.body.activity_id;
                 var vote = new Vote({
@@ -340,8 +345,9 @@ var set_vote_date = (req, res, next) => {
                     }
                     if(vote.type === "time"){
                         let reg = /(\d{4})-(\d{2})-(\d{2})/;
-                        for(let opt of options){
-                            if(opt.match(reg) === null) return console.log('Error: '+err);
+                        for(let opt in options){
+                            if(options[opt] === "") options.splice(opt, 1);
+                            else if(options[opt].match(reg) === null) return console.log('Invalid input');
                         }
                     }
                     /*for(let option of vote.option){
@@ -367,6 +373,8 @@ var set_vote_date = (req, res, next) => {
             }
             else {
                 //update
+                console.log(options);
+                if(options === "") options = [];
                 let op = options.map((option) => {
                     return {
                         name: option,

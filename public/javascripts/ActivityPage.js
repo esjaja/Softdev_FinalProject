@@ -516,19 +516,23 @@ $(document).ready( function(){
 				type: "POST",
 				dataType: "json",
 				success: function(data, textStatus, jqXHR) {
-					console.log($(this).parents('.content'));
+					console.log(data);
+					if(data.status === 200) {
+						console.log($(this).parents('.content'));
 
-					//add the option into list //$('#'+data.vote_id+'.content').prepend
-					$('#'+data.vote_id+'.content').prepend(
-						'<div id='+data.option_id+'>'+
-							'<button class="ui tiny basic button" style="margin:7pt 0 3pt 0;">'+text+'</button>'+
-							' <img class="ui avatar image me" src="http://graph.facebook.com/'+data.user_id+'/picture?type=square" style="margin-right:-1pt;display:none;">'+
-							'<button id="optionremove" value='+data.option_id+'><i class="teal remove icon"></i></button>'+
-						'</div>'
-					  );
-					  //$(this).parents('.content').remove();
-					//bing related functions
-					console.log("success to add option");
+						//add the option into list //$('#'+data.vote_id+'.content').prepend
+						$('#'+data.vote_id+'.content').prepend(
+							'<div id='+data.option_id+'>'+
+								'<button class="ui tiny basic button" style="margin:7pt 0 3pt 0;">'+text+'</button>'+
+								' <img class="ui avatar image me" src="http://graph.facebook.com/'+data.user_id+'/picture?type=square" style="margin-right:-1pt;display:none;">'+
+								'<button id="optionremove" value='+data.option_id+'><i class="teal remove icon"></i></button>'+
+							'</div>'
+						  );
+						  //$(this).parents('.content').remove();
+						//bing related functions
+						console.log("success to add option");
+					}
+					if(data.status === 300) console.log("duplicate option");
 				},
 				error: function() {
 					console.log("error!!");
@@ -791,16 +795,21 @@ function askDateBtn(btn){
 	else if($(btn).attr('id') == "askDateDone"){
 		console.log('Done!');
 		votedateList.sort();
+		for(let dt in votedateList) {
+			if(votedateList[dt] === '') votedateList.splice(dt, 1);
+		}
 		console.log('new votedateList is : ' + votedateList);
 		askDateLabel();
 		//pre_votedateList = votedateList;
+		var fake_votedateList = votedateList;
+		if(fake_votedateList.length < 2) fake_votedateList.push('');
 		//back-end
 		$.ajax({
 	      url: "set_vote_date",
 	      data: {
 	          activity_id: document.location.search.slice(6),
 			  type: "time",
-			  options: votedateList
+			  options: fake_votedateList
 		    },
 	      type: "POST",
 	        dataType: "json",
@@ -839,6 +848,9 @@ function updateDateBtn(btn){
 	else if($(btn).attr('id') == "editDateDone"){
 		console.log('Done!');
 		editdateList.sort();
+		for(let dt in editdateList) {
+			if(editdateList[dt] === '') editdateList.splice(dt, 1);
+		}
 		console.log('new editdateList is : ' + editdateList);
 		editDateLabel();
 		var fake_editdateList = editdateList;
@@ -1080,7 +1092,7 @@ function imgClick(img){
 /* extend array define */
 Array.prototype.clean = function(deleteValue) {
   for (var i = 0; i < this.length; i++) {
-    if (this[i] == deleteValue) {         
+    if (this[i] == deleteValue) {
       this.splice(i, 1);
       i--;
     }
