@@ -683,7 +683,7 @@ function calendarDate(date){
 			$(days[index]).addClass('eventDays');
 		}
 		if($(days[index]).attr('id') == today){
-			$(days[index]).addClass('today').append('<span style="color:#123456;float:right">Today</span>');
+			$(days[index]).addClass('today').append('<p style="color:black;float:right;font-weight:normal;margin-top:3px">Today</p>');
 		}
 	}
 	// nextMon
