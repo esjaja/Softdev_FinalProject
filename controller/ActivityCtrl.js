@@ -160,6 +160,11 @@ var display_activity = (req, res, next) => {
             //get messages
             Message.find({activity_id: activity.id}, null, {sort: {time: 1}}, (err, messages) => {
                 if(err) return console.log('Error: ' + err);
+                messages.sort((a, b) => {
+                    let dt_a = new Date(a.time);
+                    let dt_b = new Date(b.time);
+                    return dt_a.getTime() - dt_b.getTime();
+                });
                 messages.forEach((mes) => {
                     mes.user_name = users[mes.user_id];
                 });
